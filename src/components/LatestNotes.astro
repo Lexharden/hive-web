@@ -1,0 +1,22 @@
+---
+import type { RepoReleases } from '../lib/releases';
+import { formatDate } from '../lib/assets';
+interface Props { data: RepoReleases; versionsHref: string }
+const { data, versionsHref } = Astro.props;
+const rel = data.latest;
+---
+{rel && (
+  <div class="latest">
+    <div class="latest-head">
+      <h2>Qué trae la v{rel.version}</h2>
+      <p class="muted">Publicada el {formatDate(rel.publishedAt)}. <a href={versionsHref}>Ver todas las versiones</a></p>
+    </div>
+    <div class="notes" set:html={rel.bodyHtml} />
+  </div>
+)}
+
+<style>
+  .latest { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+  .latest-head { display: grid; gap: 12px; position: sticky; top: 100px; }
+  @media (max-width: 900px) { .latest { grid-template-columns: 1fr; } .latest-head { position: static; } }
+</style>

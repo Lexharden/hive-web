@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import DownloadPanel from '../components/DownloadPanel.astro';
+import Icon from '../components/Icon.astro';
+import { games, totalEffects, site } from '../config/site';
+import { getReleases } from '../lib/releases';
+
+const ports = Object.fromEntries(
+  await Promise.all(games.filter((g) => g.repo).map(async (g) => [g.id, await getReleases(g.repo!)])),
+);
+---
+<Base
+  title="Juegos compatibles"
+  description={`Juegos compatibles con HiveShock: ${games.map((g) => g.title).join(', ')}. ${totalEffects} efectos que tu live puede activar.`}
+>
+  <section class="intro honeycomb">
+    <div class="wrap intro-inner">
+      <h1>Juegos compatibles</h1>
+      <p class="lead">
+        {games.length} juegos y {totalEffects} efectos que tu comunidad puede activar. Cada port escucha a HiveShock en tu
+        equipo (puerto 43000) y le avisa cuando mueres para llevar la cuenta.
+      </p>
+      <p class="rom">
+        <Icon name="shield" />
+        <span>Los ports no incluyen el juego. Necesitas tu propia copia legal; la primera vez que abres el port te la pide y genera sus archivos.</span>
+      </p>
+    </div>
+  </section>
+
+  <div class="wrap list">
+    {games.map((g) => {
+      const port = ports[g.id];
+      return (
+        <section class="game" id={g.id} aria-labelledby={`${g.id}-t`}>
+          <div class="info">
+            <p class="count"><span class="num">{g.effects}</span> efectos</p>
+            <h2 id={`${g.id}-t`}>{g.title}</h2>
+            <p class="port">Con {g.port}</p>
+            <p class="how"><strong>Para activarlo:</strong> {g.howTo}</p>
+            <div class="samples">
+              <p class="muted small">Algunos efectos del perfil</p>
+              <ul>{g.sample.map((s) => <li>{s}</li>)}</ul>
+            </div>
+            {g.upstream && (
+              <a class="small upstream" href={g.upstream} target="_blank" rel="noopener">Proyecto original de {g.port}</a>
+            )}
+          </div>
+          <div class="get">
+            {port ? (
+              <DownloadPanel data={port} appName={`${g.port} con HiveShock`} />
+            ) : (
+              <div class="soon">
+                <h3>El perfil ya viene en HiveShock</h3>
+                <p class="muted">La descarga del {g.port.startsWith('Banjo') ? 'mod' : 'port'} con HiveShock aparecerá aquí en cuanto se publique. Mientras, pregunta en Discord por la versión de prueba.</p>
+                <a class="btn" href={site.links.discord} target="_blank" rel="noopener"><Icon name="chat" /> Preguntar en Discord</a>
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</Base>
+
+<style>
+  .intro { padding-block: clamp(36px, 6vw, 72px); border-bottom: 1px solid var(--line); }
+  .intro-inner { display: grid; gap: 18px; }
+  .rom {
+    display: flex; gap: 12px; align-items: flex-start; max-width: 46rem;
+    padding: 14px 16px; border-radius: var(--r);
+    background: rgb(6 20 43 / 0.55); border: 1px solid var(--line); color: #d8e2f1;
+  }
+  .rom :global(svg) { width: 22px; height: 22px; flex: none; color: var(--honey); margin-top: 2px; }
+  .list { display: grid; padding-block: 24px 80px; }
+  .game {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(24px, 4vw, 56px);
+    padding-block: clamp(36px, 5vw, 56px);
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 80px;
+  }
+  .game:last-child { border-bottom: 0; }
+  .info { display: grid; gap: 12px; align-content: start; justify-items: start; }
+  .count { color: var(--mist); font-weight: 600; }
+  .num { font-family: var(--font-display); font-size: 3rem; line-height: 1; color: var(--honey); margin-right: 6px; }
+  .port { color: var(--honey); font-weight: 700; font-size: var(--step-1); }
+  .how { color: #d8e2f1; }
+  .samples { display: grid; gap: 8px; }
+  .samples ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .samples li {
+    padding: 5px 12px; border-radius: 999px;
+    background: var(--honey); color: var(--ink); border: var(--stroke);
+    font-weight: 800; font-size: var(--step--1);
+  }
+  .upstream { color: var(--mist); }
+  .get { min-width: 0; }
+  .soon {
+    display: grid; gap: 12px; justify-items: start;
+    padding: clamp(18px, 3vw, 28px);
+    border: 1px dashed rgb(167 187 217 / 0.4);
+    border-radius: var(--r-lg);
+  }
+  .soon h3 { font-size: var(--step-1); }
+  @media (max-width: 900px) { .game { grid-template-columns: 1fr; } }
+</style>

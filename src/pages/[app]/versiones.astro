@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import { apps, type AppId } from '../../config/site';
+import { getReleases } from '../../lib/releases';
+import { visibleAssets, formatDate, formatSize, platformNames } from '../../lib/assets';
+
+export function getStaticPaths() {
+  return (Object.keys(apps) as AppId[]).map((app) => ({ params: { app } }));
+}
+
+const app = apps[Astro.params.app as AppId];
+const data = await getReleases(app.repo);
+---
+<Base title={`Versiones de ${app.name}`} description={`Historial de versiones de ${app.name}: qué cambió en cada una y sus descargas.`}>
+  <section class="intro honeycomb">
+    <div class="wrap intro-inner">
+      <a class="back small" href={`/${app.id}/`}>{app.name}</a>
+      <h1>Versiones de {app.name}</h1>
+      <p class="lead">
+        {data.releases.length} versiones publicadas. Para instalar la más reciente, ve a <a href={`/${app.id}/#descargar`}>descargar {app.name}</a>.
+      </p>
+    </div>
+  </section>
+
+  <div class="wrap timeline">
+    {data.releases.map((r, i) => {
+      const files = visibleAssets(r.assets);
+      return (
+        <article class="rel" id={r.tag}>
+          <header class="rel-head">
+            <h2>v{r.version}</h2>
+            <div class="meta">
+              <time datetime={r.publishedAt}>{formatDate(r.publishedAt)}</time>
+              {r === data.latest && <span class="chip chip--honey">Actual</span>}
+              {r.prerelease && <span class="chip chip--pre">Versión de prueba</span>}
+            </div>
+          </header>
+          <div class="rel-body">
+            <details open={i < 2}>
+              <summary>Qué cambió</summary>
+              <div class="notes" set:html={r.bodyHtml || '<p>Sin notas.</p>'} />
+            </details>
+            {files.length > 0 ? (
+              <ul class="files">
+                {files.map((a) => (
+                  <li>
+                    <a href={a.url} rel="nofollow">{platformNames[a.platform!]}: {a.label}</a>
+                    <span class="muted">{formatSize(a.size)}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <a class="small gh" href={r.url} target="_blank" rel="noopener">Ver esta versión en GitHub</a>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</Base>
+
+<style>
+  .intro { padding-block: clamp(32px, 5vw, 64px); border-bottom: 1px solid var(--line); }
+  .intro-inner { display: grid; gap: 14px; justify-items: start; }
+  .back { color: var(--mist); }
+  .timeline { padding-block: 32px 80px; display: grid; }
+  .rel {
+    display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: clamp(16px, 4vw, 48px);
+    padding-block: 32px; border-bottom: 1px solid var(--line);
+    scroll-margin-top: 80px;
+  }
+  .rel-head { display: grid; gap: 8px; align-content: start; }
+  .rel-head h2 { font-size: var(--step-2); font-variant-numeric: tabular-nums; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--mist); }
+  .rel-body { display: grid; gap: 16px; min-width: 0; justify-items: start; }
+  details { width: 100%; }
+  summary { cursor: pointer; font-weight: 800; color: var(--honey); margin-bottom: 12px; }
+  .files { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; width: 100%; font-size: var(--step--1); }
+  .files li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  .files a { color: var(--paper); }
+  .gh { color: var(--mist); }
+  @media (max-width: 720px) { .rel { grid-template-columns: 1fr; } }
+</style>

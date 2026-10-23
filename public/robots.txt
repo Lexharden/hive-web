@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hive.yafel.dev/sitemap-index.xml

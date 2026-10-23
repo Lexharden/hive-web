@@ -1,0 +1,179 @@
+/*
+  Hive — sistema visual
+  Concepto: «calcomanía de arcade». Fondo azul noche de la colmena, piezas con contorno
+  de tinta y sombra dura (como los logos ilustrados), miel para la acción principal y
+  brasa para lo que está en vivo. Un único momento de movimiento: la consola del hero.
+*/
+:root {
+  color-scheme: dark;
+  /* Color */
+  --ink: #06142b;        /* contornos y sombras duras */
+  --night: #0b2550;      /* fondo de página */
+  --night-2: #0f2e60;    /* bandas alternas */
+  --navy: #16437d;       /* superficies (marca) */
+  --navy-2: #1d5394;     /* superficie elevada / hover */
+  --honey: #fcca2f;      /* acción principal (marca) */
+  --honey-2: #ffd95c;
+  --ember: #cf4c28;      /* en vivo, HiveShock (marca) */
+  --ember-2: #e2603b;
+  --paper: #f2f6fc;      /* texto */
+  --mist: #a7bbd9;       /* texto secundario */
+  --line: rgb(167 187 217 / 0.18);
+
+  /* Tipo */
+  --font-display: 'Dela Gothic One', 'Arial Black', 'Helvetica Neue', sans-serif;
+  --font-body: 'Figtree Variable', 'Figtree', ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3rem;
+  --step-2: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --step-3: clamp(1.9rem, 1.4rem + 2.2vw, 2.9rem);
+  --step-4: clamp(2.3rem, 1.5rem + 4vw, 4.3rem);
+
+  /* Forma */
+  --r-sm: 10px;
+  --r: 16px;
+  --r-lg: 22px;
+  --stroke: 2px solid var(--ink);
+  --lift: 0 5px 0 var(--ink);
+  --lift-lg: 7px 7px 0 var(--ink);
+  --wrap: 1180px;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 88px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+[hidden] { display: none !important; }
+img, svg { max-width: 100%; display: block; }
+a { color: var(--honey); text-underline-offset: 3px; }
+a:hover { color: var(--honey-2); }
+:focus-visible { outline: 3px solid var(--honey); outline-offset: 3px; border-radius: 6px; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  margin: 0;
+}
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-1); line-height: 1.2; }
+p { margin: 0; }
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wrap) + 32px);
+  margin-inline: auto;
+  padding-left: var(--gutter-l);
+  padding-right: var(--gutter-r);
+}
+
+.section { padding-block: clamp(56px, 8vw, 104px); }
+.section--band { background: var(--night-2); border-block: 1px solid var(--line); }
+.section-head { display: grid; gap: 14px; max-width: 46rem; margin-bottom: clamp(28px, 4vw, 44px); }
+.section-head p { color: var(--mist); font-size: var(--step-1); line-height: 1.45; }
+
+.lead { font-size: var(--step-1); line-height: 1.5; color: var(--mist); max-width: 38rem; }
+.muted { color: var(--mist); }
+.small { font-size: var(--step--1); }
+
+/* Panal de fondo */
+.honeycomb {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0l28 16v32L28 64 0 48V16zM28 64v33' fill='none' stroke='%23a7bbd9' stroke-opacity='.07' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 56px 97px;
+}
+
+/* Botones */
+.btn {
+  --b-bg: var(--navy);
+  --b-fg: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 20px;
+  border: var(--stroke);
+  border-radius: var(--r-sm);
+  background: var(--b-bg);
+  color: var(--b-fg);
+  font: 700 var(--step-0)/1.15 var(--font-body);
+  text-decoration: none;
+  box-shadow: var(--lift);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
+}
+.btn:hover { background: var(--navy-2); color: var(--b-fg); }
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn--honey { --b-bg: var(--honey); --b-fg: var(--ink); }
+.btn--honey:hover { background: var(--honey-2); }
+.btn--ember { --b-bg: var(--ember); --b-fg: #fff; }
+.btn--ember:hover { background: var(--ember-2); }
+.btn--big { min-height: 60px; padding: 12px 26px; font-size: var(--step-1); }
+.btn--ghost { background: transparent; box-shadow: none; border-color: var(--line); }
+.btn--ghost:hover { background: rgb(255 255 255 / 0.06); }
+.btn .btn-sub { display: block; font-weight: 500; font-size: var(--step--1); opacity: 0.8; }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+/* Chips de versión y estado */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--mist);
+  font-size: var(--step--1);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.chip--honey { background: var(--honey); color: var(--ink); border-color: var(--ink); }
+.chip--ember { background: var(--ember); color: #fff; border-color: var(--ink); }
+.chip--pre { border-style: dashed; color: var(--honey); border-color: rgb(252 202 47 / 0.5); }
+
+.live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 0 3px rgb(207 76 40 / 0.3); }
+
+/* Notas de versión renderizadas */
+.notes { display: grid; gap: 12px; color: var(--paper); min-width: 0; }
+.notes h3, .notes h4 { font-family: var(--font-body); font-weight: 800; font-size: var(--step-0); color: var(--honey); margin-top: 6px; }
+.notes ul { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
+.notes li::marker { color: var(--honey); }
+.notes p, .notes li { color: #d8e2f1; max-width: 70ch; }
+.notes code { font-size: 0.9em; padding: 1px 6px; border-radius: 6px; background: rgb(6 20 43 / 0.55); color: var(--paper); overflow-wrap: anywhere; }
+.notes pre { overflow-x: auto; padding: 12px; background: var(--ink); border-radius: var(--r-sm); }
+.notes a { color: var(--honey); overflow-wrap: anywhere; }
+.notes table { border-collapse: collapse; display: block; overflow-x: auto; }
+.notes th, .notes td { border: 1px solid var(--line); padding: 4px 10px; text-align: left; }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 50;
+  background: var(--honey); color: var(--ink); padding: 8px 14px; border-radius: 8px; font-weight: 700;
+}
+.skip:focus { top: 12px; }

@@ -1,0 +1,48 @@
+---
+import DownloadPanel from './DownloadPanel.astro';
+import Icon from './Icon.astro';
+import type { AppInfo } from '../config/site';
+import type { RepoReleases } from '../lib/releases';
+import { platformNames } from '../lib/assets';
+
+interface Props { app: AppInfo; data: RepoReleases; lead: string; note?: string }
+const { app, data, lead, note } = Astro.props;
+---
+<section class="phero honeycomb">
+  <div class="wrap phero-grid">
+    <div class="phero-copy">
+      <picture>
+        <source srcset={`${app.logo}-320.webp`} type="image/webp" />
+        <img src={`${app.logo}-320.png`} alt="" width="220" height="185" fetchpriority="high" />
+      </picture>
+      <h1>{app.name}</h1>
+      <p class="tag">{app.tagline}</p>
+      <p class="lead">{lead}</p>
+      <ul class="plats" aria-label="Plataformas">
+        {app.platforms.map((p) => <li><Icon name={p} /> {platformNames[p]}</li>)}
+      </ul>
+      <p class="muted small">Alternativa gratuita a {app.alternativeTo}. Hecho con {app.stack}. <a href={data.url} target="_blank" rel="noopener">Código en GitHub</a></p>
+    </div>
+    <div id="descargar" class="phero-dl">
+      <DownloadPanel data={data} appName={app.name} versionsHref={`/${app.id}/versiones/`} note={note} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .phero { padding-block: clamp(36px, 6vw, 80px); border-bottom: 1px solid var(--line); }
+  .phero-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .phero-copy { display: grid; gap: 16px; justify-items: start; min-width: 0; }
+  .phero-copy img { width: clamp(150px, 20vw, 220px); height: auto; filter: drop-shadow(5px 6px 0 var(--ink)); }
+  .tag { font-family: var(--font-display); font-size: var(--step-2); color: var(--honey); line-height: 1.15; }
+  .plats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .plats li {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 8px;
+    background: rgb(6 20 43 / 0.5); border: 1px solid var(--line);
+    font-weight: 600; font-size: var(--step--1);
+  }
+  .plats :global(svg) { width: 16px; height: 16px; color: var(--honey); }
+  .phero-dl { min-width: 0; scroll-margin-top: 90px; }
+  @media (max-width: 900px) { .phero-grid { grid-template-columns: 1fr; } }
+</style>

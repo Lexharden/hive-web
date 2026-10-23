@@ -1,0 +1,753 @@
+{
+ "Lexharden/HiveShock-Avalonia": [
+  {
+   "tag_name": "v2.9.1",
+   "name": "HiveShock 2.9.1",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-23T16:20:07Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.9.1",
+   "body": "### Android\n* **El APK ya se publica en cada release** (`HiveShock-<ver>-android.apk`), junto a Windows, macOS y Linux y con su suma en `SHA256SUMS.txt`.\n* **Aviso de versión nueva** en Acerca de: busca en los releases y abre la descarga. No baja nada solo.\n* **Perfiles propios**: copia el perfil activo desde la pestaña Perfil y bórrala cuando quieras (se guarda en `profiles-deleted`).\n* Los perfiles del catálogo (Super Mario 64, etc.) llegan igual que en escritorio: se instalan solos al abrir, sin pisar los tuyos ni resucitar los que borraste.\n* El `versionCode` sale de la versión de HiveShock (antes se quedó fijo en la 2.2.0, lo que habría impedido actualizar).\n* Más robusto: sin copias de seguridad de Android (guarda tokens), los errores de copia de archivos y del servicio en segundo plano ahora aparecen en el log, y el servicio se cierra limpio al llegar al límite de 6 h de Android 15.\n* Incluye todo lo de la 2.9.0 (varios efectos por regalo): la 2.9.0 salió sin esta parte de Android y la 2.9.1 junta las dos.",
+   "assets": [
+    {
+     "name": "HiveShock-2.9.1-android.apk",
+     "size": 103483424,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-android.apk"
+    },
+    {
+     "name": "HiveShock-2.9.1-linux-arm64-full.zip",
+     "size": 54718080,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-linux-arm64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-linux-arm64-update.zip",
+     "size": 54714227,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-linux-arm64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-linux-x64-full.zip",
+     "size": 57143238,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-linux-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-linux-x64-update.zip",
+     "size": 57139385,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-linux-x64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-osx-arm64-full.zip",
+     "size": 58510453,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-osx-arm64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-osx-arm64-update.zip",
+     "size": 58496314,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-osx-arm64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-osx-arm64.dmg",
+     "size": 63012147,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-osx-arm64.dmg"
+    },
+    {
+     "name": "HiveShock-2.9.1-osx-x64-full.zip",
+     "size": 60829347,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-osx-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-osx-x64-update.zip",
+     "size": 60815214,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-osx-x64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-osx-x64.dmg",
+     "size": 64985986,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-osx-x64.dmg"
+    },
+    {
+     "name": "HiveShock-2.9.1-win-x64-full.zip",
+     "size": 82428582,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-win-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.1-win-x64-update.zip",
+     "size": 55385329,
+     "download_count": 3,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/HiveShock-2.9.1-win-x64-update.zip"
+    },
+    {
+     "name": "SHA256SUMS.txt",
+     "size": 1300,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.1/SHA256SUMS.txt"
+    }
+   ]
+  },
+  {
+   "tag_name": "v2.9.0",
+   "name": "HiveShock 2.9.0",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-23T16:15:24Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.9.0",
+   "body": "### Varios efectos por regalo\n* **Un regalo puede lanzar varios efectos.** En Regalos, bajo el efecto principal, «Añadir otro efecto»: cada uno con sus propios parámetros y una espera opcional en segundos (contada desde el efecto anterior, máximo 30 s). Salen en orden; la espera no frena a los demás espectadores.\n* Con «Repetir el efecto en cada uno», el conjunto completo se repite por cada regalo del combo (A B C A B C). Los efectos de una sola vez (borrar partida, reiniciar el equipo) salen solo en la primera vuelta, y reiniciar el equipo siempre va el último. Un regalo no encola más de 200 efectos.\n* «Enviar al juego» prueba todos los efectos del regalo. En la lista, los regalos con varios muestran «N efectos».\n* **Compatible hacia atrás:** un regalo con un solo efecto se guarda exactamente igual que antes. Con varios se añade `effects` a `gifts.json` y `effect`/`params` siguen siendo el primero, así que una versión anterior al menos lanza ese. Tus regalos y perfiles actuales no cambian.\n* Si en `gifts.json` un efecto de la lista no existe se omite con aviso. Lo mismo para chat, bits, seguir, compartir, likes y metas llegará en una versión próxima.",
+   "assets": [
+    {
+     "name": "HiveShock-2.9.0-linux-arm64-full.zip",
+     "size": 54718080,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-linux-arm64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-linux-arm64-update.zip",
+     "size": 54714227,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-linux-arm64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-linux-x64-full.zip",
+     "size": 57143238,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-linux-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-linux-x64-update.zip",
+     "size": 57139385,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-linux-x64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-osx-arm64-full.zip",
+     "size": 58510453,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-osx-arm64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-osx-arm64-update.zip",
+     "size": 58496314,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-osx-arm64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-osx-arm64.dmg",
+     "size": 63012147,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-osx-arm64.dmg"
+    },
+    {
+     "name": "HiveShock-2.9.0-osx-x64-full.zip",
+     "size": 60829347,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-osx-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-osx-x64-update.zip",
+     "size": 60815214,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-osx-x64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-osx-x64.dmg",
+     "size": 64985986,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-osx-x64.dmg"
+    },
+    {
+     "name": "HiveShock-2.9.0-win-x64-full.zip",
+     "size": 82428582,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-win-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-win-x64-update.zip",
+     "size": 55385329,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/HiveShock-2.9.0-win-x64-update.zip"
+    },
+    {
+     "name": "SHA256SUMS.txt",
+     "size": 1300,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0/SHA256SUMS.txt"
+    }
+   ]
+  },
+  {
+   "tag_name": "v2.8.0",
+   "name": "HiveShock 2.8.0",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-21T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.8.0",
+   "body": "### Metas\n* **El overlay de metas enseña el regalo de cada meta.** Encima del título de la meta aparece el icono del regalo (hasta 4) tomado del catálogo, con su nombre al pasar el ratón, para que quien mira sepa qué regalo enviar. Si el regalo no tiene imagen en el catálogo se escribe su nombre.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.7.3",
+   "name": "HiveShock 2.7.3",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-21T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.7.3",
+   "body": "### Perfiles\n* **La lista de efectos ya no repite entradas.** Los perfiles de Ocarina of Time, Majora's Mask, Banjo-Kazooie y Super Mario 64 traían varios ids que hacían lo mismo (`instakill`/`kill`, `wipe_save`/`nuke_save`/`new_run`, `warp_random`, `times_up`/`time_zero`, `enemy`, `banana_peel`…) y cada uno salía como una línea igual. Se dejó un único id por acción.\n* Los perfiles que ya tienes instalados no se modifican: si quieres limpiar la lista en ellos, reasigna lo que usaba esos ids y bórralos del perfil, o reinstala el perfil.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.7.2",
+   "name": "HiveShock 2.7.2",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-21T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.7.2",
+   "body": "### Los perfiles nuevos llegan a todos al actualizar\n* **Quien venía de la 2.6.1 o anterior ahora recibe los perfiles que le faltan** (Super Mario 64, Banjo-Kazooie…). Su actualizador viejo protege toda la carpeta `profiles/`, así que los perfiles viajan también en `profiles-catalog/` (una carpeta que sí se copia) y HiveShock los instala solo al arrancar.\n* **No cambia nada de lo que ya tienes.** Solo se instalan los perfiles que no existen en tu carpeta `profiles/`; los demás, con sus regalos, comandos y ajustes, quedan exactamente igual. Un perfil que borres a propósito no vuelve.\n* Tras actualizar, abre HiveShock una vez para que los instale; el log lo dice («Perfiles nuevos instalados: …»).",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.7.1",
+   "name": "HiveShock 2.7.1",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-21T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.7.1",
+   "body": "### Recuperar lo que pasó durante un corte\n* **Twitch: seguidores recuperados.** Al reconectar tras un corte de más de 5 s, HiveShock consulta a Twitch los seguidores nuevos de ese tramo (EventSub no los reenvía) y los procesa una sola vez; si ya se habían visto en vivo, no se repiten. Usa el permiso que ya tenías (`moderator:read:followers`). Si falta, el log lo avisa y el resto sigue igual.\n* **TikTok: reanudación experimental.** Con `HIVESHOCK_TIKTOK_RESUME=1` en el `.env`, al reconectar se manda a TikTok el último punto leído (cursor) por si reenvía lo perdido. TikTok no documenta esto, así que viene **apagado**: el log indica «TikTok reenvió un regalo de antes de reconectar» y cuántos, para saber con datos reales si funciona. Lo reenviado pasa por el registro de la 2.7.0: lo ya ejecutado se ignora y lo nuevo, dentro de la ventana, se ejecuta.\n* El cursor solo se usa en la misma sala y durante 10 minutos; se borra al cerrar el live.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.7.0",
+   "name": "HiveShock 2.7.0",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-21T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.7.0",
+   "body": "### Regalos sin duplicados y sin perder lo ya recibido\n* **Cada mensaje se ejecuta una sola vez.** HiveShock lleva un registro (`.hiveshock-ledger.jsonl`, en tu carpeta de datos) con el id de cada regalo, comentario y evento de Twitch. Si TikTok o Twitch reenvían algo al reconectar, el repetido se ignora. Antes un regalo reenviado o el historial de chat que TikTok manda al reconectar podían ejecutarse de nuevo.\n* **Los comandos de chat viejos no se ejecutan** (más de 60 s de retraso) y los regalos que llegan con más retraso que la ventana de reintento del juego (mínimo 2 min) se ignoran con un aviso. Se mide contra el retraso de los mensajes en vivo, así que un reloj del equipo desajustado no descarta regalos buenos.\n* **Lo aceptado y no entregado sobrevive a un cierre.** Si cierras HiveShock (o falla) con efectos en cola porque el juego estaba apagado, al volver a abrirlo se entregan una vez, siempre que no hayan caducado. Desconectar a propósito o la pausa de emergencia los descartan. Los efectos del sistema (reiniciar el equipo) y las macros de teclas nunca se repiten.\n* **Cortes de conexión avisados.** El corte se detecta antes (45 s sin señal en vez de 90) y al reconectar el log y el estado del canal dicen cuánto duró. TikTok y Twitch no reenvían lo que pasó durante un corte, así que esos regalos no se pueden recuperar; lo que sí se garantiza es no duplicar nada.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.6.3",
+   "name": "HiveShock 2.6.3",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-20T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.6.3",
+   "body": "### Perfiles\n* **Nuevo perfil «Banjo-Kazooie (Recompiled)».** Efectos sobre la salud, vidas, huevos y plumas, y enemigos (Snippet, Bigbutt, Shrapnel, murciélago), con regalos de ejemplo. Requiere instalar el mod HiveShock para Banjo-Kazooie: Recompiled y activarlo en su menú de mods.\n* **Super Mario 64:** nuevo efecto para borrar la partida (`delete_save`). El perfil ahora declara que lo soporta. No se puede deshacer, así que no los asignes a regalos baratos.\n* Los perfiles nuevos llegan a quien actualiza desde la app; los que ya tenías no se modifican.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.6.2",
+   "name": "HiveShock 2.6.2",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-20T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.6.2",
+   "body": "### Actualizar trae los perfiles nuevos\n* **Al actualizar desde la app ahora se instalan los perfiles nuevos del catálogo** (por ejemplo Super Mario 64). Antes el paquete de actualización no los traía y el actualizador protegía toda la carpeta `profiles/`, así que quien ya tenía HiveShock nunca los recibía.\n* **Tus perfiles no se tocan:** solo se copian las carpetas de perfil que todavía no existen. Los que ya tienes conservan tus regalos, comandos y ajustes. Si algo falla y se deshace la actualización, también se quitan los perfiles recién instalados.\n* **Para recibirlos** hay que instalar una vez esta versión de la forma normal; las actualizaciones siguientes ya traerán los perfiles nuevos.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.6.1",
+   "name": "HiveShock 2.6.1",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-20T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.6.1",
+   "body": "### Limpieza de nombres\n* **Se quitó el nombre antiguo «CrowdControl / CrowdBridge / CC»** del código, los logs y la documentación. El servidor local de pruebas (el «Puerto pruebas» de Inicio) pasa a llamarse *TestServer* y su ajuste `testPort`.\n* **Nada se rompe:** los `profile.json` con `crowdControlPort`, y las variables `CC_PORT`, `CROWDBRIDGE_PROFILE`, `DISABLE_CC` y el flag `--no-cc` se siguen leyendo. Al guardar, el perfil usa `testPort`. Los nombres nuevos son `HIVESHOCK_TEST_PORT`, `HIVESHOCK_PROFILE`, `HIVESHOCK_NO_TEST` y `--no-test`.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.6.0",
+   "name": "HiveShock 2.6.0",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-19T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.6.0",
+   "body": "### Reiniciar el equipo (solo Windows)\n* **Nuevo efecto «Reiniciar el equipo (con cuenta atrás)»,** disponible en los selectores de Regalos, Chat, Eventos, Bits y Metas. En macOS y Linux todavía no existe y no aparece.\n* **Empieza desarmado en cada sesión.** Se arma en Moderación escribiendo REINICIAR; al reabrir HiveShock vuelve a estar desarmado. Al armarlo se asigna el regalo **León (Lion)** como disparador si tu perfil no lo usa ya.\n* **Cuenta atrás visible y cancelable:** de 10 a 300 segundos (30 por defecto), con un aviso rojo en la ventana, un botón Cancelar y el atajo global **Ctrl+Alt+Shift+F12**, que funciona aunque estés dentro del juego y solo existe mientras cuenta.\n* **Salvaguardas:** solo una vez por sesión, no se ejecuta con «Solo simular» ni con la pausa de emergencia (que además lo cancela), y desconectar el puente también lo cancela.\n* **Forzar** (opcional) cierra los programas sin preguntar, así que se pierde lo que no esté guardado. Sin forzar, Windows puede esperar a que cierres lo pendiente.\n* Un botón permite **probar la cuenta atrás sin reiniciar**.",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.5.2",
+   "name": "HiveShock 2.5.2",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-19T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.5.2",
+   "body": "### Super Mario 64\n* **Nuevo perfil «Super Mario 64 (Ghostship)».** 37 efectos: cáscara de plátano, escopeta (se equipa al pasar y dispara con L), enemigos (Goomba, Bob-omb, Chuckya que persigue por todo el terreno, hongo venenoso, Amp, Fly Guy, bolas de boliche), efectos sobre Mario (fuego, descarga, empujón, lanzamiento, gorras) y temporales (gravedad baja o alta, turbo). Incluye regalos de ejemplo y las etiquetas en español.\n* Se activa en Ghostship desde **Network > HiveShock**. Las muertes de Mario vuelven al puente por el puerto de eventos (43002).",
+   "assets": []
+  },
+  {
+   "tag_name": "v2.9.0-alpha.1",
+   "name": "HiveShock 2.9.0-alpha.1",
+   "prerelease": true,
+   "draft": false,
+   "published_at": "2026-10-23T01:40:54Z",
+   "html_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/tag/v2.9.0-alpha.1",
+   "body": "Versión de prueba de la 2.9.0 con el APK de Android.",
+   "assets": [
+    {
+     "name": "HiveShock-2.9.0-alpha.1-android.apk",
+     "size": 103483424,
+     "download_count": 21,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-android.apk"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-linux-arm64-full.zip",
+     "size": 54718080,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-linux-arm64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-linux-arm64-update.zip",
+     "size": 54714227,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-linux-arm64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-linux-x64-full.zip",
+     "size": 57143238,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-linux-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-linux-x64-update.zip",
+     "size": 57139385,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-linux-x64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-osx-arm64-full.zip",
+     "size": 58510453,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-osx-arm64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-osx-arm64-update.zip",
+     "size": 58496314,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-osx-arm64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-osx-arm64.dmg",
+     "size": 63012147,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-osx-arm64.dmg"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-osx-x64-full.zip",
+     "size": 60829347,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-osx-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-osx-x64-update.zip",
+     "size": 60815214,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-osx-x64-update.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-osx-x64.dmg",
+     "size": 64985986,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-osx-x64.dmg"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-win-x64-full.zip",
+     "size": 82428582,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-win-x64-full.zip"
+    },
+    {
+     "name": "HiveShock-2.9.0-alpha.1-win-x64-update.zip",
+     "size": 55385329,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/HiveShock-2.9.0-alpha.1-win-x64-update.zip"
+    },
+    {
+     "name": "SHA256SUMS.txt",
+     "size": 1300,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveShock-Avalonia/releases/download/v2.9.0-alpha.1/SHA256SUMS.txt"
+    }
+   ]
+  }
+ ],
+ "Lexharden/HiveBuzz": [
+  {
+   "tag_name": "v0.4.0",
+   "name": "HiveBuzz v0.4.0",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-21T20:29:05Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.4.0",
+   "body": "### Novedades\n- **Buscador de MyInstants en la Biblioteca**: busca (o mira lo que está en tendencia) en myinstants.com, escucha cualquier sonido con ▶ sin descargarlo y pulsa *Descargar* para guardarlo en tu biblioteca y usarlo en reglas y alertas.\n- **Exclusividad por espectador (grupos)**: nueva sección *Puntos y grupos → Grupos* para crear listas de usuarios (VIPs, amigos…). Las reglas pueden exigir uno o varios grupos («Solo para») o excluirlos, así un comando o una animación (p. ej. su propio overlay al regalar una ballena) es solo para ellos. Las reglas tienen además el interruptor **Reemplaza a las reglas generales**: si se dispara, no se dispara la regla normal para ese mismo evento.\n\n### Mejorado\n- **Alertas con el sonido sincronizado**: la acción «Alerta en overlay» tiene ahora un campo *Sonido* (y su volumen). El sonido empieza justo cuando el overlay muestra la alerta —con vídeo, cuando éste arranca—, también si hay otras alertas en cola. Antes, un «Reproducir sonido» aparte sonaba al instante y el vídeo aparecía después.\n- **Se nota cuándo la app está trabajando**: los botones muestran una rueda y se bloquean mientras ejecutan algo (pruebas, escuchar sonidos, guardar, conectar…); las pruebas de overlay avisan con un mensaje flotante; y al actualizar se ven las etapas *Preparando → Descargando (barra con MB y %) → Instalando*, tanto en Sistema como en el aviso de arriba, con la nota de que la app se reinicia sola.\n- **Plantillas y ayuda al día**: dos plantillas nuevas en «Novedades» (animación exclusiva de un VIP al regalar una ballena y `!vip` solo para un grupo) y la Ayuda explica grupos, el sonido sincronizado de las alertas, el buscador de MyInstants, los avisos de progreso y por qué no hay bot de chat.\n\n### Eliminado\n- **El bot de chat de TikTok** y todo lo que dependía de él. Escribir en el chat de TikTok solo es posible a través del servicio de pago de Euler Stream (la propia librería lo dice: «Sending chats requires an API key & a paid plan») y no existe una forma gratuita, así que en vez de dejar un módulo que no funciona se retira. Desaparecen: la acción *Mensaje del bot*, los comandos y respuestas automáticas del bot, `!puntos` y `!top`, el anuncio de la ruleta y de las encuestas por chat, las respuestas de las peticiones de Spotify por chat (las canciones se siguen encolando; también los comandos «qué suena»), el inicio de sesión de TikTok (ventana y cookies) y la plantilla/categoría «Bot de chat».\n- La pestaña «Bot y puntos» pasa a llamarse **Puntos y grupos** (puntos, grupos de espectadores, ruleta y encuestas).\n- **Limpieza al actualizar**: las reglas que tenían la acción *Mensaje del bot* la pierden; las que solo hacían eso se eliminan. Se borran también del equipo la configuración del bot y las cookies de TikTok guardadas en el llavero. La API key de Euler Stream **se conserva**: sigue sirviendo para conectar al LIVE con más margen de firmas.\n- Las plantillas que respondían en el chat (`!fan`, `!vip`, regalo grande) ahora muestran una **alerta en pantalla**, y los agradecimientos de suscripción y del jarrón se quedan en voz. Se quitan las de saludo y comandos (`!discord`, `!redes`, `!comandos`).",
+   "assets": [
+    {
+     "name": "HiveBuzz-0.4.0-1.x86_64.rpm",
+     "size": 53580201,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz-0.4.0-1.x86_64.rpm"
+    },
+    {
+     "name": "HiveBuzz-0.4.0-1.x86_64.rpm.sig",
+     "size": 436,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz-0.4.0-1.x86_64.rpm.sig"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_aarch64.dmg",
+     "size": 43053922,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_aarch64.dmg"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_amd64.AppImage",
+     "size": 129919480,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_amd64.AppImage"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_amd64.AppImage.sig",
+     "size": 440,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_amd64.AppImage.sig"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_amd64.deb",
+     "size": 53588090,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_amd64.deb"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_amd64.deb.sig",
+     "size": 432,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_amd64.deb.sig"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_x64-setup.exe",
+     "size": 41720861,
+     "download_count": 6,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_x64-setup.exe"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_x64-setup.exe.sig",
+     "size": 436,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_x64-setup.exe.sig"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_x64.dmg",
+     "size": 45889239,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_x64.dmg"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_x64_en-US.msi",
+     "size": 54308864,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_x64_en-US.msi"
+    },
+    {
+     "name": "HiveBuzz_0.4.0_x64_en-US.msi.sig",
+     "size": 436,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_0.4.0_x64_en-US.msi.sig"
+    },
+    {
+     "name": "HiveBuzz_aarch64.app.tar.gz",
+     "size": 42630064,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_aarch64.app.tar.gz"
+    },
+    {
+     "name": "HiveBuzz_aarch64.app.tar.gz.sig",
+     "size": 424,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_aarch64.app.tar.gz.sig"
+    },
+    {
+     "name": "HiveBuzz_x64.app.tar.gz",
+     "size": 45047399,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_x64.app.tar.gz"
+    },
+    {
+     "name": "HiveBuzz_x64.app.tar.gz.sig",
+     "size": 424,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/HiveBuzz_x64.app.tar.gz.sig"
+    },
+    {
+     "name": "latest.json",
+     "size": 6634,
+     "download_count": 20,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.4.0/latest.json"
+    }
+   ]
+  },
+  {
+   "tag_name": "v0.3.4",
+   "name": "HiveBuzz v0.3.4",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-17T11:11:02Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.3.4",
+   "body": "### Corregido\n- **Sesión de TikTok y API key de Euler**: se leían solo al conectar, así que si las configurabas con la conexión ya abierta el bot seguía sin poder escribir. Ahora, si TikTok está conectado, al iniciar o cerrar sesión, pegar cookies o cambiar la API key se reconecta sola con lo nuevo.\n- **Mensaje del bot sin sesión**: ya no dice solo «falta iniciar sesión»; explica que esa conexión no tiene sesión y que, si ya la iniciaste, caducó o TikTok la rechazó.",
+   "assets": [
+    {
+     "name": "HiveBuzz-0.3.4-1.x86_64.rpm",
+     "size": 53580201,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz-0.3.4-1.x86_64.rpm"
+    },
+    {
+     "name": "HiveBuzz-0.3.4-1.x86_64.rpm.sig",
+     "size": 436,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz-0.3.4-1.x86_64.rpm.sig"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_aarch64.dmg",
+     "size": 43053922,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_aarch64.dmg"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_amd64.AppImage",
+     "size": 129919480,
+     "download_count": 1,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_amd64.AppImage"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_amd64.AppImage.sig",
+     "size": 440,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_amd64.AppImage.sig"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_amd64.deb",
+     "size": 53588090,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_amd64.deb"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_amd64.deb.sig",
+     "size": 432,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_amd64.deb.sig"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_x64-setup.exe",
+     "size": 41720861,
+     "download_count": 9,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_x64-setup.exe"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_x64-setup.exe.sig",
+     "size": 436,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_x64-setup.exe.sig"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_x64.dmg",
+     "size": 45889239,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_x64.dmg"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_x64_en-US.msi",
+     "size": 54308864,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_x64_en-US.msi"
+    },
+    {
+     "name": "HiveBuzz_0.3.4_x64_en-US.msi.sig",
+     "size": 436,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_0.3.4_x64_en-US.msi.sig"
+    },
+    {
+     "name": "HiveBuzz_aarch64.app.tar.gz",
+     "size": 42630064,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_aarch64.app.tar.gz"
+    },
+    {
+     "name": "HiveBuzz_aarch64.app.tar.gz.sig",
+     "size": 424,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_aarch64.app.tar.gz.sig"
+    },
+    {
+     "name": "HiveBuzz_x64.app.tar.gz",
+     "size": 45047399,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_x64.app.tar.gz"
+    },
+    {
+     "name": "HiveBuzz_x64.app.tar.gz.sig",
+     "size": 424,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/HiveBuzz_x64.app.tar.gz.sig"
+    },
+    {
+     "name": "latest.json",
+     "size": 6634,
+     "download_count": 40,
+     "browser_download_url": "https://github.com/Lexharden/HiveBuzz/releases/download/v0.3.4/latest.json"
+    }
+   ]
+  },
+  {
+   "tag_name": "v0.3.3",
+   "name": "HiveBuzz v0.3.3",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-17T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.3.3",
+   "body": "### Corregido\n- **Conectar con la sesión de TikTok iniciada**: si TikTok no aceptaba la conexión estando la sesión puesta (cookies caducadas o rechazadas), no conectaba hasta cerrar la sesión. Ahora se reintenta al instante sin ella: sigues recibiendo todos los eventos, y solo el bot no podrá escribir en el chat hasta que vuelvas a iniciar sesión.",
+   "assets": []
+  },
+  {
+   "tag_name": "v0.3.2",
+   "name": "HiveBuzz v0.3.2",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-17T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.3.2",
+   "body": "### Novedades\n- **Jarrón con su propia cuenta**: ya no necesita una meta. Se llena con cada regalo, se guarda al cerrar la app y se controla desde Overlays → Jarrón de regalos: sumar 100/1.000/10.000, llenarlo o vaciarlo. Además puede vaciarse solo al llegar al objetivo y contar vueltas.\n- **Jarrón personalizable**: cinco formas (jarrón, botella, taza, corazón, cilindro), degradado de color, opacidad del cristal, tapa opcional, olas y burbujas, velocidad de subida, título, porcentaje, posición de los textos, qué cae al llegar un regalo (su imagen o una moneda) y su tamaño, y un efecto al llenarse (pulso o confeti).\n\n### Corregido\n- El jarrón quedaba vacío en las pruebas si no existía una meta de monedas.",
+   "assets": []
+  },
+  {
+   "tag_name": "v0.3.1",
+   "name": "HiveBuzz v0.3.1",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-16T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.3.1",
+   "body": "### Corregido\n- **Avisos de «mensaje no manejado»**: los tipos de mensaje de TikTok que HiveBuzz no usa (intros, paneles de regalos…) ya no salen como advertencias; quedan solo en depuración.\n- **Voz de Edge-TTS**: si un servidor no responde, se pasa al siguiente a los 12 s en lugar de agotar todo el tiempo; y si Edge falla del todo (sin internet, servicio caído) el mensaje se lee con una voz local (Piper o Windows) en vez de perderse.",
+   "assets": []
+  },
+  {
+   "tag_name": "v0.3.0",
+   "name": "HiveBuzz v0.3.0",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-16T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.3.0",
+   "body": "### Novedades\n- **Jarrón de regalos**: un overlay nuevo que se llena con tu meta de monedas, deja caer la imagen de cada regalo y muestra los dólares estimados (tasa que tú eliges; es una estimación, no tus ingresos reales). Las estadísticas de cada LIVE muestran lo mismo.\n- **Peticiones HTTP más cómodas**: el webhook ahora tiene botón «Probar» (te enseña el estado, el tiempo y la respuesta) y reintentos opcionales si el servidor falla.\n- **Niveles de fan**: HiveBuzz recuerda el nivel de club de fans y de donador de cada espectador y lo muestra en la lista de puntos. Los comandos del bot pueden exigir nivel, rol o enfriamiento («Permisos, niveles de fan y enfriamiento»).\n- **Plantillas «Novedades»** (Reglas → Plantillas): avisar a un servicio de los regalos grandes o de los follows, `!fan` solo para el club de fans, `!vozvip` para donadores nivel 5+ y una celebración cuando se llena la meta del jarrón.\n\n### Mejorado\n- **Importar configuración** te avisa de las acciones que salen de tu equipo o lo controlan (webhook, red, teclas, OBS) antes de aplicar un archivo ajeno.\n- **Registro en archivo**: `hivebuzz.log` en la carpeta de datos, con copia rotada, para poder revisar qué pasó tras un cierre inesperado.\n- Las etiquetas de nivel ahora dicen «club de fans» y «donador», con una pista de qué significa cada una.\n- Exportar, importar y guardar logs comprueban la ruta del archivo.\n\n### Interno\n- El CI ejecuta `clippy` con `-D warnings`.\n- Las notas del release salen de este archivo (`scripts/changelog-notes.mjs`) en vez de un texto fijo.",
+   "assets": []
+  },
+  {
+   "tag_name": "v0.2.4",
+   "name": "HiveBuzz v0.2.4",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-14T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.2.4",
+   "body": "### Añadido\n- **Salida de audio**: Ajustes → «Salida de audio» lista las salidas que detecta el sistema para elegir dónde suenan los sonidos y la voz, con botón de prueba. Si la elegida se desconecta, se usa la predeterminada.",
+   "assets": []
+  },
+  {
+   "tag_name": "v0.2.3",
+   "name": "HiveBuzz v0.2.3",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-14T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.2.3",
+   "body": "### Corregido\n- **Base de datos**: los puntos de los espectadores ya no fallan con «database is locked» cuando varias escrituras coinciden;\n  las transacciones de escritura esperan su turno (`BEGIN IMMEDIATE`).",
+   "assets": []
+  },
+  {
+   "tag_name": "v0.2.2",
+   "name": "HiveBuzz v0.2.2",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-13T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.2.2",
+   "body": "### Añadido\n- **Sonido por emote**: nuevo disparador de reglas «Emote» (por id o cualquiera) que se activa con los emotes de tu\n  comunidad, sueltos o dentro de un chat; el editor muestra las miniaturas de los emotes ya vistos para elegirlos y\n  la acción «Reproducir sonido» pone el audio. Hay una plantilla «Sonido por emote» lista para elegir solo el sonido. Los emotes se crean en TikTok; HiveBuzz los reconoce por su id.\n\n### Corregido\n- **Bot de chat**: el aviso ahora muestra la respuesta real de Euler Stream cuando rechaza el mensaje (puede requerir plan de pago).\n- **Sesión de TikTok**: la ventana de login se presenta como un navegador de escritorio, el error real se registra y hay\n  una alternativa para pegar las cookies a mano.\n- **Login de TikTok**: «Entrar con Google/Facebook/Apple» ya puede abrir su ventana emergente.\n- **Acerca de**: se quitó el botón y los textos que enviaban a GitHub.\n- **Overlays**: botón «Copiar (localhost)» para TikTok LIVE Studio y textos que ya no prometen que acepte las URLs.",
+   "assets": []
+  },
+  {
+   "tag_name": "v0.2.1",
+   "name": "HiveBuzz v0.2.1",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-12T18:00:00Z",
+   "html_url": "https://github.com/Lexharden/HiveBuzz/releases/tag/v0.2.1",
+   "body": "### Corregido\n- **Edge-TTS** dejó de responder (403) porque Microsoft retiró el servidor histórico: ahora se prueba primero\n  `api.msedgeservices.com` y se conserva el antiguo como alternativa.",
+   "assets": []
+  }
+ ],
+ "Lexharden/Shipwright-HiveShock": [
+  {
+   "tag_name": "v1.0.2",
+   "name": "Shipwright-HiveShock v1.0.2",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-21T21:14:42Z",
+   "html_url": "https://github.com/Lexharden/Shipwright-HiveShock/releases/tag/v1.0.2",
+   "body": "**Full Changelog**: https://github.com/Lexharden/Shipwright-HiveShock/compare/v1.0.1...v1.0.2",
+   "assets": [
+    {
+     "name": "Shipwright-HiveShock-v1.0.2-Linux.appimage",
+     "size": 31954112,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/Shipwright-HiveShock/releases/download/v1.0.2/Shipwright-HiveShock-v1.0.2-Linux.appimage"
+    },
+    {
+     "name": "Shipwright-HiveShock-v1.0.2-macOS.dmg",
+     "size": 50907069,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/Shipwright-HiveShock/releases/download/v1.0.2/Shipwright-HiveShock-v1.0.2-macOS.dmg"
+    },
+    {
+     "name": "Shipwright-HiveShock-v1.0.2-Win64.zip",
+     "size": 73089122,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/Shipwright-HiveShock/releases/download/v1.0.2/Shipwright-HiveShock-v1.0.2-Win64.zip"
+    }
+   ]
+  }
+ ],
+ "Lexharden/2ship2harkinian-HiveShock": [
+  {
+   "tag_name": "v1.0.0",
+   "name": "2Ship-HiveShock v1.0.0",
+   "prerelease": false,
+   "draft": false,
+   "published_at": "2026-10-14T19:38:53Z",
+   "html_url": "https://github.com/Lexharden/2ship2harkinian-HiveShock/releases/tag/v1.0.0",
+   "body": "Primera versión, basada en la rama `develop` de 2 Ship 2 Harkinian: servidor TCP de HiveShock, aparición de enemigos, efectos sobre el jugador, mejoras, control del tiempo y del mundo, y opciones en el menú.",
+   "assets": [
+    {
+     "name": "2Ship-HiveShock-v1.0.0-Linux.appimage",
+     "size": 16729280,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/2ship2harkinian-HiveShock/releases/download/v1.0.0/2Ship-HiveShock-v1.0.0-Linux.appimage"
+    },
+    {
+     "name": "2Ship-HiveShock-v1.0.0-macOS.dmg",
+     "size": 27531171,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/2ship2harkinian-HiveShock/releases/download/v1.0.0/2Ship-HiveShock-v1.0.0-macOS.dmg"
+    },
+    {
+     "name": "2Ship-HiveShock-v1.0.0-Win64.zip",
+     "size": 45083855,
+     "download_count": 0,
+     "browser_download_url": "https://github.com/Lexharden/2ship2harkinian-HiveShock/releases/download/v1.0.0/2Ship-HiveShock-v1.0.0-Win64.zip"
+    }
+   ]
+  }
+ ]
+}

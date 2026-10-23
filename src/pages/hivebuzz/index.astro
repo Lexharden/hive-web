@@ -1,0 +1,119 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductHero from '../../components/ProductHero.astro';
+import FeatureGrid from '../../components/FeatureGrid.astro';
+import LatestNotes from '../../components/LatestNotes.astro';
+import Icon from '../../components/Icon.astro';
+import { apps, site } from '../../config/site';
+import { getReleases } from '../../lib/releases';
+import { softwareJsonLd } from '../../lib/seo';
+
+const app = apps.hivebuzz;
+const data = await getReleases(app.repo);
+
+const features = [
+  { icon: 'bolt', title: 'Alertas con sonido a tiempo', text: 'Imagen, GIF o video con texto. El sonido arranca justo cuando la alerta aparece, aunque haya cola.' },
+  { icon: 'mic', title: 'Voz que no habla encima', text: 'Lee el chat y los regalos con Piper (sin internet), voces de Windows o Edge. Espera a que termines de hablar.' },
+  { icon: 'code', title: 'Reglas sin programar', text: 'Cuando pase algo, si se cumplen las condiciones, haz esto. Con plantillas listas y botón para probar.' },
+  { icon: 'timer', title: 'Metas, timers y subathon', text: 'Metas de likes, follows o monedas. El timer se alarga con cada regalo y sobrevive a reinicios.' },
+  { icon: 'wheel', title: 'Puntos, ruleta y encuestas', text: 'Tus espectadores ganan puntos, giran la ruleta y votan con un número en el chat.' },
+  { icon: 'plug', title: 'OBS, webhooks y más', text: 'Cambia de escena, muestra fuentes, avisa a Home Assistant o Streamer.bot y manda comandos a juegos por TCP.' },
+  { icon: 'play', title: 'Pedidos de canciones', text: 'Con Spotify conectado, tu chat pide canciones con !sr, con permisos por rol y costo en puntos.' },
+  { icon: 'layers', title: 'Respaldo en un archivo', text: 'Exporta toda tu configuración, con sonidos e imágenes, en un .zip y llévala a otra PC.' },
+  { icon: 'shield', title: 'Todo en tu PC', text: 'Sin servidores ni cuentas. Los tokens viven en el llavero del sistema y los overlays solo responden en tu equipo.' },
+];
+
+const overlays = [
+  'Alertas', 'Feed de eventos', 'Chat en pantalla', 'Regalos', 'Top donadores', 'Metas',
+  'Timer', 'Contadores', 'Ruleta', 'Encuestas', 'Jarrón de regalos', 'Sonando ahora',
+];
+---
+<Base
+  title="HiveBuzz"
+  description="HiveBuzz: alternativa gratuita a TikFinity. Alertas, voz, overlays para OBS, metas, timers, puntos y ruleta para TikTok LIVE y Twitch. Todo en tu PC."
+  image="/img/og-hivebuzz.png"
+  jsonLd={softwareJsonLd(app, data)}
+>
+  <ProductHero
+    app={app}
+    data={data}
+    lead="Todo lo que tu stream necesita alrededor del juego: alertas, voz, overlays para OBS, metas y reglas automáticas. Escucha TikTok LIVE y Twitch al mismo tiempo y no depende de ningún servicio en la nube."
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Tu live reacciona solo</h2>
+        <p>Configúralo una vez y HiveBuzz se encarga mientras tú hablas con tu comunidad.</p>
+      </div>
+      <FeatureGrid items={features} />
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="wrap overlays-wrap">
+      <div class="section-head">
+        <h2>{overlays.length} overlays para OBS</h2>
+        <p>Cada uno con su enlace. Los ajustas en un editor con vista previa en vivo a 1920×1080: fuente, colores, posición y escala.</p>
+      </div>
+      <ul class="overlays">
+        {overlays.map((o) => <li>{o}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap two">
+      <div class="block">
+        <h2>TikTok y Twitch, juntos</h2>
+        <p class="muted">En Twitch basta con escribir tu canal: chat, bits y suscripciones llegan sin iniciar sesión. Si entras con tu cuenta, también ves seguidores nuevos y espectadores.</p>
+      </div>
+      <div class="block">
+        <h2>¿Usas HiveShock?</h2>
+        <p class="muted">Funcionan juntas sin pisarse: HiveShock mueve el juego y HiveBuzz pone las alertas y la voz.</p>
+        <a class="btn" href="/hiveshock/">Conocer HiveShock</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="wrap">
+      <LatestNotes data={data} versionsHref="/hivebuzz/versiones/" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap closing">
+      <h2>¿Quieres plantillas de otros streamers?</h2>
+      <p class="lead">En Discord compartimos reglas, sonidos y configuraciones de overlays.</p>
+      <a class="btn btn--honey btn--big" href={site.links.discord} target="_blank" rel="noopener"><Icon name="chat" /> Entrar al Discord</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .overlays {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px;
+  }
+  .overlays li {
+    padding: 14px 16px 14px 44px;
+    position: relative;
+    border-radius: var(--r-sm);
+    background: rgb(6 20 43 / 0.45);
+    border: 1px solid var(--line);
+    font-weight: 700;
+  }
+  .overlays li::before {
+    content: '';
+    position: absolute; left: 16px; top: 50%; translate: 0 -50%;
+    width: 16px; height: 18px;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--honey);
+  }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 64px); }
+  .block { display: grid; gap: 14px; align-content: start; justify-items: start; }
+  .block h2 { font-size: var(--step-2); }
+  .closing { display: grid; gap: 16px; justify-items: start; }
+  @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+interface Props { items: Array<{ icon: string; title: string; text: string; only?: string }> }
+const { items } = Astro.props;
+---
+<ul class="features">
+  {items.map((f) => (
+    <li>
+      <span class="ic"><Icon name={f.icon} /></span>
+      <h3>{f.title}{f.only && <span class="only">{f.only}</span>}</h3>
+      <p>{f.text}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .features {
+    list-style: none; margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+    gap: 34px 32px;
+  }
+  @media (max-width: 960px) { .features { --cols: 2; } }
+  @media (max-width: 600px) { .features { --cols: 1; } }
+  li { display: grid; gap: 8px; align-content: start; }
+  .ic {
+    width: 46px; height: 50px;
+    display: grid; place-items: center;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--honey);
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .ic :global(svg) { width: 22px; height: 22px; }
+  h3 { font-family: var(--font-body); font-weight: 800; font-size: var(--step-1); display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .only { font-size: 0.75rem; font-weight: 700; color: var(--mist); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+  p { color: var(--mist); }
+</style>

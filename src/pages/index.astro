@@ -1,0 +1,193 @@
+---
+import Base from '../layouts/Base.astro';
+import LiveConsole from '../components/LiveConsole.astro';
+import AppCard from '../components/AppCard.astro';
+import GameGrid from '../components/GameGrid.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import { apps, site, totalEffects, games } from '../config/site';
+import { getReleases } from '../lib/releases';
+
+const shock = await getReleases(apps.hiveshock.repo);
+const buzz = await getReleases(apps.hivebuzz.repo);
+
+const faq = [
+  {
+    q: '¿Cuánto cuestan?',
+    a: '<p>Nada. HiveShock y HiveBuzz son gratis, sin suscripción, sin límite de efectos y sin marcas de agua. Si quieres apoyar el proyecto, hay un Ko-fi.</p>',
+  },
+  {
+    q: '¿Funcionan con TikTok y con Twitch a la vez?',
+    a: '<p>Sí. Las dos apps escuchan TikTok LIVE y Twitch al mismo tiempo. En Twitch, los bits cuentan como regalos y el chat funciona sin iniciar sesión.</p>',
+  },
+  {
+    q: '¿Necesito el juego original?',
+    a: '<p>Sí. Los ports no traen contenido con derechos de autor: al abrirlos por primera vez te piden tu propia copia legal del juego y generan sus archivos a partir de ella.</p>',
+  },
+  {
+    q: 'Windows dice que la app no es reconocida. ¿Es seguro?',
+    a: '<p>Ese aviso aparece con apps nuevas que no tienen un certificado de pago. Pulsa <strong>Más información</strong> y luego <strong>Ejecutar de todas formas</strong>. Cada versión publica sus sumas SHA-256 para que compruebes que el archivo es el original.</p><p>En macOS, la primera vez abre la app con clic derecho y <strong>Abrir</strong>.</p>',
+  },
+  {
+    q: '¿Mis regalos y perfiles se pierden al actualizar?',
+    a: '<p>No. Las dos apps avisan cuando hay versión nueva y se actualizan con un clic, sin tocar tus perfiles, reglas, sonidos ni credenciales. Nunca se reinician solas en medio de un directo.</p>',
+  },
+  {
+    q: '¿HiveBuzz puede escribir en el chat de TikTok?',
+    a: '<p>No. TikTok solo permite enviar mensajes por un servicio de pago, así que HiveBuzz lee el chat y responde con alertas, voz y sonidos en tu stream.</p>',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Hive',
+  url: site.url,
+  founder: site.owner,
+  sameAs: [site.links.youtube, site.links.instagram, site.links.github],
+};
+---
+<Base jsonLd={jsonLd}>
+  <section class="hero honeycomb">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Que tu live juegue contigo.</h1>
+        <p class="lead">
+          Con HiveShock, cada regalo y comando del chat cambia tu partida en tiempo real. Con HiveBuzz, tu stream
+          tiene alertas, voz y overlays propios. Las dos son gratis.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--honey btn--big" href="/hiveshock/#descargar"><Icon name="download" /> Descargar HiveShock</a>
+          <a class="btn btn--big" href="/hivebuzz/#descargar">Descargar HiveBuzz</a>
+        </div>
+        <ul class="facts">
+          <li><strong>{games.length}</strong> juegos</li>
+          <li><strong>{totalEffects}</strong> efectos listos</li>
+          <li><strong>TikTok</strong> y <strong>Twitch</strong></li>
+        </ul>
+      </div>
+      <LiveConsole />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Dos apps, cada una a lo suyo</h2>
+        <p>Úsalas juntas o por separado. HiveShock mueve el juego; HiveBuzz se encarga de lo que se ve y se oye en el stream.</p>
+      </div>
+      <div class="apps">
+        <AppCard
+          app={apps.hiveshock}
+          data={shock}
+          tone="ember"
+          points={[
+            'Regalos, chat, follows, likes y bits disparan efectos',
+            'Varios efectos por regalo, con esperas entre ellos',
+            'Metas, contador de muertes y overlays para OBS',
+            'Compañero para Android: el live corre en tu teléfono',
+          ]}
+        />
+        <AppCard
+          app={apps.hivebuzz}
+          data={buzz}
+          tone="honey"
+          points={[
+            'Alertas con imagen, video y sonido sincronizado',
+            'Voz offline con Piper, voces de Windows o Edge',
+            '12 overlays con editor visual y vista previa',
+            'Reglas con OBS, webhooks, teclas y Spotify',
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Juegos compatibles</h2>
+        <p>Cada juego trae un perfil con sus efectos y regalos de ejemplo. Los cambias a tu gusto o creas el tuyo.</p>
+      </div>
+      <GameGrid />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Listo para tu próximo live</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Descarga y abre</h3>
+          <p>Instala HiveShock y abre el juego con su port. Elige el juego en Inicio y pulsa Conectar.</p>
+        </li>
+        <li>
+          <h3>Enlaza tu cuenta</h3>
+          <p>Escribe tu usuario de TikTok o entra con Twitch. No pide contraseñas y todo queda en tu PC.</p>
+        </li>
+        <li>
+          <h3>Asigna y sal en vivo</h3>
+          <p>Elige qué hace cada regalo, pruébalo con el simulador y deja que tu comunidad decida tu partida.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="community">
+    <div class="wrap community-inner">
+      <div>
+        <h2>La colmena está en Discord</h2>
+        <p>Ayuda para configurar, avisos de cada versión, clips de la comunidad y pruebas de lo que viene en Windows, macOS, Linux y Android.</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--big community-btn" href={site.links.discord} target="_blank" rel="noopener"><Icon name="chat" /> Unirme al Discord</a>
+        <a class="btn btn--ghost community-ghost" href={site.links.youtube} target="_blank" rel="noopener"><Icon name="play" /> Ver en YouTube</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Preguntas frecuentes</h2>
+      </div>
+      <Faq items={faq} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(40px, 7vw, 88px) clamp(48px, 7vw, 96px); border-bottom: 1px solid var(--line); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .hero-copy { display: grid; gap: 24px; justify-items: start; min-width: 0; }
+  .facts { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--mist); }
+  .facts strong { color: var(--paper); font-weight: 800; }
+  .apps { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 32px); }
+  .steps {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    counter-reset: step;
+  }
+  .steps li { counter-increment: step; display: grid; gap: 10px; align-content: start; padding-top: 18px; border-top: 3px solid var(--honey); }
+  .steps li::before {
+    content: counter(step);
+    font-family: var(--font-display);
+    font-size: 2.6rem; line-height: 1;
+    color: var(--honey);
+  }
+  .steps p { color: var(--mist); }
+  .community { background: var(--honey); color: var(--ink); border-block: var(--stroke); }
+  .community-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; padding-block: clamp(44px, 6vw, 72px); }
+  .community-inner > div:first-child { display: grid; gap: 12px; max-width: 40rem; }
+  .community p { font-size: var(--step-1); line-height: 1.45; }
+  .community-btn { --b-bg: var(--ink); --b-fg: var(--honey); box-shadow: 0 5px 0 rgb(6 20 43 / 0.35); }
+  .community-btn:hover { background: var(--navy); }
+  .community-ghost { color: var(--ink); border-color: rgb(6 20 43 / 0.35); }
+  .community-ghost:hover { color: var(--ink); background: rgb(6 20 43 / 0.08); }
+  @media (max-width: 900px) {
+    .hero-grid, .apps { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>

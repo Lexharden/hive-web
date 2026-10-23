@@ -1,0 +1,126 @@
+---
+import Icon from './Icon.astro';
+import type { RepoReleases } from '../lib/releases';
+import { byPlatform, formatDate, formatSize, platformNames, type Platform } from '../lib/assets';
+
+interface Props {
+  data: RepoReleases;
+  appName: string;
+  versionsHref?: string;
+  note?: string; // texto opcional bajo el botón principal
+}
+const { data, appName, versionsHref, note } = Astro.props;
+const rel = data.latest ?? data.releases[0];
+const groups = rel ? byPlatform(rel.assets) : {};
+const platforms = (['windows', 'macos', 'linux', 'android'] as Platform[]).filter((p) => groups[p]?.length);
+const checksum = rel?.assets.find((a) => a.kind === 'checksum');
+const has = (p: Platform, arch: string) => groups[p]?.some((a) => a.arch === arch) ?? false;
+const primaryNote: Record<Platform, string> = {
+  windows: 'Windows 10 y 11, 64 bits',
+  macos: has('macos', 'x64') ? 'Para Apple Silicon. ¿Mac con Intel? Está abajo.' : 'La primera vez, ábrelo con clic derecho y Abrir.',
+  linux: has('linux', 'arm64') ? 'x64. También hay versión ARM64 abajo.' : 'Linux x64.',
+  android: 'Para el teléfono. Permite instalar apps de origen desconocido.',
+};
+---
+{rel ? (
+  <div class="dl" data-dl data-repo={data.repo} data-tag={rel.tag} data-published={rel.publishedAt}>
+    <div class="dl-head">
+      <span class="chip chip--honey" data-version>v{rel.version}</span>
+      <span class="muted small">Publicada el <span data-date>{formatDate(rel.publishedAt)}</span></span>
+      <span class="chip" data-fresh hidden>Recién publicada</span>
+    </div>
+
+    <div class="primary">
+      {platforms.map((p, idx) => {
+        const a = groups[p]![0];
+        return (
+          <div class="primary-item" data-primary={p} hidden={idx !== 0}>
+            <a class="btn btn--honey btn--big" href={a.url} data-key={a.key} rel="nofollow">
+              <Icon name="download" />
+              <span>
+                Descargar para {platformNames[p]}
+                <span class="btn-sub">{a.label}, <span data-size>{formatSize(a.size)}</span></span>
+              </span>
+            </a>
+            <p class="muted small">{primaryNote[p]}</p>
+          </div>
+        );
+      })}
+      {note && <p class="note small" set:html={note} />}
+      <p class="unsupported small" data-unsupported hidden>
+        {appName} no tiene versión para este dispositivo. Ábrelo desde tu computadora para descargarlo.
+      </p>
+    </div>
+
+    <div class="platforms">
+      {platforms.map((p) => (
+        <div class="plat">
+          <p class="plat-name"><Icon name={p} /> {platformNames[p]}</p>
+          <ul>
+            {groups[p]!.map((a) => (
+              <li>
+                <a href={a.url} data-key={a.key} rel="nofollow">{a.label}</a>
+                <span class="size" data-size>{formatSize(a.size)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="dl-foot small">
+      <a href={rel.url} target="_blank" rel="noopener" data-release-link>Notas en GitHub</a>
+      {checksum && <a href={checksum.url} data-key={checksum.key} rel="nofollow">Sumas SHA-256</a>}
+      {versionsHref && <a href={versionsHref}>Versiones anteriores</a>}
+      {data.latestPre && (
+        <a href={data.latestPre.url} target="_blank" rel="noopener" class="pre">
+          Versión de prueba: v{data.latestPre.version}
+        </a>
+      )}
+    </div>
+  </div>
+) : (
+  <div class="dl dl--empty">
+    <p>Todavía no hay versiones publicadas de {appName}.</p>
+    <a class="btn" href={`${data.url}/releases`} target="_blank" rel="noopener">Ver en GitHub</a>
+  </div>
+)}
+
+<style>
+  .dl {
+    display: grid;
+    gap: 20px;
+    padding: clamp(18px, 3vw, 28px);
+    background: var(--navy);
+    border: var(--stroke);
+    border-radius: var(--r-lg);
+    box-shadow: var(--lift-lg);
+    min-width: 0;
+  }
+  .dl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .primary { display: grid; gap: 10px; }
+  .primary-item { display: grid; gap: 10px; justify-items: start; }
+  .primary .btn { width: 100%; justify-content: flex-start; text-align: left; }
+  .note { color: var(--mist); }
+  .unsupported { padding: 12px 14px; border-radius: var(--r-sm); background: rgb(207 76 40 / 0.18); border: 1px solid rgb(207 76 40 / 0.5); }
+  .platforms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .plat { min-width: 0; }
+  .plat-name { display: flex; align-items: center; gap: 8px; font-weight: 800; margin-bottom: 6px; }
+  .plat-name :global(svg) { width: 18px; height: 18px; color: var(--honey); }
+  .plat ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .plat li { display: flex; justify-content: space-between; gap: 10px; font-size: var(--step--1); }
+  .plat a { color: var(--paper); text-decoration: underline; text-decoration-color: rgb(252 202 47 / 0.5); }
+  .plat a:hover { color: var(--honey); }
+  .size { color: var(--mist); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .dl-foot { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  .dl-foot a { color: var(--mist); }
+  .dl-foot a:hover { color: var(--honey); }
+  .dl-foot .pre { color: var(--honey); }
+  .dl--empty { justify-items: start; }
+</style>

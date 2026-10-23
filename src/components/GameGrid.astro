@@ -1,0 +1,61 @@
+---
+import { games } from '../config/site';
+import { getReleases } from '../lib/releases';
+
+interface Props { linkTo?: 'page' | 'anchor' }
+const { linkTo = 'page' } = Astro.props;
+const ports = Object.fromEntries(
+  await Promise.all(games.filter((g) => g.repo).map(async (g) => [g.id, await getReleases(g.repo!)])),
+);
+---
+<ul class="games">
+  {games.map((g) => {
+    const port = ports[g.id];
+    const v = port?.latest?.version;
+    return (
+      <li>
+        <a class="game" href={linkTo === 'page' ? `/juegos/#${g.id}` : `#${g.id}`}>
+          <span class="count"><span class="num">{g.effects}</span> efectos</span>
+          <span class="title">{g.title}</span>
+          <span class="port">{g.port}</span>
+          <span class={`status ${port ? 'status--ready' : ''}`}>
+            {port ? (v ? `Port con HiveShock v${v}` : 'Port con HiveShock') : 'Perfil incluido en HiveShock'}
+          </span>
+        </a>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .games {
+    list-style: none; margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .game {
+    display: grid;
+    gap: 4px;
+    height: 100%;
+    padding: 18px 18px 16px;
+    border-radius: var(--r);
+    border: 1px solid var(--line);
+    background: rgb(22 67 125 / 0.45);
+    color: var(--paper);
+    text-decoration: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .game:hover { color: var(--paper); border-color: var(--honey); background: var(--navy); }
+  .count { color: var(--mist); font-size: var(--step--1); font-weight: 600; }
+  .num { font-family: var(--font-display); font-size: 2.2rem; line-height: 1; color: var(--honey); margin-right: 4px; font-variant-numeric: tabular-nums; }
+  .title { font-family: var(--font-display); font-size: 1.15rem; line-height: 1.2; margin-top: 10px; }
+  .port { color: var(--mist); font-size: var(--step--1); }
+  .status {
+    margin-top: 12px; justify-self: start;
+    font-size: 0.78rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 6px;
+    border: 1px solid var(--line); color: var(--mist);
+  }
+  .status--ready { border-color: rgb(252 202 47 / 0.6); color: var(--honey); }
+</style>

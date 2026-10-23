@@ -1,0 +1,120 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductHero from '../../components/ProductHero.astro';
+import FeatureGrid from '../../components/FeatureGrid.astro';
+import GameGrid from '../../components/GameGrid.astro';
+import LatestNotes from '../../components/LatestNotes.astro';
+import Icon from '../../components/Icon.astro';
+import { apps, site } from '../../config/site';
+import { getReleases } from '../../lib/releases';
+import { softwareJsonLd } from '../../lib/seo';
+
+const app = apps.hiveshock;
+const data = await getReleases(app.repo);
+
+const features = [
+  { icon: 'gift', title: 'Regalos con combos', text: 'Cada regalo lanza uno o varios efectos en orden, con esperas opcionales. Con combos, el efecto se repite por cada unidad.' },
+  { icon: 'chat', title: 'Comandos del chat', text: 'Palabras como !bobomb o !saltar disparan efectos, con tiempo de espera por espectador y anti-spam.' },
+  { icon: 'heart', title: 'Follows, likes, shares y bits', text: 'TikTok y Twitch a la vez. Cada evento tiene sus reglas y sus efectos.' },
+  { icon: 'target', title: 'Metas en pantalla', text: 'Barras de meta con el ícono del regalo que hay que enviar. Al llenarse, el juego reacciona.' },
+  { icon: 'layers', title: 'Overlays para OBS', text: 'Contador de muertes, regalos recientes y metas, listos para capturar.' },
+  { icon: 'keys', title: 'Teclas y macros', text: 'Para juegos sin port: secuencias de teclas hacia la ventana del juego, con atajos globales.', only: 'Windows' },
+  { icon: 'shield', title: 'Pausa de emergencia', text: 'Detén todo con un clic. Los efectos peligrosos, como borrar la partida, se arman a mano.' },
+  { icon: 'refresh', title: 'Nada se repite, nada se pierde', text: 'Si TikTok o Twitch reenvían algo al reconectar, se ignora. Lo pendiente sobrevive a un cierre.' },
+  { icon: 'android', title: 'Compañero en Android', text: 'El live corre en tu teléfono y el juego en el mismo aparato o en tu PC por la red local.' },
+];
+
+const support = [
+  ['TikTok y Twitch: regalos, chat, eventos y metas', true, true],
+  ['Editor de perfiles y perfiles propios', true, true],
+  ['Perfiles nuevos del catálogo al actualizar', true, true],
+  ['Aviso de versión nueva', true, true],
+  ['Overlays para OBS', true, false],
+  ['Teclas y macros hacia el juego', 'Solo Windows', false],
+] as const;
+---
+<Base
+  title="HiveShock"
+  description="HiveShock: alternativa gratuita a Crowd Control. Los regalos y el chat de TikTok y Twitch provocan efectos dentro de Majora's Mask, Ocarina of Time, Super Mario 64 y más."
+  image="/img/og-hiveshock.png"
+  jsonLd={softwareJsonLd(app, data)}
+>
+  <ProductHero
+    app={app}
+    data={data}
+    lead="Conecta tu live de TikTok o Twitch con el juego. Regalos, comandos del chat, follows y bits se vuelven enemigos, curas, daño, gravedad baja o controles invertidos, en el momento."
+    note="El juego se abre con su port, que se descarga aparte. <a href='/juegos/'>Ver juegos y ports</a>."
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Tu comunidad manda en la partida</h2>
+        <p>Tú juegas normal. Lo que pasa en el juego lo decide quien te ve.</p>
+      </div>
+      <FeatureGrid items={features} />
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Juegos con perfil incluido</h2>
+        <p>Cada perfil trae efectos y regalos de ejemplo. Los ports se descargan desde la página de juegos.</p>
+      </div>
+      <GameGrid />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>En la PC y en el teléfono</h2>
+        <p>El mapeo de regalos es el mismo en todas partes. Android funciona como compañero: sin overlays, por diseño.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="support">
+          <thead>
+            <tr><th scope="col">Función</th><th scope="col">Windows, macOS y Linux</th><th scope="col">Android</th></tr>
+          </thead>
+          <tbody>
+            {support.map(([f, pc, an]) => (
+              <tr>
+                <th scope="row">{f}</th>
+                <td>{pc === true ? <span class="yes"><Icon name="check" label="Sí" /></span> : pc}</td>
+                <td>{an === true ? <span class="yes"><Icon name="check" label="Sí" /></span> : <span class="no">No</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="wrap">
+      <LatestNotes data={data} versionsHref="/hiveshock/versiones/" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap closing">
+      <h2>¿Dudas antes de tu primer live?</h2>
+      <p class="lead">En Discord te ayudamos a configurar los regalos de tu juego.</p>
+      <a class="btn btn--honey btn--big" href={site.links.discord} target="_blank" rel="noopener"><Icon name="chat" /> Entrar al Discord</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
+  .support { width: 100%; border-collapse: collapse; min-width: 560px; }
+  .support th, .support td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .support tbody tr:last-child > * { border-bottom: 0; }
+  .support thead th { background: var(--ink); color: var(--mist); font-size: var(--step--1); font-weight: 700; }
+  .support tbody th { font-weight: 600; }
+  .support td { color: var(--mist); }
+  .yes :global(svg) { width: 22px; height: 22px; color: var(--honey); }
+  .no { color: var(--mist); opacity: 0.8; }
+  .closing { display: grid; gap: 16px; justify-items: start; }
+</style>

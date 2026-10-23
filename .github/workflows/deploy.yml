@@ -1,0 +1,68 @@
+# Construye el sitio con los releases actuales de GitHub y lo publica en GitHub Pages.
+#
+# Se ejecuta cuando:
+#   - haces push a main (cambios de diseño o textos)
+#   - un repo de las apps avisa que publicó, editó o borró un release (repository_dispatch)
+#   - cada 6 horas, como red de seguridad por si algún aviso se pierde
+#   - lo lanzas a mano desde la pestaña Actions
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  repository_dispatch:
+    types: [release-changed]
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si llegan varios avisos seguidos, solo importa el último build.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Origen del build
+        if: github.event_name == 'repository_dispatch'
+        run: echo "Release ${{ github.event.client_payload.action }} en ${{ github.event.client_payload.repo }} (${{ github.event.client_payload.tag }})"
+
+      - name: Build
+        run: npm run build
+        env:
+          # Lectura de la API de GitHub con 1000 peticiones/hora.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # En CI, si GitHub no responde el build falla y queda publicada la versión anterior
+          # (mejor eso que publicar datos viejos del snapshot).
+          REQUIRE_GITHUB: '1'
+          SITE_URL: ${{ vars.SITE_URL || 'https://hive.yafel.dev' }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

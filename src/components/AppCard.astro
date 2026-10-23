@@ -1,0 +1,67 @@
+---
+import Icon from './Icon.astro';
+import type { AppInfo } from '../config/site';
+import type { RepoReleases } from '../lib/releases';
+
+interface Props { app: AppInfo; data: RepoReleases; points: string[]; tone: 'ember' | 'honey' }
+const { app, data, points, tone } = Astro.props;
+const rel = data.latest;
+---
+<article class={`app app--${tone}`}>
+  <div class="app-top">
+    <picture>
+      <source srcset={`${app.logo}-320.webp`} type="image/webp" />
+      <img src={`${app.logo}-320.png`} alt="" width="160" height="134" loading="lazy" />
+    </picture>
+    <div class="app-id">
+      <h3>{app.name}</h3>
+      <p class="alt">Alternativa gratuita a {app.alternativeTo}</p>
+      {rel && (
+        <span class="chip" data-version-of={data.repo} data-tag={rel.tag} data-published={rel.publishedAt}>v{rel.version}</span>
+      )}
+    </div>
+  </div>
+  <p class="sum">{app.summary}</p>
+  <ul class="points">
+    {points.map((p) => <li><Icon name="check" /> <span>{p}</span></li>)}
+  </ul>
+  <div class="btn-row">
+    <a class={`btn ${tone === 'ember' ? 'btn--ember' : 'btn--honey'}`} href={`/${app.id}/#descargar`}><Icon name="download" /> Descargar</a>
+    <a class="btn btn--ghost" href={`/${app.id}/`}>Ver qué hace</a>
+  </div>
+</article>
+
+<style>
+  .app {
+    --tone: var(--ember);
+    position: relative;
+    display: grid;
+    gap: 20px;
+    align-content: start;
+    padding: clamp(20px, 3vw, 32px);
+    background: var(--navy);
+    border: var(--stroke);
+    border-radius: var(--r-lg);
+    box-shadow: var(--lift-lg);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .app::before {
+    content: '';
+    position: absolute; inset: 0 0 auto;
+    height: 8px;
+    background: var(--tone);
+    border-bottom: var(--stroke);
+  }
+  .app--honey { --tone: var(--honey); }
+  .app-top { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding-top: 6px; }
+  .app-top img { width: 132px; height: auto; filter: drop-shadow(4px 5px 0 var(--ink)); }
+  .app-id { display: grid; gap: 6px; justify-items: start; }
+  .app-id h3 { font-size: var(--step-2); }
+  .alt { color: var(--tone); font-weight: 700; }
+  .sum { color: #d8e2f1; }
+  .points { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .points li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+  .points :global(svg) { width: 22px; height: 22px; color: var(--tone); margin-top: 2px; }
+  .btn-row { margin-top: 4px; }
+</style>

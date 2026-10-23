@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import DownloadPanel from '../components/DownloadPanel.astro';
+import { apps, games } from '../config/site';
+import { getReleases } from '../lib/releases';
+
+const shock = await getReleases(apps.hiveshock.repo);
+const buzz = await getReleases(apps.hivebuzz.repo);
+const portGames = games.filter((g) => g.repo);
+const ports = await Promise.all(portGames.map((g) => getReleases(g.repo!)));
+---
+<Base title="Descargas" description="Descarga la última versión de HiveShock, HiveBuzz y los ports compatibles para Windows, macOS, Linux y Android.">
+  <section class="intro honeycomb">
+    <div class="wrap intro-inner">
+      <h1>Descargas</h1>
+      <p class="lead">Siempre la última versión publicada en GitHub. Las apps te avisan cuando sale una nueva y se actualizan desde dentro.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid">
+      <div class="col">
+        <h2>HiveShock</h2>
+        <DownloadPanel data={shock} appName="HiveShock" versionsHref="/hiveshock/versiones/" />
+      </div>
+      <div class="col">
+        <h2>HiveBuzz</h2>
+        <DownloadPanel data={buzz} appName="HiveBuzz" versionsHref="/hivebuzz/versiones/" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Ports con HiveShock</h2>
+        <p>Abre el juego con su port y activa HiveShock en su menú. <a href="/juegos/">Ver todos los juegos</a></p>
+      </div>
+      <div class="grid">
+        {portGames.map((g, i) => (
+          <div class="col">
+            <h3>{g.title} <span class="muted">con {g.port}</span></h3>
+            <DownloadPanel data={ports[i]} appName={g.port} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap verify">
+      <div class="section-head">
+        <h2>Comprueba tu descarga</h2>
+        <p>Cada versión de HiveShock publica un archivo con sus sumas SHA-256. Calcula la del archivo que bajaste y compárala.</p>
+      </div>
+      <div class="cmds">
+        <div>
+          <p class="cmd-title">Windows (PowerShell)</p>
+          <pre><code>Get-FileHash .\HiveShock-*.zip -Algorithm SHA256</code></pre>
+        </div>
+        <div>
+          <p class="cmd-title">macOS y Linux</p>
+          <pre><code>shasum -a 256 HiveShock-*</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-block: clamp(36px, 6vw, 72px); border-bottom: 1px solid var(--line); }
+  .intro-inner { display: grid; gap: 16px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 36px); }
+  .col { display: grid; gap: 16px; align-content: start; min-width: 0; }
+  .col h2 { font-size: var(--step-2); }
+  .col h3 { font-size: var(--step-1); }
+  .col h3 .muted { font-family: var(--font-body); font-weight: 600; font-size: var(--step-0); }
+  .cmds { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .cmds > div { min-width: 0; display: grid; gap: 8px; }
+  .cmd-title { font-weight: 800; }
+  pre { margin: 0; padding: 14px 16px; background: var(--ink); border: 1px solid var(--line); border-radius: var(--r-sm); overflow-x: auto; }
+  code { font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace; font-size: 0.92rem; color: var(--paper); }
+  @media (max-width: 900px) { .grid, .cmds { grid-template-columns: 1fr; } }
+</style>

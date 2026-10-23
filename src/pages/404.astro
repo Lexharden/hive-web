@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Página no encontrada">
+  <section class="nf honeycomb">
+    <div class="wrap inner">
+      <p class="code">404</p>
+      <h1>Esta celda del panal está vacía</h1>
+      <p class="lead">La página que buscas no existe o cambió de lugar.</p>
+      <div class="btn-row">
+        <a class="btn btn--honey" href="/">Ir al inicio</a>
+        <a class="btn" href="/descargas/">Ver descargas</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding-block: clamp(64px, 12vw, 140px); }
+  .inner { display: grid; gap: 18px; justify-items: start; }
+  .code { font-family: var(--font-display); font-size: clamp(4rem, 14vw, 9rem); line-height: 1; color: var(--honey); text-shadow: 6px 6px 0 var(--ink); }
+</style>

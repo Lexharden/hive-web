@@ -1,0 +1,172 @@
+---
+// Simulación del puente de HiveShock: lo que llega del live y el efecto que provoca.
+// Los regalos y efectos salen de los perfiles reales incluidos en la app.
+const feed = [
+  { game: "Majora's Mask", user: 'luna.plays', src: 'TikTok', gift: 'Capybara', n: 1, fx: 'Stick invertido 20 s' },
+  { game: "Majora's Mask", user: 'el_chompi', src: 'TikTok', gift: 'GG', n: 3, fx: 'Enemigo aleatorio' },
+  { game: "Majora's Mask", user: 'nanaKoko', src: 'Twitch', gift: '500 bits', n: 1, fx: 'Un hada' },
+  { game: 'Super Mario 64', user: 'pixel_rata', src: 'TikTok', gift: 'Rosa', n: 5, fx: 'Cáscara de plátano' },
+  { game: 'Super Mario 64', user: 'kirbs_mx', src: 'TikTok', gift: 'Money Gun', n: 1, fx: 'Hongo venenoso' },
+  { game: 'Super Mario 64', user: 'dannyGG', src: 'Twitch', gift: '!bobomb', n: 1, fx: 'Un Bob-omb' },
+  { game: 'Twilight Princess', user: 'sofi.zelda', src: 'TikTok', gift: 'Galaxy', n: 1, fx: 'Bestia de las Sombras' },
+  { game: 'Twilight Princess', user: 'tacodeoro', src: 'TikTok', gift: 'Perfume', n: 2, fx: 'Botas de hierro' },
+  { game: 'Twilight Princess', user: 'mr_epona', src: 'Twitch', gift: 'Follow', n: 1, fx: 'Llena el farol' },
+  { game: 'Ocarina of Time', user: 'hyrule_vibes', src: 'TikTok', gift: 'Doughnut', n: 1, fx: 'Dark Link' },
+  { game: 'Ocarina of Time', user: 'ale.nava', src: 'TikTok', gift: 'Super Popular', n: 1, fx: '+10 rupias' },
+  { game: 'Ocarina of Time', user: 'cucco_lover', src: 'TikTok', gift: 'Heart Me', n: 4, fx: 'Cura 1 corazón' },
+];
+const first = feed.slice(0, 3);
+const tint = (s: string) => ['#fcca2f', '#cf4c28', '#7fb2ff', '#8be0b4', '#f59cc8'][[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % 5];
+---
+<div class="console" data-console aria-label="Ejemplo de HiveShock en un live">
+  <div class="console-top">
+    <span class="on-air"><span class="live-dot"></span> En vivo</span>
+    <span class="game" data-game>{first[0].game}</span>
+    <span class="viewers">HiveShock conectado</span>
+  </div>
+  <ol class="feed" data-feed aria-live="off">
+    {first.slice().reverse().map((e) => (
+      <li class="row">
+        <span class="hex" style={`--t:${tint(e.user)}`}>{e.user[0].toUpperCase()}</span>
+        <span class="who">
+          <strong>@{e.user}</strong>
+          <span class="what">{e.gift === 'Follow' ? 'te siguió' : e.gift.startsWith('!') ? `escribió ${e.gift}` : `envió ${e.gift} ×${e.n}`}<span class="src">{e.src}</span></span>
+        </span>
+        <span class="fx">{e.fx}</span>
+      </li>
+    ))}
+  </ol>
+  <p class="console-foot">Simulación con los perfiles que trae HiveShock</p>
+  <script type="application/json" data-feed-src set:html={JSON.stringify(feed.map((e) => ({ ...e, t: tint(e.user) })))} />
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-console]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (root && !reduce) {
+    const list = root.querySelector<HTMLOListElement>('[data-feed]')!;
+    const gameEl = root.querySelector<HTMLElement>('[data-game]')!;
+    const feed = JSON.parse(root.querySelector('[data-feed-src]')!.textContent || '[]');
+    let i = 3;
+    let visible = true;
+    new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(root);
+
+    const make = (e: any) => {
+      const li = document.createElement('li');
+      li.className = 'row row--new';
+      const hex = document.createElement('span');
+      hex.className = 'hex';
+      hex.style.setProperty('--t', e.t);
+      hex.textContent = e.user[0].toUpperCase();
+      const who = document.createElement('span');
+      who.className = 'who';
+      const name = document.createElement('strong');
+      name.textContent = '@' + e.user;
+      const what = document.createElement('span');
+      what.className = 'what';
+      what.textContent = e.gift === 'Follow' ? 'te siguió' : e.gift.startsWith('!') ? `escribió ${e.gift}` : `envió ${e.gift} ×${e.n}`;
+      const src = document.createElement('span');
+      src.className = 'src';
+      src.textContent = e.src;
+      what.append(src);
+      who.append(name, what);
+      const fx = document.createElement('span');
+      fx.className = 'fx';
+      fx.textContent = e.fx;
+      li.append(hex, who, fx);
+      return li;
+    };
+
+    setInterval(() => {
+      if (!visible || document.hidden) return;
+      const e = feed[i % feed.length];
+      if (gameEl.textContent !== e.game) {
+        gameEl.textContent = e.game;
+        list.replaceChildren();
+      }
+      list.prepend(make(e));
+      while (list.children.length > 3) list.lastElementChild!.remove();
+      i++;
+    }, 2200);
+  }
+</script>
+
+<style>
+  .console {
+    position: relative;
+    background: var(--navy);
+    border: var(--stroke);
+    border-radius: var(--r-lg);
+    box-shadow: var(--lift-lg);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .console-top {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 14px 18px;
+    background: var(--ink);
+    font-size: var(--step--1);
+  }
+  .on-air {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 3px 10px 3px 8px; border-radius: 6px;
+    background: var(--ember); color: #fff; font-weight: 800;
+  }
+  .on-air .live-dot { background: #fff; box-shadow: none; }
+  .game { font-family: var(--font-display); font-size: 1rem; color: var(--honey); }
+  .viewers { margin-left: auto; color: var(--mist); }
+  .feed {
+    list-style: none; margin: 0; padding: 16px;
+    display: grid; gap: 10px;
+    min-height: 262px; align-content: start;
+  }
+  .row, :global(.row) {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: rgb(6 20 43 / 0.45);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+  }
+  :global(.row--new) { animation: drop 0.45s cubic-bezier(.2, .9, .3, 1.3) both; }
+  @keyframes drop {
+    from { transform: translateY(-14px) scale(0.97); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  .hex, :global(.console .hex) {
+    width: 44px; height: 48px;
+    display: grid; place-items: center;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--t);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
+  .who, :global(.console .who) { display: grid; min-width: 0; line-height: 1.3; }
+  .who strong, :global(.console .who strong) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .what, :global(.console .what) { color: var(--mist); font-size: var(--step--1); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .src, :global(.console .src) {
+    font-size: 0.72rem; font-weight: 700; padding: 0 6px; border-radius: 4px;
+    border: 1px solid var(--line); color: var(--mist);
+  }
+  .fx, :global(.console .fx) {
+    padding: 6px 12px;
+    background: var(--honey);
+    color: var(--ink);
+    border: var(--stroke);
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: var(--step--1);
+    white-space: nowrap;
+  }
+  .console-foot { padding: 0 18px 14px; color: var(--mist); font-size: 0.8rem; }
+  @media (max-width: 480px) {
+    .row, :global(.row) { grid-template-columns: 38px minmax(0, 1fr); }
+    .hex, :global(.console .hex) { width: 38px; height: 42px; }
+    .fx, :global(.console .fx) { grid-column: 2; justify-self: start; white-space: normal; }
+    .feed { min-height: 330px; }
+  }
+  @media (prefers-reduced-motion: reduce) { :global(.row--new) { animation: none; } }
+</style>
