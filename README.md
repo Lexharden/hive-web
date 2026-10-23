@@ -67,6 +67,10 @@ Requiere Node 22.12 o superior.
 | **Añadir una app nueva** | Añádela a `apps`, copia `src/pages/hivebuzz/` como plantilla y añádela al menú en `Header.astro` |
 | Colores y tipografía | `src/styles/global.css` (tokens al inicio) |
 | Cómo se nombran los archivos de descarga | `src/lib/assets.ts` |
+| Patrocinadores y muro de donadores | `src/config/site.ts` → `sponsors` y `donors` (logos en `public/img/sponsors/`) |
+| Metas, niveles y método de donación | `src/config/site.ts` → `support` (una meta con `raised` y `target` muestra barra) |
+| Aviso legal | `src/pages/legal.astro`; cambia `site.legalUpdated` al editarlo |
+| Ocultar las descargas de los ports | `site.showPortDownloads = false` |
 
 ### Nombres de archivo que entiende la web
 
@@ -86,3 +90,19 @@ reemplaza al botón principal.
 
 `/releases.json` publica la última versión y archivos de cada app y port. Sirve para un bot de Discord que anuncie
 versiones o para que las apps comprueben actualizaciones contra tu dominio.
+
+## Easter eggs
+
+Viven en `src/scripts/easter.ts` y no afectan el uso normal:
+
+- `↑ ↑ ↓ ↓ ← → ← → B A`: enjambre de abejas y «+30 vidas»
+- Escribir `iddqd`, `hesoyam` o `idkfa` en cualquier página
+- Cinco clics rápidos en el logo de la portada: descarga eléctrica
+- Clics en los logos de HiveShock o HiveBuzz: salen abejas; a la séptima, colmena enfadada
+- Tecla `P` con la consola del inicio a la vista: pausa
+- La página 404 y un mensaje para quien abre la consola del navegador
+
+## Apoyo al descargar
+
+Cada panel de descarga lleva una franja para apoyar y, al pulsar una descarga, se abre un agradecimiento con el botón
+de donación (como mucho una vez cada 10 minutos por visitante). La descarga empieza igual aunque se cierre.

@@ -1,13 +1,13 @@
 ---
-import { site, apps, games } from '../config/site';
+import { site, games } from '../config/site';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <div class="wrap grid">
     <div class="about">
       <p class="name">Hive</p>
-      <p class="muted">Apps gratuitas para streamers, hechas en México por {site.owner}. El código de cada app está en GitHub.</p>
-      <a class="btn btn--honey" href={site.links.kofi} target="_blank" rel="noopener">Apoyar en Ko-fi</a>
+      <p class="muted">Apps gratuitas para streamers, hechas en México por {site.owner}.</p>
+      <a class="btn btn--honey" href="/apoyar/">Apoyar el proyecto</a>
     </div>
     <nav aria-label="Apps">
       <p class="col-title">Apps</p>
@@ -26,16 +26,17 @@ const year = new Date().getFullYear();
       <a href={site.links.discord} target="_blank" rel="noopener">Discord</a>
       <a href={site.links.youtube} target="_blank" rel="noopener">YouTube</a>
       <a href={site.links.instagram} target="_blank" rel="noopener">Instagram</a>
-      <a href={`https://github.com/${apps.hiveshock.repo}`} target="_blank" rel="noopener">GitHub</a>
+      <a href="/apoyar/">Patrocinadores</a>
     </nav>
   </div>
   <div class="wrap legal">
     <p>
-      HiveShock y HiveBuzz son proyectos independientes. No están afiliados ni patrocinados por TikTok, Twitch,
-      Nintendo, Rare, Microsoft, Crowd Control ni TikFinity; sus marcas pertenecen a sus dueños. Los ports no incluyen
-      contenido con derechos de autor: necesitas tu propia copia legal de cada juego.
+      HiveShock y HiveBuzz son proyectos independientes, sin relación con TikTok, Twitch ni con ninguna compañía de
+      videojuegos. Las marcas y nombres de juegos pertenecen a sus dueños y se mencionan solo para indicar compatibilidad.
+      No distribuimos juegos, ROMs ni contenido con derechos de autor. El software se ofrece tal cual y se usa bajo
+      responsabilidad de cada usuario.
     </p>
-    <p>© {year} {site.owner}</p>
+    <p class="legal-links"><a href="/legal/">Aviso legal</a> <a href="/legal/#privacidad">Privacidad</a> <span class="copy" data-egg-copy>© {year} {site.owner}</span></p>
   </div>
 </footer>
 
@@ -54,5 +55,8 @@ const year = new Date().getFullYear();
     color: var(--mist); font-size: var(--step--1);
   }
   .legal p:first-child { max-width: 62rem; }
+  .legal-links { display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline; }
+  .legal-links a { color: var(--mist); }
+  .legal-links a:hover { color: var(--honey); }
   @media (max-width: 820px) { .grid { grid-template-columns: 1fr 1fr; } .about { grid-column: 1 / -1; } }
 </style>

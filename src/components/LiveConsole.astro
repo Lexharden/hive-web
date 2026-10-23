@@ -2,18 +2,18 @@
 // Simulación del puente de HiveShock: lo que llega del live y el efecto que provoca.
 // Los regalos y efectos salen de los perfiles reales incluidos en la app.
 const feed = [
-  { game: "Majora's Mask", user: 'luna.plays', src: 'TikTok', gift: 'Capybara', n: 1, fx: 'Stick invertido 20 s' },
-  { game: "Majora's Mask", user: 'el_chompi', src: 'TikTok', gift: 'GG', n: 3, fx: 'Enemigo aleatorio' },
-  { game: "Majora's Mask", user: 'nanaKoko', src: 'Twitch', gift: '500 bits', n: 1, fx: 'Un hada' },
-  { game: 'Super Mario 64', user: 'pixel_rata', src: 'TikTok', gift: 'Rosa', n: 5, fx: 'Cáscara de plátano' },
-  { game: 'Super Mario 64', user: 'kirbs_mx', src: 'TikTok', gift: 'Money Gun', n: 1, fx: 'Hongo venenoso' },
-  { game: 'Super Mario 64', user: 'dannyGG', src: 'Twitch', gift: '!bobomb', n: 1, fx: 'Un Bob-omb' },
-  { game: 'Twilight Princess', user: 'sofi.zelda', src: 'TikTok', gift: 'Galaxy', n: 1, fx: 'Bestia de las Sombras' },
-  { game: 'Twilight Princess', user: 'tacodeoro', src: 'TikTok', gift: 'Perfume', n: 2, fx: 'Botas de hierro' },
-  { game: 'Twilight Princess', user: 'mr_epona', src: 'Twitch', gift: 'Follow', n: 1, fx: 'Llena el farol' },
-  { game: 'Ocarina of Time', user: 'hyrule_vibes', src: 'TikTok', gift: 'Doughnut', n: 1, fx: 'Dark Link' },
-  { game: 'Ocarina of Time', user: 'ale.nava', src: 'TikTok', gift: 'Super Popular', n: 1, fx: '+10 rupias' },
-  { game: 'Ocarina of Time', user: 'cucco_lover', src: 'TikTok', gift: 'Heart Me', n: 4, fx: 'Cura 1 corazón' },
+  { game: 'Twilight Princess', user: 'Ximezzle', src: 'TikTok', gift: 'Perfume', n: 2, fx: 'Botas de hierro' },
+  { game: 'Twilight Princess', user: 'EspartaGames', src: 'Twitch', gift: 'Follow', n: 1, fx: 'Llena el farol' },
+  { game: 'Twilight Princess', user: 'Oscar', src: 'TikTok', gift: 'Ballena', n: 1, fx: 'Manada de bokoblins', big: true },
+  { game: "Majora's Mask", user: 'ralbat_', src: 'TikTok', gift: 'Capybara', n: 1, fx: 'Stick invertido 20 s' },
+  { game: "Majora's Mask", user: 'insomnia', src: 'TikTok', gift: 'GG', n: 3, fx: 'Enemigo aleatorio' },
+  { game: "Majora's Mask", user: 'Mint Kookie', src: 'Twitch', gift: '500 bits', n: 1, fx: 'Un hada' },
+  { game: 'Super Mario 64', user: 'el_pinchiviejo', src: 'TikTok', gift: 'Rosa', n: 5, fx: 'Cáscara de plátano' },
+  { game: 'Super Mario 64', user: 'Guz', src: 'TikTok', gift: 'Money Gun', n: 1, fx: 'Hongo venenoso' },
+  { game: 'Super Mario 64', user: 'TheMaximusGT', src: 'Twitch', gift: '!bobomb', n: 1, fx: 'Un Bob-omb' },
+  { game: 'Ocarina of Time', user: 'Karhrilys', src: 'TikTok', gift: 'Doughnut', n: 1, fx: 'Dark Link' },
+  { game: 'Ocarina of Time', user: 'Michindorf', src: 'TikTok', gift: 'Super Popular', n: 1, fx: '+10 rupias' },
+  { game: 'Ocarina of Time', user: 'insomnia', src: 'TikTok', gift: 'Heart Me', n: 4, fx: 'Cura 1 corazón' },
 ];
 const first = feed.slice(0, 3);
 const tint = (s: string) => ['#fcca2f', '#cf4c28', '#7fb2ff', '#8be0b4', '#f59cc8'][[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % 5];
@@ -26,17 +26,18 @@ const tint = (s: string) => ['#fcca2f', '#cf4c28', '#7fb2ff', '#8be0b4', '#f59cc
   </div>
   <ol class="feed" data-feed aria-live="off">
     {first.slice().reverse().map((e) => (
-      <li class="row">
+      <li class={e.big ? "row row--big" : "row"}>
         <span class="hex" style={`--t:${tint(e.user)}`}>{e.user[0].toUpperCase()}</span>
         <span class="who">
-          <strong>@{e.user}</strong>
+          <strong>{e.user}</strong>
           <span class="what">{e.gift === 'Follow' ? 'te siguió' : e.gift.startsWith('!') ? `escribió ${e.gift}` : `envió ${e.gift} ×${e.n}`}<span class="src">{e.src}</span></span>
         </span>
         <span class="fx">{e.fx}</span>
       </li>
     ))}
   </ol>
-  <p class="console-foot">Simulación con los perfiles que trae HiveShock</p>
+  <p class="console-foot">Simulación con nombres de nuestra comunidad y los perfiles reales de HiveShock</p>
+  <p class="paused" data-paused hidden>Pausa</p>
   <script type="application/json" data-feed-src set:html={JSON.stringify(feed.map((e) => ({ ...e, t: tint(e.user) })))} />
 </div>
 
@@ -49,11 +50,19 @@ const tint = (s: string) => ['#fcca2f', '#cf4c28', '#7fb2ff', '#8be0b4', '#f59cc
     const feed = JSON.parse(root.querySelector('[data-feed-src]')!.textContent || '[]');
     let i = 3;
     let visible = true;
+    let paused = false;
     new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(root);
+    const pausedEl = root.querySelector<HTMLElement>('[data-paused]')!;
+    // Easter egg: la P pausa la consola, como en cualquier juego.
+    window.addEventListener('keydown', (ev) => {
+      if (ev.key.toLowerCase() !== 'p' || !visible || (ev.target as HTMLElement).closest('input, textarea')) return;
+      paused = !paused;
+      pausedEl.hidden = !paused;
+    });
 
     const make = (e: any) => {
       const li = document.createElement('li');
-      li.className = 'row row--new';
+      li.className = e.big ? 'row row--new row--big' : 'row row--new';
       const hex = document.createElement('span');
       hex.className = 'hex';
       hex.style.setProperty('--t', e.t);
@@ -61,7 +70,7 @@ const tint = (s: string) => ['#fcca2f', '#cf4c28', '#7fb2ff', '#8be0b4', '#f59cc
       const who = document.createElement('span');
       who.className = 'who';
       const name = document.createElement('strong');
-      name.textContent = '@' + e.user;
+      name.textContent = e.user;
       const what = document.createElement('span');
       what.className = 'what';
       what.textContent = e.gift === 'Follow' ? 'te siguió' : e.gift.startsWith('!') ? `escribió ${e.gift}` : `envió ${e.gift} ×${e.n}`;
@@ -78,7 +87,7 @@ const tint = (s: string) => ['#fcca2f', '#cf4c28', '#7fb2ff', '#8be0b4', '#f59cc
     };
 
     setInterval(() => {
-      if (!visible || document.hidden) return;
+      if (!visible || paused || document.hidden) return;
       const e = feed[i % feed.length];
       if (gameEl.textContent !== e.game) {
         gameEl.textContent = e.game;
@@ -162,6 +171,14 @@ const tint = (s: string) => ['#fcca2f', '#cf4c28', '#7fb2ff', '#8be0b4', '#f59cc
     white-space: nowrap;
   }
   .console-foot { padding: 0 18px 14px; color: var(--mist); font-size: 0.8rem; }
+  .paused {
+    position: absolute; inset: 52px 0 0; display: grid; place-items: center;
+    background: rgb(6 20 43 / 0.72);
+    font-family: var(--font-display); font-size: 2.2rem; color: var(--honey);
+    letter-spacing: 0.08em;
+  }
+  .row--big, :global(.console .row--big) { border-color: var(--honey); background: rgb(252 202 47 / 0.12); }
+  .row--big .fx, :global(.console .row--big .fx) { background: var(--ember); color: #fff; }
   @media (max-width: 480px) {
     .row, :global(.row) { grid-template-columns: 38px minmax(0, 1fr); }
     .hex, :global(.console .hex) { width: 38px; height: 42px; }

@@ -1,0 +1,213 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import { site, support, sponsors, donors } from '../config/site';
+
+const faq = [
+  {
+    q: '¿Donar desbloquea algo en las apps?',
+    a: '<p>No. HiveShock y HiveBuzz son iguales para todos. Las donaciones mantienen el proyecto gratis, no compran funciones.</p>',
+  },
+  {
+    q: '¿Cómo aparezco en el muro de donadores?',
+    a: '<p>Deja en el mensaje de tu donación el nombre que quieres mostrar. Si prefieres no aparecer, escribe «anónimo» y no lo publicamos.</p>',
+  },
+  {
+    q: 'Quiero patrocinar como marca o equipo',
+    a: `<p>Escríbenos en <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> y armamos un patrocinio a la medida: logo en la web, mención en las versiones o colaboraciones en directo.</p>`,
+  },
+  {
+    q: '¿Hay otras formas de ayudar?',
+    a: '<p>Sí: reporta errores, prueba las versiones de prueba en tu plataforma, comparte tus perfiles de regalos y recomienda las apps a otros streamers. Todo eso ayuda tanto como una donación.</p>',
+  },
+];
+---
+<Base title="Apoya el proyecto" description="Apoya HiveShock y HiveBuzz con una donación o un patrocinio. Las apps son y seguirán siendo gratis.">
+  <section class="hero honeycomb">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <h1>Apoya a la colmena</h1>
+        <p class="lead">
+          HiveShock y HiveBuzz son gratis y lo seguirán siendo. No tienen anuncios, versión de pago ni funciones bloqueadas.
+          Lo que cuesta mantenerlas lo cubren las personas y marcas que deciden apoyar.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--ember btn--big" href={support.primary.href} target="_blank" rel="noopener"><Icon name="heart" /> {support.primary.label}</a>
+          <a class="btn btn--big" href="#patrocinar">Patrocinar como marca</a>
+        </div>
+      </div>
+      <figure class="jar" aria-hidden="true">
+        <svg viewBox="0 0 220 240">
+          <path d="M60 40h100v18c18 10 30 30 30 56v84a22 22 0 0 1-22 22H52a22 22 0 0 1-22-22v-84c0-26 12-46 30-56z" fill="#16437d" stroke="#06142b" stroke-width="6" stroke-linejoin="round"/>
+          <path d="M36 140c26-14 48 12 74 0s48-14 74 0v58a16 16 0 0 1-16 16H52a16 16 0 0 1-16-16z" fill="#fcca2f"/>
+          <path d="M36 140c26-14 48 12 74 0s48-14 74 0" fill="none" stroke="#06142b" stroke-width="4"/>
+          <rect x="52" y="22" width="116" height="26" rx="8" fill="#cf4c28" stroke="#06142b" stroke-width="6"/>
+          <g fill="none" stroke="#06142b" stroke-width="3" opacity=".35">
+            <path d="M80 160l12 7v14l-12 7-12-7v-14zM116 168l12 7v14l-12 7-12-7v-14zM152 160l12 7v14l-12 7-12-7v-14z"/>
+          </g>
+          <path d="M60 80c0-10 6-16 14-18" stroke="#f2f6fc" stroke-width="6" stroke-linecap="round" opacity=".35" fill="none"/>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>A dónde va tu apoyo</h2>
+        <p>Gastos reales que hacen las apps más fáciles de instalar y llevan HiveShock a más juegos.</p>
+      </div>
+      <ul class="goals">
+        {support.goals.map((g) => (
+          <li>
+            <h3>{g.title}</h3>
+            <p>{g.text}</p>
+            {g.raised != null && g.target ? (
+              <div class="bar" role="progressbar" aria-valuemin={0} aria-valuemax={g.target} aria-valuenow={g.raised} aria-label={g.title}>
+                <span style={`width:${Math.min(100, (g.raised / g.target) * 100)}%`}></span>
+              </div>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--band" id="niveles">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Formas de apoyar</h2>
+        <p>Cualquier monto cuenta. Elige la que te acomode.</p>
+      </div>
+      <ul class="tiers">
+        {support.tiers.map((t) => (
+          <li class={t.featured ? 'tier tier--featured' : 'tier'}>
+            <div class="tier-head">
+              <span class="tier-hex" aria-hidden="true"></span>
+              <h3>{t.name}</h3>
+              <p class="when">{t.when}</p>
+            </div>
+            <ul class="perks">
+              {t.perks.map((p) => <li><Icon name="check" /> <span>{p}</span></li>)}
+            </ul>
+            {t.name === 'Reina' ? (
+              <a class="btn" href={site.links.discord} target="_blank" rel="noopener">Escribir para patrocinar</a>
+            ) : (
+              <a class={t.featured ? 'btn btn--ember' : 'btn btn--honey'} href={support.primary.href} target="_blank" rel="noopener">
+                {t.featured ? 'Apoyar cada mes' : 'Donar una vez'}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="patrocinar">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Patrocinadores</h2>
+        <p>Marcas, equipos y creadores que hacen posible el proyecto.</p>
+      </div>
+      <ul class="sponsors">
+        {sponsors.length > 0
+          ? sponsors.map((s) => (
+              <li class="sp sp--on">
+                <a href={s.url ?? '#'} target="_blank" rel="noopener">
+                  {s.logo ? <img src={s.logo} alt={s.name} loading="lazy" /> : <span class="sp-name">{s.name}</span>}
+                </a>
+              </li>
+            ))
+          : [0, 1, 2, 3].map((i) => (
+              <li class="sp">
+                <a href={site.links.discord} target="_blank" rel="noopener">
+                  <span class="sp-hex" aria-hidden="true"></span>
+                  <span>{i === 0 ? 'Tu marca aquí' : 'Lugar disponible'}</span>
+                </a>
+              </li>
+            ))}
+      </ul>
+
+      <div class="section-head donors-head">
+        <h2>Muro de donadores</h2>
+        <p>Gracias a cada persona que puso su granito de miel.</p>
+      </div>
+      {donors.length > 0 ? (
+        <ul class="donors">
+          {donors.map((d) => <li title={d.note}>{d.name}</li>)}
+        </ul>
+      ) : (
+        <div class="donors-empty">
+          <p>El muro se llena con cada donación. Deja tu nombre en el mensaje y aparecerás aquí.</p>
+          <a class="btn btn--honey" href={support.primary.href} target="_blank" rel="noopener">Ser de los primeros</a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Preguntas sobre el apoyo</h2>
+      </div>
+      <Faq items={faq} />
+      <p class="muted small fine">
+        Las donaciones son voluntarias y no son la compra de un producto. Consulta el <a href="/legal/#donaciones">aviso legal</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(40px, 6vw, 80px); border-bottom: 1px solid var(--line); }
+  .hero-inner { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .hero-copy { display: grid; gap: 22px; justify-items: start; }
+  .jar { margin: 0; justify-self: center; width: min(260px, 70vw); filter: drop-shadow(8px 8px 0 var(--ink)); }
+  .goals { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .goals li { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 3px solid var(--ember); }
+  .goals h3 { font-family: var(--font-body); font-weight: 800; font-size: var(--step-1); }
+  .goals p { color: var(--mist); }
+  .bar { height: 10px; border-radius: 999px; background: rgb(6 20 43 / 0.6); overflow: hidden; border: 1px solid var(--line); }
+  .bar span { display: block; height: 100%; background: var(--honey); }
+  .tiers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .tier {
+    display: grid; grid-template-rows: auto 1fr auto; gap: 18px;
+    padding: 24px; border-radius: var(--r-lg);
+    background: rgb(22 67 125 / 0.5); border: 1px solid var(--line);
+  }
+  .tier--featured { background: var(--navy); border: var(--stroke); box-shadow: var(--lift-lg); }
+  .tier-head { display: grid; gap: 6px; }
+  .tier-hex { width: 32px; height: 36px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: var(--honey); }
+  .tier--featured .tier-hex { background: var(--ember); }
+  .tier h3 { font-size: var(--step-2); }
+  .when { color: var(--mist); }
+  .perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; align-content: start; }
+  .perks li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; }
+  .perks :global(svg) { width: 20px; height: 20px; color: var(--honey); margin-top: 3px; }
+  .tier .btn { justify-self: start; }
+  .sponsors { list-style: none; margin: 0 0 56px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .sp a {
+    display: grid; place-items: center; gap: 10px; text-align: center;
+    min-height: 120px; padding: 16px;
+    border: 2px dashed rgb(167 187 217 / 0.35); border-radius: var(--r);
+    color: var(--mist); text-decoration: none; font-weight: 700;
+  }
+  .sp a:hover { border-color: var(--honey); color: var(--honey); }
+  .sp--on a { border-style: solid; background: var(--navy); }
+  .sp--on img { max-height: 72px; object-fit: contain; }
+  .sp-name { font-family: var(--font-display); color: var(--paper); }
+  .sp-hex { width: 36px; height: 40px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: rgb(252 202 47 / 0.25); }
+  .donors-head { margin-bottom: 24px; }
+  .donors { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .donors li { padding: 6px 14px; border-radius: 999px; background: var(--honey); color: var(--ink); border: var(--stroke); font-weight: 800; }
+  .donors-empty { display: grid; gap: 14px; justify-items: start; padding: 22px; border: 1px dashed rgb(167 187 217 / 0.35); border-radius: var(--r); color: #d8e2f1; }
+  .fine { margin-top: 24px; }
+  @media (max-width: 960px) {
+    .goals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tiers { grid-template-columns: 1fr; }
+    .sponsors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .jar { width: 180px; } }
+  @media (max-width: 520px) { .goals { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,200 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config/site';
+import { formatDate } from '../lib/assets';
+
+const sections = [
+  { id: 'alcance', title: 'Alcance' },
+  { id: 'garantia', title: 'Software sin garantía' },
+  { id: 'responsabilidad', title: 'Límite de responsabilidad' },
+  { id: 'uso', title: 'Tu responsabilidad al usarlo' },
+  { id: 'juegos', title: 'Juegos, ports y ROMs' },
+  { id: 'marcas', title: 'Marcas y afiliación' },
+  { id: 'terceros', title: 'Servicios de terceros' },
+  { id: 'donaciones', title: 'Donaciones y patrocinios' },
+  { id: 'privacidad', title: 'Privacidad' },
+  { id: 'cambios', title: 'Cambios y contacto' },
+];
+---
+<Base title="Aviso legal" description="Aviso legal, descargo de responsabilidad y privacidad de HiveShock, HiveBuzz y el sitio Hive.">
+  <section class="intro honeycomb">
+    <div class="wrap intro-inner">
+      <h1>Aviso legal</h1>
+      <p class="lead">
+        Lo que necesitas saber antes de descargar y usar HiveShock, HiveBuzz y sus integraciones. En resumen: es software
+        gratuito, se ofrece tal cual, lo usas bajo tu responsabilidad y nunca proporcionamos juegos ni ROMs.
+      </p>
+      <p class="muted small">Última revisión: {formatDate(site.legalUpdated + 'T12:00:00Z')}</p>
+    </div>
+  </section>
+
+  <div class="wrap layout">
+    <nav class="toc" aria-label="En esta página">
+      <p class="toc-title">En esta página</p>
+      <ol>
+        {sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+      </ol>
+    </nav>
+
+    <article class="doc">
+      <section id="alcance">
+        <h2>Alcance</h2>
+        <p>
+          Hive es un proyecto independiente de {site.owner} que agrupa HiveShock, HiveBuzz y las integraciones de HiveShock
+          con ports y mods de videojuegos. Este aviso aplica a este sitio y a todo el software que se descarga desde él.
+          Al descargar o usar cualquiera de estos programas aceptas lo que se describe aquí. Si no estás de acuerdo, no los
+          descargues ni los uses.
+        </p>
+      </section>
+
+      <section id="garantia">
+        <h2>Software sin garantía</h2>
+        <p>
+          Todo el software se ofrece gratis y <strong>«tal cual»</strong>, sin garantías de ningún tipo, expresas o
+          implícitas. No garantizamos que funcione sin errores, que sea compatible con tu equipo o tus juegos, que sirva para
+          un fin concreto ni que siga funcionando si TikTok, Twitch u otros servicios cambian su funcionamiento.
+        </p>
+      </section>
+
+      <section id="responsabilidad">
+        <h2>Límite de responsabilidad</h2>
+        <p>
+          En la máxima medida que permita la ley aplicable, ni el autor ni quienes colaboran en el proyecto son responsables
+          de daños directos o indirectos derivados del uso o de la imposibilidad de usar el software, incluidos:
+        </p>
+        <ul>
+          <li>pérdida de partidas guardadas, archivos, configuraciones u otros datos;</li>
+          <li>fallas, cierres inesperados o reinicios de tu equipo, del juego o de otros programas;</li>
+          <li>advertencias, suspensiones o sanciones en tus cuentas de TikTok, Twitch u otras plataformas;</li>
+          <li>pérdida de ingresos, de seguidores o de oportunidades;</li>
+          <li>el contenido que tus espectadores envíen y que el software muestre o lea en voz alta.</li>
+        </ul>
+      </section>
+
+      <section id="uso">
+        <h2>Tu responsabilidad al usarlo</h2>
+        <ul>
+          <li>
+            Tú decides qué hace cada regalo, comando o evento. Algunos efectos no se pueden deshacer, como borrar una partida,
+            reiniciar el equipo o pulsar teclas en otra ventana. Asígnalos con cuidado y haz respaldos de tus partidas.
+          </li>
+          <li>
+            Los textos, nombres y mensajes que aparecen en alertas, overlays y voz vienen de tus espectadores. Configura los
+            filtros y revisa lo que se muestra en tu transmisión.
+          </li>
+          <li>
+            Debes cumplir las normas de la comunidad y los términos de servicio de TikTok, Twitch y cualquier plataforma donde
+            transmitas, así como las leyes de tu país.
+          </li>
+          <li>Usa solo cuentas propias o que tengas permiso de administrar.</li>
+        </ul>
+      </section>
+
+      <section id="juegos">
+        <h2>Juegos, ports y ROMs</h2>
+        <p>
+          <strong>No vendemos, distribuimos ni proporcionamos juegos, ROMs, BIOS, imágenes de disco, assets ni ningún archivo
+          protegido por derechos de autor</strong>, y no damos instrucciones para conseguirlos. Para usar un port necesitas
+          tu propia copia legal del juego, obtenida conforme a las leyes de tu país.
+        </p>
+        <p>
+          Los ports y mods compatibles son proyectos de sus propias comunidades. No somos sus autores, no los mantenemos y no
+          respondemos por su funcionamiento ni por el uso que se les dé. No proporcionamos copias de los ports originales ni
+          de versiones de terceros: lo único que se publica aquí es la integración con HiveShock, sin contenido del juego.
+        </p>
+        <p>
+          Si eres titular de derechos y crees que algo publicado aquí te afecta, escríbenos por los medios de
+          <a href="#cambios">contacto</a> con los detalles y lo revisaremos de inmediato.
+        </p>
+      </section>
+
+      <section id="marcas">
+        <h2>Marcas y afiliación</h2>
+        <p>
+          TikTok, Twitch, los nombres de juegos, personajes, consolas y compañías de videojuegos son marcas de sus respectivos
+          dueños. Se mencionan solo para indicar con qué es compatible el software. Hive, HiveShock y HiveBuzz no están
+          afiliados, patrocinados ni respaldados por ninguno de ellos.
+        </p>
+      </section>
+
+      <section id="terceros">
+        <h2>Servicios de terceros</h2>
+        <p>
+          Las apps se conectan a servicios que no controlamos, como TikTok LIVE, Twitch, Spotify, OBS o motores de voz en
+          línea. La conexión con TikTok LIVE usa métodos no oficiales que TikTok puede cambiar o restringir en cualquier
+          momento. El uso de cada servicio se rige por sus propios términos y políticas.
+        </p>
+      </section>
+
+      <section id="donaciones">
+        <h2>Donaciones y patrocinios</h2>
+        <ul>
+          <li>Las donaciones son voluntarias. No son la compra de un producto ni desbloquean funciones.</li>
+          <li>
+            No otorgan derechos sobre el software, licencias especiales, soporte garantizado, participación en el proyecto ni
+            control sobre sus decisiones.
+          </li>
+          <li>Los agradecimientos descritos en la página de apoyo son un gesto del proyecto y pueden cambiar.</li>
+          <li>
+            Los pagos los procesa una plataforma externa, como Ko-fi, bajo sus propios términos. Cualquier reembolso depende
+            de las reglas de esa plataforma.
+          </li>
+        </ul>
+      </section>
+
+      <section id="privacidad">
+        <h2>Privacidad</h2>
+        <p>
+          Este sitio no usa cookies, no tiene analítica y no pide datos personales. Para mostrarte la versión más reciente, tu
+          navegador consulta la API pública de GitHub, el servicio donde se alojan las descargas, que recibe tu dirección IP
+          como en cualquier visita a una web.
+        </p>
+        <p>
+          HiveShock y HiveBuzz guardan su configuración en tu equipo y no envían tus datos a servidores del proyecto. Solo se
+          conectan a los servicios que tú configures y al servidor de descargas para buscar actualizaciones. Las credenciales
+          se guardan en el almacén seguro de tu sistema operativo cuando está disponible.
+        </p>
+      </section>
+
+      <section id="cambios">
+        <h2>Cambios y contacto</h2>
+        <p>
+          Este aviso puede actualizarse. La fecha de la última revisión aparece al inicio de la página, y los cambios importantes
+          se anuncian en Discord.
+        </p>
+        <p>
+          Para dudas, reportes o solicitudes de titulares de derechos, escríbenos en el
+          <a href={site.links.discord} target="_blank" rel="noopener">Discord de la comunidad</a>.
+        </p>
+      </section>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .intro { padding-block: clamp(36px, 6vw, 72px); border-bottom: 1px solid var(--line); }
+  .intro-inner { display: grid; gap: 14px; }
+  .layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 72px);
+    padding-block: clamp(40px, 6vw, 72px) clamp(64px, 8vw, 104px);
+    align-items: start;
+  }
+  .toc { position: sticky; top: 96px; display: grid; gap: 10px; }
+  .toc-title { font-weight: 800; }
+  .toc ol { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; color: var(--mist); font-size: var(--step--1); }
+  .toc a { color: var(--mist); text-decoration: none; }
+  .toc a:hover { color: var(--honey); }
+  .doc { display: grid; gap: 40px; max-width: 46rem; }
+  .doc section { display: grid; gap: 14px; scroll-margin-top: 90px; }
+  .doc h2 { font-size: var(--step-2); }
+  .doc p, .doc li { color: #d8e2f1; }
+  .doc strong { color: var(--paper); }
+  .doc ul { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
+  .doc li::marker { color: var(--honey); }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { position: static; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--r); }
+  }
+</style>

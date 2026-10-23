@@ -13,7 +13,7 @@ const { app, data, lead, note } = Astro.props;
     <div class="phero-copy">
       <picture>
         <source srcset={`${app.logo}-320.webp`} type="image/webp" />
-        <img src={`${app.logo}-320.png`} alt="" width="220" height="185" fetchpriority="high" />
+        <img src={`${app.logo}-320.png`} alt="" width="220" height="185" fetchpriority="high" data-egg-hive={app.id} />
       </picture>
       <h1>{app.name}</h1>
       <p class="tag">{app.tagline}</p>
@@ -21,7 +21,7 @@ const { app, data, lead, note } = Astro.props;
       <ul class="plats" aria-label="Plataformas">
         {app.platforms.map((p) => <li><Icon name={p} /> {platformNames[p]}</li>)}
       </ul>
-      <p class="muted small">Alternativa gratuita a {app.alternativeTo}. Hecho con {app.stack}. <a href={data.url} target="_blank" rel="noopener">Código en GitHub</a></p>
+      <p class="muted small">Gratis para siempre. Hecho en México con {app.stack}.</p>
     </div>
     <div id="descargar" class="phero-dl">
       <DownloadPanel data={data} appName={app.name} versionsHref={`/${app.id}/versiones/`} note={note} />

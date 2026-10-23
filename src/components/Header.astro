@@ -14,7 +14,7 @@ const isActive = (href: string) => path === href.replace(/\/$/, '') || path.star
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="/" aria-label="Hive, inicio">
-      <svg class="brand-mark" viewBox="0 0 40 44" aria-hidden="true">
+      <svg class="brand-mark" viewBox="0 0 40 44" aria-hidden="true" data-egg-logo>
         <path d="M20 2 37.3 12v20L20 42 2.7 32V12z" fill="#fcca2f" stroke="#06142b" stroke-width="3" stroke-linejoin="round" />
         <path d="M22.5 9 13 24h6.5L17.5 35 27 20h-6.5z" fill="#cf4c28" stroke="#06142b" stroke-width="2" stroke-linejoin="round" />
       </svg>
@@ -30,6 +30,9 @@ const isActive = (href: string) => path === href.replace(/\/$/, '') || path.star
     <a class="btn btn--ghost discord" href={site.links.discord} target="_blank" rel="noopener">
       <Icon name="chat" /> Discord
     </a>
+    <a class="btn btn--ember support" href="/apoyar/" aria-current={isActive('/apoyar/') ? 'page' : undefined}>
+      <Icon name="heart" /> Apoyar
+    </a>
 
     <details class="menu">
       <summary aria-label="Abrir menú"><Icon name="menu" /></summary>
@@ -37,6 +40,7 @@ const isActive = (href: string) => path === href.replace(/\/$/, '') || path.star
         {nav.map((n) => (
           <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>
         ))}
+        <a href="/apoyar/" aria-current={isActive('/apoyar/') ? 'page' : undefined}>Apoyar el proyecto</a>
         <a href={site.links.discord} target="_blank" rel="noopener">Comunidad en Discord</a>
       </div>
     </details>
@@ -67,7 +71,9 @@ const isActive = (href: string) => path === href.replace(/\/$/, '') || path.star
   }
   .nav a:hover, .menu-panel a:hover { color: var(--paper); background: rgb(255 255 255 / 0.06); }
   .nav a[aria-current='page'], .menu-panel a[aria-current='page'] { color: var(--honey); }
-  .discord { min-height: 40px; padding: 6px 14px; font-size: var(--step--1); }
+  .discord, .support { min-height: 40px; padding: 6px 14px; font-size: var(--step--1); }
+  .support { box-shadow: 0 4px 0 var(--ink); }
+  .bar { gap: 20px; }
   .menu { display: none; position: relative; }
   .menu summary {
     list-style: none; cursor: pointer; display: grid; place-items: center;
@@ -82,6 +88,7 @@ const isActive = (href: string) => path === href.replace(/\/$/, '') || path.star
   }
   @media (max-width: 820px) {
     .nav, .discord { display: none; }
-    .menu { display: block; margin-left: auto; }
+    .support { margin-left: auto; }
+    .menu { display: block; }
   }
 </style>

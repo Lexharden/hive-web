@@ -11,11 +11,11 @@ const rel = data.latest;
   <div class="app-top">
     <picture>
       <source srcset={`${app.logo}-320.webp`} type="image/webp" />
-      <img src={`${app.logo}-320.png`} alt="" width="160" height="134" loading="lazy" />
+      <img src={`${app.logo}-320.png`} alt="" width="160" height="134" loading="lazy" data-egg-hive={app.id} />
     </picture>
     <div class="app-id">
       <h3>{app.name}</h3>
-      <p class="alt">Alternativa gratuita a {app.alternativeTo}</p>
+      <p class="alt">{app.role}</p>
       {rel && (
         <span class="chip" data-version-of={data.repo} data-tag={rel.tag} data-published={rel.publishedAt}>v{rel.version}</span>
       )}

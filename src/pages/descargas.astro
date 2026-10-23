@@ -1,19 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import DownloadPanel from '../components/DownloadPanel.astro';
-import { apps, games } from '../config/site';
+import { apps, games, site } from '../config/site';
 import { getReleases } from '../lib/releases';
 
 const shock = await getReleases(apps.hiveshock.repo);
 const buzz = await getReleases(apps.hivebuzz.repo);
-const portGames = games.filter((g) => g.repo);
+const portGames = site.showPortDownloads ? games.filter((g) => g.repo) : [];
 const ports = await Promise.all(portGames.map((g) => getReleases(g.repo!)));
 ---
 <Base title="Descargas" description="Descarga la última versión de HiveShock, HiveBuzz y los ports compatibles para Windows, macOS, Linux y Android.">
   <section class="intro honeycomb">
     <div class="wrap intro-inner">
       <h1>Descargas</h1>
-      <p class="lead">Siempre la última versión publicada en GitHub. Las apps te avisan cuando sale una nueva y se actualizan desde dentro.</p>
+      <p class="lead">Siempre la última versión publicada. Las apps te avisan cuando sale una nueva y se actualizan desde dentro.</p>
     </div>
   </section>
 
@@ -30,22 +30,22 @@ const ports = await Promise.all(portGames.map((g) => getReleases(g.repo!)));
     </div>
   </section>
 
-  <section class="section section--band">
+  {portGames.length > 0 && <section class="section section--band">
     <div class="wrap">
       <div class="section-head">
         <h2>Ports con HiveShock</h2>
-        <p>Abre el juego con su port y activa HiveShock en su menú. <a href="/juegos/">Ver todos los juegos</a></p>
+        <p>Necesitas tu propia copia legal de cada juego; no proporcionamos juegos ni ROMs. <a href="/juegos/">Ver todos los juegos</a></p>
       </div>
       <div class="grid">
         {portGames.map((g, i) => (
           <div class="col">
             <h3>{g.title} <span class="muted">con {g.port}</span></h3>
-            <DownloadPanel data={ports[i]} appName={g.port} />
+            <DownloadPanel data={ports[i]} appName={g.port} support={false} />
           </div>
         ))}
       </div>
     </div>
-  </section>
+  </section>}
 
   <section class="section">
     <div class="wrap verify">

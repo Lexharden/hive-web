@@ -1,6 +1,6 @@
 // Dos tareas en el navegador:
 // 1. Elegir el botón principal según el sistema de quien visita.
-// 2. Preguntar a GitHub si hay un release más nuevo que el del último build y,
+// 2. Preguntar al servidor de descargas (API de GitHub) si hay un release más nuevo que el del último build y,
 //    si lo hay, actualizar versión, fecha y enlaces sin esperar al redeploy.
 import { classify, formatDate, formatSize, type Platform } from '../lib/assets';
 
@@ -75,7 +75,6 @@ async function refresh(panel: HTMLElement) {
   });
   panel.querySelectorAll<HTMLElement>('[data-version]').forEach((el) => (el.textContent = rel.tag_name.startsWith('v') ? rel.tag_name : `v${rel.tag_name}`));
   panel.querySelectorAll<HTMLElement>('[data-date]').forEach((el) => (el.textContent = formatDate(rel.published_at)));
-  panel.querySelectorAll<HTMLAnchorElement>('[data-release-link]').forEach((el) => (el.href = rel.html_url));
   const fresh = panel.querySelector<HTMLElement>('[data-fresh]');
   if (fresh) fresh.hidden = false;
   panel.dataset.tag = rel.tag_name;

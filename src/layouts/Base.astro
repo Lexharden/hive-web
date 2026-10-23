@@ -5,6 +5,7 @@ import '@fontsource-variable/figtree/wght.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import DownloadThanks from '../components/DownloadThanks.astro';
 import { site } from '../config/site';
 
 interface Props {
@@ -45,8 +46,11 @@ const ogImage = new URL(image, Astro.site ?? site.url).href;
       <slot />
     </main>
     <Footer />
+    <DownloadThanks />
     <script>
       import '../scripts/downloads';
+      import '../scripts/support';
+      import '../scripts/easter';
     </script>
   </body>
 </html>

@@ -17,13 +17,16 @@ const ports = Object.fromEntries(
     <div class="wrap intro-inner">
       <h1>Juegos compatibles</h1>
       <p class="lead">
-        {games.length} juegos y {totalEffects} efectos que tu comunidad puede activar. Cada port escucha a HiveShock en tu
-        equipo (puerto 43000) y le avisa cuando mueres para llevar la cuenta.
+        {games.length} juegos y {totalEffects} efectos que tu comunidad puede activar. La lista crece con ports y mods de
+        distintas consolas y de PC. Cada uno se conecta con HiveShock en tu propio equipo y le avisa cuando pierdes una vida.
       </p>
-      <p class="rom">
+      <div class="rom">
         <Icon name="shield" />
-        <span>Los ports no incluyen el juego. Necesitas tu propia copia legal; la primera vez que abres el port te la pide y genera sus archivos.</span>
-      </p>
+        <div>
+          <p><strong>No proporcionamos juegos, ROMs ni archivos con derechos de autor.</strong> Cada port te pide tu propia copia legal del juego y genera sus archivos a partir de ella.</p>
+          <p>Los ports y mods son proyectos de sus propias comunidades. Aquí solo se publica la conexión con HiveShock. <a href="/legal/#juegos">Leer el aviso legal</a></p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -41,17 +44,15 @@ const ports = Object.fromEntries(
               <p class="muted small">Algunos efectos del perfil</p>
               <ul>{g.sample.map((s) => <li>{s}</li>)}</ul>
             </div>
-            {g.upstream && (
-              <a class="small upstream" href={g.upstream} target="_blank" rel="noopener">Proyecto original de {g.port}</a>
-            )}
+            <p class="small credit">{g.port} es un proyecto de su comunidad, sin relación con los dueños del juego.</p>
           </div>
           <div class="get">
-            {port ? (
+            {port && site.showPortDownloads ? (
               <DownloadPanel data={port} appName={`${g.port} con HiveShock`} />
             ) : (
               <div class="soon">
                 <h3>El perfil ya viene en HiveShock</h3>
-                <p class="muted">La descarga del {g.port.startsWith('Banjo') ? 'mod' : 'port'} con HiveShock aparecerá aquí en cuanto se publique. Mientras, pregunta en Discord por la versión de prueba.</p>
+                <p class="muted">{port ? `Pide en Discord la versión de ${g.port} con HiveShock.` : `La versión de este ${g.kind} con HiveShock se anunciará en Discord en cuanto esté lista.`}</p>
                 <a class="btn" href={site.links.discord} target="_blank" rel="noopener"><Icon name="chat" /> Preguntar en Discord</a>
               </div>
             )}
@@ -66,11 +67,13 @@ const ports = Object.fromEntries(
   .intro { padding-block: clamp(36px, 6vw, 72px); border-bottom: 1px solid var(--line); }
   .intro-inner { display: grid; gap: 18px; }
   .rom {
-    display: flex; gap: 12px; align-items: flex-start; max-width: 46rem;
+    display: flex; gap: 12px; align-items: flex-start; max-width: 52rem;
     padding: 14px 16px; border-radius: var(--r);
     background: rgb(6 20 43 / 0.55); border: 1px solid var(--line); color: #d8e2f1;
   }
   .rom :global(svg) { width: 22px; height: 22px; flex: none; color: var(--honey); margin-top: 2px; }
+  .rom > div { display: grid; gap: 8px; }
+  .rom a { color: var(--honey); }
   .list { display: grid; padding-block: 24px 80px; }
   .game {
     display: grid;
@@ -93,7 +96,7 @@ const ports = Object.fromEntries(
     background: var(--honey); color: var(--ink); border: var(--stroke);
     font-weight: 800; font-size: var(--step--1);
   }
-  .upstream { color: var(--mist); }
+  .credit { color: var(--mist); }
   .get { min-width: 0; }
   .soon {
     display: grid; gap: 12px; justify-items: start;

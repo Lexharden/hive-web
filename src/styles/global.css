@@ -177,3 +177,64 @@ p { margin: 0; }
   background: var(--honey); color: var(--ink); padding: 8px 14px; border-radius: 8px; font-weight: 700;
 }
 .skip:focus { top: 12px; }
+
+/* ---------- Easter eggs ---------- */
+.egg-toasts {
+  position: fixed; z-index: 60;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: grid; gap: 10px; justify-items: end; pointer-events: none;
+}
+.egg-toast {
+  display: grid; gap: 2px;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 12px 16px;
+  background: var(--honey); color: var(--ink);
+  border: var(--stroke); border-radius: var(--r);
+  box-shadow: 5px 5px 0 var(--ink);
+  animation: egg-in 0.35s cubic-bezier(.2, .9, .3, 1.3);
+}
+.egg-toast strong { font-family: var(--font-display); font-weight: 400; font-size: 1.1rem; }
+.egg-toast span { font-size: var(--step--1); font-weight: 600; }
+.egg-toast--out { transition: opacity 0.4s, transform 0.4s; opacity: 0; transform: translateY(8px); }
+@keyframes egg-in { from { opacity: 0; transform: translateY(14px) scale(0.95); } }
+
+.egg-bee {
+  position: fixed; left: 0; top: 0; z-index: 59; width: 40px; height: 34px; pointer-events: none;
+  animation: egg-fly var(--dur, 3s) linear forwards;
+}
+.egg-bee svg { width: 100%; height: 100%; animation: egg-buzz 0.18s ease-in-out infinite alternate; }
+.egg-bee--left svg { transform: scaleX(-1); }
+@keyframes egg-fly {
+  0% { transform: translate(var(--x0), var(--y0)); }
+  25% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .25), calc(var(--y0) + (var(--y1) - var(--y0)) * .25 - var(--wob))); }
+  50% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .5), calc(var(--y0) + (var(--y1) - var(--y0)) * .5 + var(--wob))); }
+  75% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .75), calc(var(--y0) + (var(--y1) - var(--y0)) * .75 - var(--wob))); }
+  100% { transform: translate(var(--x1), var(--y1)); }
+}
+@keyframes egg-buzz { to { translate: 0 -3px; } }
+
+.egg-shock body { animation: egg-shake 0.5s steps(2) 2; }
+.egg-shock body::after {
+  content: ''; position: fixed; inset: 0; z-index: 58; pointer-events: none;
+  background: var(--honey); mix-blend-mode: overlay;
+  animation: egg-flash 0.9s steps(3) forwards;
+}
+@keyframes egg-shake {
+  0%, 100% { transform: none; }
+  25% { transform: translate(-6px, 3px); }
+  50% { transform: translate(5px, -4px); }
+  75% { transform: translate(-3px, -2px); }
+}
+@keyframes egg-flash { 0% { opacity: .9; } 50% { opacity: .2; } 70% { opacity: .7; } 100% { opacity: 0; } }
+
+.egg-zap .brand-mark { animation: egg-zap 0.3s ease; }
+@keyframes egg-zap { 50% { transform: rotate(-12deg) scale(1.15); filter: drop-shadow(0 0 8px var(--honey)); } }
+.egg-wiggle { animation: egg-wiggle 0.4s ease; }
+@keyframes egg-wiggle { 25% { transform: rotate(-6deg); } 75% { transform: rotate(5deg); } }
+
+.egg-god .app, .egg-god .dl, .egg-god .console { box-shadow: 0 0 0 3px var(--honey), 0 0 28px rgb(252 202 47 / 0.55), var(--lift-lg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .egg-toast, .egg-zap .brand-mark, .egg-wiggle { animation: none; }
+}

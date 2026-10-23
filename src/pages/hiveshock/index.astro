@@ -18,7 +18,7 @@ const features = [
   { icon: 'heart', title: 'Follows, likes, shares y bits', text: 'TikTok y Twitch a la vez. Cada evento tiene sus reglas y sus efectos.' },
   { icon: 'target', title: 'Metas en pantalla', text: 'Barras de meta con el ícono del regalo que hay que enviar. Al llenarse, el juego reacciona.' },
   { icon: 'layers', title: 'Overlays para OBS', text: 'Contador de muertes, regalos recientes y metas, listos para capturar.' },
-  { icon: 'keys', title: 'Teclas y macros', text: 'Para juegos sin port: secuencias de teclas hacia la ventana del juego, con atajos globales.', only: 'Windows' },
+  { icon: 'keys', title: 'Teclas y macros', text: 'Para juegos sin integración: secuencias de teclas hacia la ventana del juego, con atajos globales.', only: 'Windows' },
   { icon: 'shield', title: 'Pausa de emergencia', text: 'Detén todo con un clic. Los efectos peligrosos, como borrar la partida, se arman a mano.' },
   { icon: 'refresh', title: 'Nada se repite, nada se pierde', text: 'Si TikTok o Twitch reenvían algo al reconectar, se ignora. Lo pendiente sobrevive a un cierre.' },
   { icon: 'android', title: 'Compañero en Android', text: 'El live corre en tu teléfono y el juego en el mismo aparato o en tu PC por la red local.' },
@@ -35,7 +35,7 @@ const support = [
 ---
 <Base
   title="HiveShock"
-  description="HiveShock: alternativa gratuita a Crowd Control. Los regalos y el chat de TikTok y Twitch provocan efectos dentro de Majora's Mask, Ocarina of Time, Super Mario 64 y más."
+  description="HiveShock es gratis: los regalos, el chat, los follows y los bits de TikTok y Twitch provocan efectos dentro de tus juegos en tiempo real."
   image="/img/og-hiveshock.png"
   jsonLd={softwareJsonLd(app, data)}
 >
@@ -60,7 +60,7 @@ const support = [
     <div class="wrap">
       <div class="section-head">
         <h2>Juegos con perfil incluido</h2>
-        <p>Cada perfil trae efectos y regalos de ejemplo. Los ports se descargan desde la página de juegos.</p>
+        <p>Cada perfil trae efectos y regalos de ejemplo. La lista crece con juegos de distintas consolas y de PC.</p>
       </div>
       <GameGrid />
     </div>

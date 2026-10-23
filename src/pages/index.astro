@@ -5,6 +5,7 @@ import AppCard from '../components/AppCard.astro';
 import GameGrid from '../components/GameGrid.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
+import SupportBand from '../components/SupportBand.astro';
 import { apps, site, totalEffects, games } from '../config/site';
 import { getReleases } from '../lib/releases';
 
@@ -14,7 +15,11 @@ const buzz = await getReleases(apps.hivebuzz.repo);
 const faq = [
   {
     q: '¿Cuánto cuestan?',
-    a: '<p>Nada. HiveShock y HiveBuzz son gratis, sin suscripción, sin límite de efectos y sin marcas de agua. Si quieres apoyar el proyecto, hay un Ko-fi.</p>',
+    a: '<p>Nada. HiveShock y HiveBuzz son gratis, sin suscripción, sin límite de efectos y sin marcas de agua. Las donaciones son voluntarias y no desbloquean funciones. <a href="/apoyar/">Cómo apoyar</a>.</p>',
+  },
+  {
+    q: '¿Con qué juegos funciona HiveShock?',
+    a: '<p>Con los ports y mods que integran su conexión, de distintas consolas y de PC; la lista crece con cada versión. En Windows también puede mandar teclas a casi cualquier juego, aunque no tenga integración. <a href="/juegos/">Ver juegos compatibles</a>.</p>',
   },
   {
     q: '¿Funcionan con TikTok y con Twitch a la vez?',
@@ -22,7 +27,7 @@ const faq = [
   },
   {
     q: '¿Necesito el juego original?',
-    a: '<p>Sí. Los ports no traen contenido con derechos de autor: al abrirlos por primera vez te piden tu propia copia legal del juego y generan sus archivos a partir de ella.</p>',
+    a: '<p>Sí. No proporcionamos juegos, ROMs ni archivos con derechos de autor, y no ayudamos a conseguirlos. Cada port te pide tu propia copia legal del juego la primera vez que lo abres.</p>',
   },
   {
     q: 'Windows dice que la app no es reconocida. ¿Es seguro?',
@@ -44,7 +49,7 @@ const jsonLd = {
   name: 'Hive',
   url: site.url,
   founder: site.owner,
-  sameAs: [site.links.youtube, site.links.instagram, site.links.github],
+  sameAs: [site.links.youtube, site.links.instagram],
 };
 ---
 <Base jsonLd={jsonLd}>
@@ -107,7 +112,7 @@ const jsonLd = {
     <div class="wrap">
       <div class="section-head">
         <h2>Juegos compatibles</h2>
-        <p>Cada juego trae un perfil con sus efectos y regalos de ejemplo. Los cambias a tu gusto o creas el tuyo.</p>
+        <p>Cada juego trae un perfil con sus efectos y regalos de ejemplo. La lista crece con ports y mods de distintas consolas y de PC.</p>
       </div>
       <GameGrid />
     </div>
@@ -147,6 +152,8 @@ const jsonLd = {
       </div>
     </div>
   </section>
+
+  <SupportBand />
 
   <section class="section">
     <div class="wrap">

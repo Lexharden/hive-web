@@ -15,11 +15,11 @@ export const GET: APIRoute = async () => {
       const d = await getReleases(r.repo);
       const rel = d.latest;
       return {
-        ...r,
+        id: r.id,
+        name: r.name,
         version: rel?.version ?? null,
         publishedAt: rel?.publishedAt ?? null,
-        url: rel?.url ?? `${d.url}/releases`,
-        prerelease: d.latestPre ? { version: d.latestPre.version, url: d.latestPre.url } : null,
+        prerelease: d.latestPre ? { version: d.latestPre.version } : null,
         files: rel ? visibleAssets(rel.assets).map((a) => ({ name: a.name, url: a.url, size: a.size, platform: a.platform, arch: a.arch })) : [],
       };
     }),
