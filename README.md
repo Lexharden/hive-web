@@ -55,7 +55,7 @@ npm run build            # genera dist/
 GITHUB_TOKEN=... npm run snapshot   # actualiza el snapshot de respaldo con los releases reales
 ```
 
-Requiere Node 22.12 o superior.
+Requiere Node 22.23.4 o superior (ver `.nvmrc`).
 
 ## Dónde se cambia cada cosa
 
@@ -67,7 +67,8 @@ Requiere Node 22.12 o superior.
 | **Añadir una app nueva** | Añádela a `apps`, copia `src/pages/hivebuzz/` como plantilla y añádela al menú en `Header.astro` |
 | Colores y tipografía | `src/styles/global.css` (tokens al inicio) |
 | Cómo se nombran los archivos de descarga | `src/lib/assets.ts` |
-| Patrocinadores | `src/data/support.json` → `sponsors` (logos en `public/img/sponsors/`) |
+| Patrocinadores | `src/data/support.json` → `sponsors` (logos en `public/img/sponsors/`). Ocultos mientras `showSponsors` sea `false` en `src/config/site.ts` |
+| Créditos | `src/data/credits.json` → `people` (nombre, rol, nota y 0 o más cuentas). Página `/creditos/` |
 | Logo e insignias de nivel | `src/lib/brand.js`; `npm run brand` regenera los SVG de `public/brand/` |
 | Qué hace el apoyo (Desarrollo, Pruebas…) | `src/data/support.json` → `work` |
 | Quitar o renombrar a un donador | `src/data/donors.json` (lo demás lo llena el bot) |

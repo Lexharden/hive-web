@@ -19,6 +19,8 @@ const stats = [
   { n: '1', label: 'persona detrás de todo' },
 ];
 
+const tiers = support.tiers.filter((t) => site.showSponsors || t.id !== 'reina');
+
 const faq = [
   {
     q: '¿Donar desbloquea algo en las apps?',
@@ -36,10 +38,12 @@ const faq = [
     q: '¿Qué método me conviene?',
     a: '<p>Desde México, la transferencia SPEI no cobra comisión y el apoyo llega completo. Desde otro país, PayPal o Ko-fi. Ko-fi también permite apoyar cada mes.</p>',
   },
-  {
-    q: 'Quiero patrocinar como marca o equipo',
-    a: `<p>Escríbeme en <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> y armamos un patrocinio a la medida: logo en la web, mención en las versiones o colaboraciones en directo.</p>`,
-  },
+  ...(site.showSponsors
+    ? [{
+        q: 'Quiero patrocinar como marca o equipo',
+        a: `<p>Escríbeme en <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> y armamos un patrocinio a la medida: logo en la web, mención en las versiones o colaboraciones en directo.</p>`,
+      }]
+    : []),
   {
     q: '¿Hay otras formas de ayudar?',
     a: '<p>Sí: reporta errores, prueba las versiones de prueba en tu plataforma, comparte tus perfiles de regalos y recomienda las apps a otros streamers. Todo eso ayuda tanto como una donación.</p>',
@@ -53,11 +57,11 @@ const faq = [
         <h1>Apoya a la colmena</h1>
         <p class="lead">
           HiveShock y HiveBuzz son gratis y lo seguirán siendo. No tienen anuncios, versión de pago ni funciones bloqueadas.
-          Lo que cuesta mantenerlas lo cubren las personas y marcas que deciden apoyar.
+          Lo que cuesta mantenerlas lo cubren las personas{site.showSponsors ? ' y marcas' : ''} que deciden apoyar.
         </p>
         <div class="btn-row">
           <a class="btn btn--ember btn--big" href="#donar"><Icon name="heart" /> Elegir cómo donar</a>
-          <a class="btn btn--big" href="#patrocinar">Patrocinar como marca</a>
+          {site.showSponsors && <a class="btn btn--big" href="#patrocinar">Patrocinar como marca</a>}
         </div>
       </div>
       <figure class="jar" aria-hidden="true">
@@ -120,7 +124,7 @@ const faq = [
         <p>Una forma de dar las gracias según cómo apoyes.</p>
       </div>
       <ul class="tiers">
-        {support.tiers.map((t) => (
+        {tiers.map((t) => (
           <li class={`tier tier--${t.id}${t.featured ? ' tier--featured' : ''}`}>
             <div class="tier-head">
               <TierBadge tier={t.id} size={96} />
@@ -143,8 +147,9 @@ const faq = [
     </div>
   </section>
 
-  <section class="section section--band" id="patrocinar">
+  <section class="section section--band" id={site.showSponsors ? 'patrocinar' : undefined}>
     <div class="wrap">
+      {site.showSponsors && (<>
       <div class="section-head">
         <h2>Patrocinadores</h2>
         <p>Marcas, equipos y creadores que hacen posible el proyecto.</p>
@@ -167,6 +172,7 @@ const faq = [
               </li>
             ))}
       </ul>
+      </>)}
 
       <div class="section-head donors-head" id="muro">
         <h2>Muro de donadores</h2>
@@ -217,7 +223,7 @@ const faq = [
     background: var(--honey); color: var(--ink); margin-bottom: 4px;
   }
   .area-ic :global(svg) { width: 22px; height: 22px; }
-  .tiers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .tiers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: stretch; }
   .tier {
     display: grid; grid-template-rows: auto 1fr auto; gap: 18px;
     padding: 24px; border-radius: var(--r-lg);

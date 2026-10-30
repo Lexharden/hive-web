@@ -1,0 +1,76 @@
+---
+// Créditos a personas: nombre, aportación y, si las tienen, sus cuentas (0 o n).
+import { type Credit } from '../config/site';
+import { platforms, cleanHandle, displayHandle } from '../lib/socials.js';
+
+interface Props { people: Credit[] }
+const { people } = Astro.props;
+
+const safeUrl = (u: string) => {
+  try { const x = new URL(u); return x.protocol === 'https:' ? x.href : null; } catch { return null; }
+};
+
+const cards = people.map((p) => {
+  const accounts = Object.entries(p.links ?? {}).flatMap(([net, raw]) => {
+    const handle = cleanHandle(net, raw);
+    return handle ? [{ label: platforms[net as keyof typeof platforms].label, text: displayHandle(net, handle), href: platforms[net as keyof typeof platforms].url(handle) }] : [];
+  });
+  const extra = (p.extra ?? []).flatMap((e) => {
+    const href = safeUrl(e.url);
+    return href && e.label ? [{ label: e.label, text: new URL(href).hostname.replace(/^www\./, ''), href }] : [];
+  });
+  return { ...p, accounts: [...accounts, ...extra] };
+});
+---
+<ul class="credits">
+  {cards.map((c) => (
+    <li class="credit">
+      <span class="initial" aria-hidden="true">{c.name.trim().charAt(0).toUpperCase()}</span>
+      <div class="who">
+        <p class="name">{c.name}</p>
+        {c.role && <p class="role">{c.role}</p>}
+        {c.note && <p class="note">{c.note}</p>}
+        {c.accounts.length > 0 && (
+          <ul class="links" aria-label={`Cuentas de ${c.name}`}>
+            {c.accounts.map((a) => (
+              <li>
+                <a href={a.href} target="_blank" rel="noopener nofollow ugc">
+                  <span class="net">{a.label}</span>
+                  <span class="handle">{a.text}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .credits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .credit {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start;
+    padding: 16px; border-radius: var(--r);
+    background: rgb(22 67 125 / 0.45); border: 1px solid var(--line); border-top: 3px solid var(--honey);
+  }
+  .initial {
+    width: 48px; height: 52px; display: grid; place-items: center;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--honey); color: var(--ink); font-family: var(--font-display); font-size: 1.2rem;
+  }
+  .who { display: grid; gap: 2px; min-width: 0; }
+  .name { font-weight: 800; font-size: var(--step-1); line-height: 1.25; overflow-wrap: anywhere; }
+  .role { color: var(--honey); font-size: var(--step--1); font-weight: 700; }
+  .note { color: #d8e2f1; font-size: var(--step--1); margin-top: 4px; }
+  .links { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .links a {
+    display: inline-flex; gap: 6px; align-items: baseline;
+    padding: 3px 10px; border-radius: 999px;
+    background: rgb(6 20 43 / 0.55); border: 1px solid var(--line);
+    color: var(--paper); text-decoration: none; font-size: 0.82rem;
+  }
+  .links a:hover { border-color: var(--honey); }
+  .net { color: var(--mist); font-weight: 700; }
+  .handle { font-weight: 700; overflow-wrap: anywhere; }
+</style>

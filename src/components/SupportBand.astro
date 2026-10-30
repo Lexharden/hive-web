@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { sponsors } from '../config/site';
+import { site, sponsors } from '../config/site';
 ---
 <section class="sband" aria-labelledby="sband-t">
   <div class="wrap sband-inner">
@@ -12,9 +12,10 @@ import { sponsors } from '../config/site';
       </p>
       <div class="btn-row">
         <a class="btn btn--ember btn--big" href="/apoyar/#donar"><Icon name="heart" /> Donar</a>
-        <a class="btn btn--ghost" href="/apoyar/#patrocinar">Patrocinios y donadores</a>
+        <a class="btn btn--ghost" href={site.showSponsors ? '/apoyar/#patrocinar' : '/apoyar/#muro'}>{site.showSponsors ? 'Patrocinios y donadores' : 'Muro de donadores'}</a>
       </div>
     </div>
+    {site.showSponsors && (
     <ul class="slots" aria-label="Patrocinadores">
       {sponsors.length > 0
         ? sponsors.slice(0, 4).map((s) => (
@@ -33,6 +34,7 @@ import { sponsors } from '../config/site';
             </li>
           ))}
     </ul>
+    )}
   </div>
 </section>
 
@@ -62,5 +64,6 @@ import { sponsors } from '../config/site';
   }
   .slot--on a { border-style: solid; background: var(--navy); }
   .slot--on img { max-height: 70%; object-fit: contain; }
+  .sband-inner:not(:has(.slots)) { grid-template-columns: 1fr; }
   @media (max-width: 900px) { .sband-inner { grid-template-columns: 1fr; } }
 </style>

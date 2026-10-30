@@ -1,5 +1,5 @@
 ---
-import { site, games } from '../config/site';
+import { site, games, credits } from '../config/site';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -26,7 +26,8 @@ const year = new Date().getFullYear();
       <a href={site.links.discord} target="_blank" rel="noopener">Discord</a>
       <a href={site.links.youtube} target="_blank" rel="noopener">YouTube</a>
       <a href={site.links.instagram} target="_blank" rel="noopener">Instagram</a>
-      <a href="/apoyar/">Patrocinadores</a>
+      {site.showSponsors && <a href="/apoyar/#patrocinar">Patrocinadores</a>}
+      {credits.length > 0 && <a href="/creditos/">Créditos</a>}
     </nav>
   </div>
   <div class="wrap legal">

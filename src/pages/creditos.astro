@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import CreditList from '../components/CreditList.astro';
+import { site, credits } from '../config/site';
+---
+<Base title="Créditos" description="Las personas que han aportado a HiveShock, HiveBuzz y los perfiles de los juegos.">
+  <section class="hero honeycomb">
+    <div class="wrap hero-inner">
+      <h1>Créditos</h1>
+      <p class="lead">
+        HiveShock y HiveBuzz se hacen con ayuda de la comunidad: pruebas, ideas, arte, traducciones y mucho más.
+        Gracias a cada persona de esta lista.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      {credits.length > 0 ? (
+        <CreditList people={credits} />
+      ) : (
+        <p class="muted">Pronto aparecerán aquí las personas que han aportado al proyecto.</p>
+      )}
+      <p class="muted small after">
+        ¿Aportaste y no apareces? Escríbeme por <a href={site.links.discord} target="_blank" rel="noopener">Discord</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(40px, 6vw, 80px); border-bottom: 1px solid var(--line); }
+  .hero-inner { display: grid; gap: 18px; justify-items: start; }
+  .after { margin-top: 28px; }
+</style>

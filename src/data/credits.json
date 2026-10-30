@@ -1,0 +1,88 @@
+{
+  "_ayuda": "Créditos a personas. Se muestran en el orden en que las escribas. 'role' y 'note' son opcionales. 'links' admite cero o más redes (tiktok, twitch, youtube, kick, instagram, x) con el usuario o el enlace al perfil. 'extra' admite cualquier otro sitio (https) con su etiqueta. Puedes dejar una persona sin enlaces.",
+  "_ejemplo": {
+    "name": "Nombre",
+    "role": "Pruebas y traducción",
+    "note": "Texto corto opcional.",
+    "links": {
+      "tiktok": "@usuario",
+      "twitch": "https://www.twitch.tv/usuario"
+    },
+    "extra": [
+      {
+        "label": "Sitio web",
+        "url": "https://ejemplo.com"
+      }
+    ]
+  },
+  "people": [
+    {
+      "name": "ralbat_",
+      "links": {
+        "instagram": "https://www.instagram.com/ralbat_/",
+        "tiktok": "https://www.tiktok.com/@ralbat_",
+        "twitch": "https://www.twitch.tv/ralbat_"
+      }
+    },
+    {
+      "name": "El_Pinchiviejo",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@el_pinchiviejo",
+        "twitch": "https://www.twitch.tv/pinchiviejo"
+      }
+    },
+    {
+      "name": "INSOMNIA",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@insomnia0311"
+      }
+    },
+    {
+      "name": "TheMaximusGT",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@themaxgt",
+        "twitch":"https://www.twitch.tv/themaximusgt"
+      }
+    },
+    {
+      "name": "XimezzleZero",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@ximcamgri",
+        "twitch":"https://www.twitch.tv/ximezzlezero"
+      }
+    },
+    {
+      "name": "Kahrilys",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@kahrilys.gameplays"
+      }
+    },
+    {
+      "name": "Pupperina",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@pupperinachan",
+        "instagram":"https://www.instagram.com/pupperinaa"
+      }
+    },
+    {
+      "name": "Guz",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@juegaotravez",
+        "instagram":"https://www.instagram.com/juegaotravez"
+      }
+    },
+    {
+      "name": "Esparta Games",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@espartagamess"
+      }
+    },
+    {
+      "name": "Noé",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@noetelpes816"
+      }
+    }
+    
+  ]
+}
