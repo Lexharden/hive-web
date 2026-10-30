@@ -1,3 +1,5 @@
+import supportData from '../data/support.json';
+import donorsData from '../data/donors.json';
 // Configuración central del sitio. Todo lo que no viene de los releases vive aquí:
 // enlaces, textos de cada app, juegos compatibles y la forma de apoyar el proyecto.
 
@@ -14,7 +16,7 @@ export const site = {
     instagram: 'https://www.instagram.com/yaafel/',
   },
   /** Fecha de la última revisión del aviso legal. Cámbiala cuando edites /legal/. */
-  legalUpdated: '2026-10-23',
+  legalUpdated: '2026-10-30',
   /** Mostrar descargas de los ports en la web. En false, solo se muestra cómo activarlos. */
   showPortDownloads: true,
 };
@@ -64,7 +66,9 @@ export interface Game {
   id: string;
   title: string;
   port: string;
-  effects: number; // efectos del perfil incluido en HiveShock
+  /** Carpeta del perfil en HiveShock (config/profiles/<perfil>). Con ella el número de efectos se lee solo. */
+  profile?: string;
+  effects: number; // respaldo si no se puede leer el perfil
   /** Repo del port con HiveShock integrado; sus releases alimentan las descargas (no se muestra). */
   repo?: string;
   kind: 'port' | 'mod';
@@ -79,6 +83,7 @@ export const games: Game[] = [
     id: 'majoras-mask',
     title: "Majora's Mask",
     port: '2 Ship 2 Harkinian',
+    profile: 'majora-mask',
     effects: 67,
     repo: 'Lexharden/2ship2harkinian-HiveShock',
     kind: 'port',
@@ -89,16 +94,18 @@ export const games: Game[] = [
     id: 'ocarina-of-time',
     title: 'Ocarina of Time',
     port: 'Ship of Harkinian',
-    effects: 59,
+    profile: 'ocarina-of-time',
+    effects: 74,
     repo: 'Lexharden/Shipwright-HiveShock',
     kind: 'port',
     howTo: 'Entra en una partida y activa HiveShock en Enhancements.',
-    sample: ['Dark Link', '+10 rupias', 'Cura 1 corazón', 'Instakill'],
+    sample: ['Dark Link', 'Ganon bestia', 'Flare Dancer', '+10 rupias'],
   },
   {
     id: 'twilight-princess',
     title: 'Twilight Princess',
     port: 'Dusklight',
+    profile: 'dusklight',
     effects: 69,
     kind: 'port',
     howTo: 'Entra en una partida y activa el puente en el menú Mods.',
@@ -108,6 +115,7 @@ export const games: Game[] = [
     id: 'super-mario-64',
     title: 'Super Mario 64',
     port: 'Ghostship',
+    profile: 'super-mario-64',
     effects: 36,
     kind: 'port',
     howTo: 'Abre Network › HiveShock y activa Enable HiveShock.',
@@ -117,76 +125,51 @@ export const games: Game[] = [
     id: 'banjo-kazooie',
     title: 'Banjo-Kazooie',
     port: 'Banjo-Kazooie: Recompiled',
-    effects: 22,
+    profile: 'banjo-kazooie',
+    effects: 32,
     kind: 'mod',
     howTo: 'Instala el mod HiveShock y actívalo en el menú de mods.',
-    sample: ['10 huevos azules', 'Vida extra', 'Quita 1 panal', 'Aparece Bigbutt'],
+    sample: ['Snippet mutante', 'Salto gigante', 'Cámara lenta', 'Emboscada'],
   },
 ];
 
 export const totalEffects = games.reduce((n, g) => n + g.effects, 0);
 
 // ---------- Apoyo al proyecto ----------
+// Lo que se edita a mano vive en src/data/support.json; los donadores, en src/data/donors.json.
 
 export interface SupportGoal {
   title: string;
   text: string;
-  /** Opcional: si pones ambos números, se muestra una barra de progreso. */
-  raised?: number;
-  target?: number;
+  target?: number; // MXN; solo se usa con trackTotals
 }
+export interface SpeiAccount { bank: string; clabe: string }
+export interface Supporter { name: string; url?: string; logo?: string; since?: string }
 
-export const support = {
-  /** Botón principal de donación. Puedes añadir más métodos abajo. */
-  primary: { label: 'Apoyar en Ko-fi', href: 'https://ko-fi.com/yafel' },
-  methods: [
-    { label: 'Ko-fi', text: 'Una vez o cada mes, con tarjeta o PayPal.', href: 'https://ko-fi.com/yafel' },
-  ],
-  goals: [
-    {
-      title: 'Firma de código para Windows',
-      text: 'Un certificado quita el aviso de «aplicación no reconocida» al instalar.',
-    },
-    {
-      title: 'Firma y notarización en macOS',
-      text: 'La cuenta de desarrollador de Apple permite abrir las apps sin pasos extra.',
-    },
-    {
-      title: 'Equipo para pruebas',
-      text: 'Computadoras, consolas y teléfonos para probar cada port y la app de Android.',
-    },
-    {
-      title: 'Tiempo para nuevos ports',
-      text: 'Cada juego nuevo lleva semanas de integración, efectos y pruebas en directo.',
-    },
-  ] as SupportGoal[],
-  tiers: [
-    {
-      name: 'Abeja',
-      when: 'Una donación, de cualquier monto',
-      perks: ['Tu nombre en el muro de donadores', 'Rol de donador en Discord'],
-    },
-    {
-      name: 'Obrera',
-      when: 'Apoyo mensual',
-      perks: ['Todo lo de Abeja', 'Acceso anticipado a versiones de prueba', 'Canal privado para proponer efectos'],
-      featured: true,
-    },
-    {
-      name: 'Reina',
-      when: 'Patrocinio de marca, equipo o creador',
-      perks: ['Tu logo en esta página y en la portada', 'Mención en las notas de cada versión', 'Contacto directo para colaboraciones'],
-    },
-  ],
+export const support = supportData as unknown as {
+  trackTotals: boolean;
+  usdToMxn: number;
+  methods: {
+    paypal: { label: string; href: string; text: string };
+    kofi: { label: string; href: string; text: string };
+    spei: { label: string; text: string; holder: string; concept: string; accounts: SpeiAccount[] };
+  };
+  goals: SupportGoal[];
+  tiers: Array<{ name: string; when: string; perks: string[]; featured?: boolean }>;
+  sponsors: Supporter[];
 };
 
-export interface Supporter {
-  name: string;
-  url?: string;
-  logo?: string; // ruta en /public para patrocinadores
-  note?: string;
-}
+export const sponsors: Supporter[] = support.sponsors ?? [];
+export const donors: Supporter[] = (donorsData.donors as Supporter[]) ?? [];
+export const raisedMXN: number = support.trackTotals ? Number(donorsData.raisedMXN) || 0 : 0;
 
-/** Edita estas listas para mostrar a quienes apoyan. Vacías, la página muestra lugares disponibles. */
-export const sponsors: Supporter[] = [];
-export const donors: Supporter[] = [];
+/** Progreso de cada meta, llenándolas en orden con lo recaudado. null = sin barra. */
+export function goalProgress(): Array<number | null> {
+  let left = raisedMXN;
+  return support.goals.map((g) => {
+    if (!support.trackTotals || !g.target) return null;
+    const used = Math.min(left, g.target);
+    left -= used;
+    return Math.round((used / g.target) * 100);
+  });
+}

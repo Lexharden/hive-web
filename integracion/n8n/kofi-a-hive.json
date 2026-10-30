@@ -1,0 +1,121 @@
+{
+  "name": "Ko-fi → Hive (muro de donadores)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "kofi-hive",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "43b270fc-8f9b-4972-a19e-efe17f4d55ac",
+      "name": "Ko-fi webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        300
+      ],
+      "webhookId": "7936aadd-abed-4648-8061-09d8e3c120cd"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ko-fi manda el contenido como texto JSON en el campo «data».\n// 1) Pega aquí el Verification Token de Ko-fi (ko-fi.com → Settings → API → Webhooks → Advanced).\nconst KOFI_TOKEN = 'PEGA_AQUI_EL_TOKEN_DE_KOFI';\n\nconst raw = $json.body?.data;\nlet d;\ntry {\n  d = typeof raw === 'string' ? JSON.parse(raw) : raw;\n} catch (e) {\n  return []; // no es de Ko-fi\n}\nif (!d || d.verification_token !== KOFI_TOKEN) return []; // aviso falso: se ignora\nif (!['Donation', 'Subscription'].includes(d.type)) return []; // ventas de la tienda, comisiones, etc.\n\n// Solo se envía lo necesario. El correo y el mensaje NO salen de n8n.\nreturn [{\n  json: {\n    event_type: 'donation',\n    client_payload: {\n      id: d.kofi_transaction_id || d.message_id,\n      name: d.from_name || '',\n      method: 'kofi',\n      amount: d.amount,\n      currency: d.currency,\n      public: d.is_public === true,\n      source: d.type === 'Subscription' ? 'kofi-mensual' : 'kofi',\n    },\n  },\n}];\n"
+      },
+      "id": "554afe4e-4a94-42e9-b21e-a35cde0395c3",
+      "name": "Validar y preparar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/Lexharden/hive-web/dispatches",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2022-11-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ event_type: $json.event_type, client_payload: $json.client_payload }) }}",
+        "options": {}
+      },
+      "id": "62cbd56e-826b-4b94-98b9-41efbdf418b6",
+      "name": "Avisar a hive-web",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "PEGA_AQUI_EL_WEBHOOK_DEL_CANAL_PRIVADO_DE_DISCORD",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: `Nueva donación por Ko-fi de ${$json.client_payload.public ? $json.client_payload.name : 'alguien (privada)'}: ${$json.client_payload.amount} ${$json.client_payload.currency}` }) }}",
+        "options": {}
+      },
+      "id": "ea07825b-e490-41ca-ba57-5db064adb722",
+      "name": "Aviso en Discord (opcional)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        400
+      ],
+      "disabled": true,
+      "notes": "Actívalo cuando pegues la URL de un webhook de un canal PRIVADO de administración."
+    }
+  ],
+  "connections": {
+    "Ko-fi webhook": {
+      "main": [
+        [
+          {
+            "node": "Validar y preparar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar y preparar": {
+      "main": [
+        [
+          {
+            "node": "Avisar a hive-web",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aviso en Discord (opcional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

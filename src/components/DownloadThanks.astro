@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
-import { site, support } from '../config/site';
+import DonateMethods from './DonateMethods.astro';
+import { site } from '../config/site';
 ---
 <dialog class="thanks" data-thanks aria-labelledby="thanks-t">
   <form method="dialog" class="close-row">
@@ -13,10 +14,8 @@ import { site, support } from '../config/site';
       Es gratis, sin anuncios ni límites, y así va a seguir. Si te sirve en tus lives, una donación paga los certificados
       de firma, el equipo de pruebas y el tiempo para llevarla a más juegos.
     </p>
-    <div class="btn-row">
-      <a class="btn btn--ember btn--big" href={support.primary.href} target="_blank" rel="noopener"><Icon name="heart" /> {support.primary.label}</a>
-      <a class="btn" href="/apoyar/">Otras formas de apoyar</a>
-    </div>
+    <DonateMethods variant="compact" idPrefix="dlg" />
+    <p class="small muted">¿Quieres salir en el <a href="/apoyar/#muro">muro de donadores</a>? Al donar por PayPal o SPEI, mándame tu nombre por Discord.</p>
     <div class="next">
       <p class="next-title">Mientras se descarga</p>
       <ul>

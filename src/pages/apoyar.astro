@@ -2,7 +2,10 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
-import { site, support, sponsors, donors } from '../config/site';
+import DonateMethods from '../components/DonateMethods.astro';
+import { site, support, sponsors, donors, goalProgress } from '../config/site';
+
+const progress = goalProgress();
 
 const faq = [
   {
@@ -11,11 +14,19 @@ const faq = [
   },
   {
     q: '¿Cómo aparezco en el muro de donadores?',
-    a: '<p>Deja en el mensaje de tu donación el nombre que quieres mostrar. Si prefieres no aparecer, escribe «anónimo» y no lo publicamos.</p>',
+    a: `<p><strong>Ko-fi:</strong> marca tu donación como pública y apareces sola en unos minutos.</p><p><strong>PayPal o SPEI:</strong> mándame por <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> el nombre que quieres mostrar. Si no me dices nada, tu donación queda privada.</p>`,
+  },
+  {
+    q: '¿Se publica cuánto doné?',
+    a: '<p>No. En la web solo aparece el nombre que elijas. Los montos nunca se muestran por persona.</p>',
+  },
+  {
+    q: '¿Qué método me conviene?',
+    a: '<p>Desde México, la transferencia SPEI no cobra comisión y el apoyo llega completo. Desde otro país, PayPal o Ko-fi. Ko-fi también permite apoyar cada mes.</p>',
   },
   {
     q: 'Quiero patrocinar como marca o equipo',
-    a: `<p>Escríbenos en <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> y armamos un patrocinio a la medida: logo en la web, mención en las versiones o colaboraciones en directo.</p>`,
+    a: `<p>Escríbeme en <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> y armamos un patrocinio a la medida: logo en la web, mención en las versiones o colaboraciones en directo.</p>`,
   },
   {
     q: '¿Hay otras formas de ayudar?',
@@ -23,7 +34,7 @@ const faq = [
   },
 ];
 ---
-<Base title="Apoya el proyecto" description="Apoya HiveShock y HiveBuzz con una donación o un patrocinio. Las apps son y seguirán siendo gratis.">
+<Base title="Apoya el proyecto" description="Apoya HiveShock y HiveBuzz por PayPal, Ko-fi o transferencia SPEI. Las apps son y seguirán siendo gratis.">
   <section class="hero honeycomb">
     <div class="wrap hero-inner">
       <div class="hero-copy">
@@ -33,7 +44,7 @@ const faq = [
           Lo que cuesta mantenerlas lo cubren las personas y marcas que deciden apoyar.
         </p>
         <div class="btn-row">
-          <a class="btn btn--ember btn--big" href={support.primary.href} target="_blank" rel="noopener"><Icon name="heart" /> {support.primary.label}</a>
+          <a class="btn btn--ember btn--big" href="#donar"><Icon name="heart" /> Elegir cómo donar</a>
           <a class="btn btn--big" href="#patrocinar">Patrocinar como marca</a>
         </div>
       </div>
@@ -52,33 +63,50 @@ const faq = [
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="donar">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Cómo donar</h2>
+        <p>Cualquier monto ayuda. Elige el método que te acomode.</p>
+      </div>
+      <DonateMethods variant="full" idPrefix="page" />
+      <p class="muted small after">
+        Para aparecer en el muro con PayPal o SPEI, mándame tu nombre por <a href={site.links.discord} target="_blank" rel="noopener">Discord</a>.
+        Las donaciones son voluntarias y no son la compra de un producto. <a href="/legal/#donaciones">Aviso legal</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--band">
     <div class="wrap">
       <div class="section-head">
         <h2>A dónde va tu apoyo</h2>
         <p>Gastos reales que hacen las apps más fáciles de instalar y llevan HiveShock a más juegos.</p>
       </div>
       <ul class="goals">
-        {support.goals.map((g) => (
+        {support.goals.map((g, i) => (
           <li>
             <h3>{g.title}</h3>
             <p>{g.text}</p>
-            {g.raised != null && g.target ? (
-              <div class="bar" role="progressbar" aria-valuemin={0} aria-valuemax={g.target} aria-valuenow={g.raised} aria-label={g.title}>
-                <span style={`width:${Math.min(100, (g.raised / g.target) * 100)}%`}></span>
+            {progress[i] != null && (
+              <div class="goal-bar">
+                <div class="bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress[i]!} aria-label={g.title}>
+                  <span style={`width:${progress[i]}%`}></span>
+                </div>
+                <span class="pct">{progress[i] === 100 ? 'Logrado' : `${progress[i]}%`}</span>
               </div>
-            ) : null}
+            )}
           </li>
         ))}
       </ul>
     </div>
   </section>
 
-  <section class="section section--band" id="niveles">
+  <section class="section" id="niveles">
     <div class="wrap">
       <div class="section-head">
-        <h2>Formas de apoyar</h2>
-        <p>Cualquier monto cuenta. Elige la que te acomode.</p>
+        <h2>Niveles de la colmena</h2>
+        <p>Una forma de dar las gracias según cómo apoyes.</p>
       </div>
       <ul class="tiers">
         {support.tiers.map((t) => (
@@ -93,10 +121,10 @@ const faq = [
             </ul>
             {t.name === 'Reina' ? (
               <a class="btn" href={site.links.discord} target="_blank" rel="noopener">Escribir para patrocinar</a>
+            ) : t.featured ? (
+              <a class="btn btn--ember" href={support.methods.kofi.href} target="_blank" rel="noopener">Apoyar cada mes en Ko-fi</a>
             ) : (
-              <a class={t.featured ? 'btn btn--ember' : 'btn btn--honey'} href={support.primary.href} target="_blank" rel="noopener">
-                {t.featured ? 'Apoyar cada mes' : 'Donar una vez'}
-              </a>
+              <a class="btn btn--honey" href="#donar">Donar una vez</a>
             )}
           </li>
         ))}
@@ -104,7 +132,7 @@ const faq = [
     </div>
   </section>
 
-  <section class="section" id="patrocinar">
+  <section class="section section--band" id="patrocinar">
     <div class="wrap">
       <div class="section-head">
         <h2>Patrocinadores</h2>
@@ -129,32 +157,29 @@ const faq = [
             ))}
       </ul>
 
-      <div class="section-head donors-head">
+      <div class="section-head donors-head" id="muro">
         <h2>Muro de donadores</h2>
         <p>Gracias a cada persona que puso su granito de miel.</p>
       </div>
       {donors.length > 0 ? (
         <ul class="donors">
-          {donors.map((d) => <li title={d.note}>{d.name}</li>)}
+          {donors.map((d) => <li>{d.name}</li>)}
         </ul>
       ) : (
         <div class="donors-empty">
-          <p>El muro se llena con cada donación. Deja tu nombre en el mensaje y aparecerás aquí.</p>
-          <a class="btn btn--honey" href={support.primary.href} target="_blank" rel="noopener">Ser de los primeros</a>
+          <p>El muro se llena con cada donación pública. Dona y avísame tu nombre para aparecer aquí.</p>
+          <a class="btn btn--honey" href="#donar">Ser de los primeros</a>
         </div>
       )}
     </div>
   </section>
 
-  <section class="section section--band">
+  <section class="section">
     <div class="wrap">
       <div class="section-head">
         <h2>Preguntas sobre el apoyo</h2>
       </div>
       <Faq items={faq} />
-      <p class="muted small fine">
-        Las donaciones son voluntarias y no son la compra de un producto. Consulta el <a href="/legal/#donaciones">aviso legal</a>.
-      </p>
     </div>
   </section>
 </Base>
@@ -164,12 +189,16 @@ const faq = [
   .hero-inner { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
   .hero-copy { display: grid; gap: 22px; justify-items: start; }
   .jar { margin: 0; justify-self: center; width: min(260px, 70vw); filter: drop-shadow(8px 8px 0 var(--ink)); }
+  #donar, #muro, #patrocinar, #niveles { scroll-margin-top: 80px; }
+  .after { margin-top: 22px; max-width: 60rem; }
   .goals { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
   .goals li { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 3px solid var(--ember); }
   .goals h3 { font-family: var(--font-body); font-weight: 800; font-size: var(--step-1); }
   .goals p { color: var(--mist); }
+  .goal-bar { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin-top: 4px; }
   .bar { height: 10px; border-radius: 999px; background: rgb(6 20 43 / 0.6); overflow: hidden; border: 1px solid var(--line); }
   .bar span { display: block; height: 100%; background: var(--honey); }
+  .pct { font-weight: 800; font-size: var(--step--1); color: var(--honey); font-variant-numeric: tabular-nums; }
   .tiers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
   .tier {
     display: grid; grid-template-rows: auto 1fr auto; gap: 18px;
@@ -202,7 +231,6 @@ const faq = [
   .donors { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .donors li { padding: 6px 14px; border-radius: 999px; background: var(--honey); color: var(--ink); border: var(--stroke); font-weight: 800; }
   .donors-empty { display: grid; gap: 14px; justify-items: start; padding: 22px; border: 1px dashed rgb(167 187 217 / 0.35); border-radius: var(--r); color: #d8e2f1; }
-  .fine { margin-top: 24px; }
   @media (max-width: 960px) {
     .goals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .tiers { grid-template-columns: 1fr; }

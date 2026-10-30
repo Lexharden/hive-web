@@ -1,0 +1,6 @@
+{
+  "_ayuda": "Lo escribe el workflow 'Donación' (scripts/add-donation.mjs). Puedes editarlo a mano para quitar o renombrar a alguien. Nunca se guardan montos por persona, correos ni mensajes.",
+  "donors": [],
+  "raisedMXN": 0,
+  "processed": []
+}

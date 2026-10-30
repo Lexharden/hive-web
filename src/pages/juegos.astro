@@ -2,9 +2,12 @@
 import Base from '../layouts/Base.astro';
 import DownloadPanel from '../components/DownloadPanel.astro';
 import Icon from '../components/Icon.astro';
-import { games, totalEffects, site } from '../config/site';
+import { site } from '../config/site';
+import { gamesWithEffects } from '../lib/effects';
 import { getReleases } from '../lib/releases';
 
+const games = await gamesWithEffects();
+const totalEffects = games.reduce((n, g) => n + g.effects, 0);
 const ports = Object.fromEntries(
   await Promise.all(games.filter((g) => g.repo).map(async (g) => [g.id, await getReleases(g.repo!)])),
 );

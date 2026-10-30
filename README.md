@@ -67,8 +67,10 @@ Requiere Node 22.12 o superior.
 | **Añadir una app nueva** | Añádela a `apps`, copia `src/pages/hivebuzz/` como plantilla y añádela al menú en `Header.astro` |
 | Colores y tipografía | `src/styles/global.css` (tokens al inicio) |
 | Cómo se nombran los archivos de descarga | `src/lib/assets.ts` |
-| Patrocinadores y muro de donadores | `src/config/site.ts` → `sponsors` y `donors` (logos en `public/img/sponsors/`) |
-| Metas, niveles y método de donación | `src/config/site.ts` → `support` (una meta con `raised` y `target` muestra barra) |
+| Patrocinadores | `src/data/support.json` → `sponsors` (logos en `public/img/sponsors/`) |
+| Quitar o renombrar a un donador | `src/data/donors.json` (lo demás lo llena el bot) |
+| PayPal, Ko-fi, cuentas SPEI, metas y niveles | `src/data/support.json` |
+| Número de efectos por juego | Se lee solo de los perfiles de HiveShock; `effects` en `site.ts` es el respaldo |
 | Aviso legal | `src/pages/legal.astro`; cambia `site.legalUpdated` al editarlo |
 | Ocultar las descargas de los ports | `site.showPortDownloads = false` |
 
@@ -106,3 +108,38 @@ Viven en `src/scripts/easter.ts` y no afectan el uso normal:
 
 Cada panel de descarga lleva una franja para apoyar y, al pulsar una descarga, se abre un agradecimiento con el botón
 de donación (como mucho una vez cada 10 minutos por visitante). La descarga empieza igual aunque se cierre.
+
+## Donaciones y muro de donadores
+
+```
+Ko-fi ──webhook──▶ n8n «Ko-fi → Hive» ──┐
+                                         ├─ repository_dispatch «donation» ─▶ donation.yml
+Tú, desde el cel ─▶ n8n «Registrar donación» (formulario con contraseña) ─┘        │
+                                                       scripts/add-donation.mjs ◀───┘
+                                                       actualiza src/data/donors.json
+                                                       y lanza deploy.yml
+```
+
+- **Ko-fi:** automático. Si la persona marcó su donación como pública, su nombre aparece en el muro.
+- **PayPal y SPEI:** cuando confirmes el pago, llena el formulario de n8n (nombre, método, monto y si aceptó aparecer).
+- **Qué se guarda:** solo el nombre de quien aceptó aparecer y el mes. Nunca montos por persona, correos ni mensajes.
+  Con `"trackTotals": true` en `support.json` se guarda además un total general para llenar las barras de metas
+  (en porcentaje). Viene apagado.
+- **Filtros:** nombres con enlaces o groserías quedan como anónimos; los repetidos no se duplican; un aviso que llegue
+  dos veces se ignora.
+
+### Configurar (una vez)
+
+1. En n8n, **importa** `integracion/n8n/kofi-a-hive.json` y `integracion/n8n/registrar-donacion.json`.
+2. Crea una credencial **Header Auth**: nombre `Authorization`, valor `Bearer <token>`. Usa el mismo token
+   fine-grained de `WEB_DISPATCH_TOKEN` (Contents de lectura y escritura sobre `hive-web`). Asígnala al nodo
+   «Avisar a hive-web» de los dos flujos.
+3. **Ko-fi:** en el nodo «Validar y preparar» pega tu *Verification Token* (Ko-fi → Settings → API → Webhooks →
+   Advanced). Activa el flujo y pega en Ko-fi la URL de producción del webhook
+   (`https://n8n.yafel.dev/webhook/kofi-hive`). Usa *Send test* para probar: los avisos de prueba son públicos y con
+   nombre de ejemplo, así que bórralo de `donors.json` después.
+4. **Formulario:** en el nodo «Formulario» crea una credencial Basic Auth con usuario y contraseña. Activa el flujo y
+   guarda la URL de producción del formulario en tu teléfono.
+5. Opcional: activa los nodos «Aviso en Discord» con el webhook de un canal privado para enterarte de cada donación.
+
+La ruta `/webhook/kofi-hive` de n8n tiene que ser accesible desde internet para que Ko-fi llegue.

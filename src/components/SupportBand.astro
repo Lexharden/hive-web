@@ -1,18 +1,18 @@
 ---
 import Icon from './Icon.astro';
-import { support, sponsors } from '../config/site';
+import { sponsors } from '../config/site';
 ---
 <section class="sband" aria-labelledby="sband-t">
   <div class="wrap sband-inner">
     <div class="copy">
       <h2 id="sband-t">Gratis gracias a quienes apoyan</h2>
       <p>
-        No hay versión de pago, anuncios ni funciones bloqueadas. Las donaciones pagan certificados de firma, equipo
-        de pruebas y el tiempo para llevar HiveShock a más juegos.
+        No hay versión de pago, anuncios ni funciones bloqueadas. Las donaciones por PayPal, Ko-fi o transferencia
+        pagan certificados de firma, equipo de pruebas y el tiempo para llevar HiveShock a más juegos.
       </p>
       <div class="btn-row">
-        <a class="btn btn--ember btn--big" href={support.primary.href} target="_blank" rel="noopener"><Icon name="heart" /> {support.primary.label}</a>
-        <a class="btn btn--ghost" href="/apoyar/">Patrocinios y donadores</a>
+        <a class="btn btn--ember btn--big" href="/apoyar/#donar"><Icon name="heart" /> Donar</a>
+        <a class="btn btn--ghost" href="/apoyar/#patrocinar">Patrocinios y donadores</a>
       </div>
     </div>
     <ul class="slots" aria-label="Patrocinadores">

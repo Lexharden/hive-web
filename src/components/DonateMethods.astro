@@ -1,0 +1,109 @@
+---
+// Formas de donar: PayPal, Ko-fi y transferencia SPEI.
+// variant="full": tarjetas para /apoyar/. variant="compact": botones y SPEI plegable (diálogo de descarga).
+import Icon from './Icon.astro';
+import { support } from '../config/site';
+
+interface Props { variant?: 'full' | 'compact'; idPrefix?: string }
+const { variant = 'full', idPrefix = 'm' } = Astro.props;
+const { paypal, kofi, spei } = support.methods;
+const fmt = (c: string) => c.replace(/(\d{4})(?=\d)/g, '$1 ');
+---
+{variant === 'full' ? (
+  <div class="methods">
+    <article class="m">
+      <h3>{paypal.label}</h3>
+      <p>{paypal.text}</p>
+      <a class="btn btn--honey" href={paypal.href} target="_blank" rel="noopener">Donar con PayPal</a>
+    </article>
+    <article class="m">
+      <h3>{kofi.label}</h3>
+      <p>{kofi.text}</p>
+      <a class="btn btn--honey" href={kofi.href} target="_blank" rel="noopener">Donar en Ko-fi</a>
+    </article>
+    <article class="m m--spei" id="spei">
+      <h3>{spei.label}</h3>
+      <p>{spei.text}</p>
+      <ul class="accounts">
+        {spei.accounts.map((a, i) => (
+          <li>
+            <span class="bank">{a.bank}</span>
+            <code id={`${idPrefix}-clabe-${i}`} class="clabe">{fmt(a.clabe)}</code>
+            <button class="copy" type="button" data-copy={a.clabe} data-copy-target={`${idPrefix}-clabe-${i}`}>Copiar CLABE</button>
+          </li>
+        ))}
+      </ul>
+      <dl class="meta">
+        <div><dt>Titular</dt><dd>{spei.holder}</dd></div>
+        <div><dt>Concepto</dt><dd>{spei.concept}</dd></div>
+      </dl>
+    </article>
+  </div>
+) : (
+  <div class="compact">
+    <div class="btn-row">
+      <a class="btn btn--ember" href={paypal.href} target="_blank" rel="noopener"><Icon name="heart" /> PayPal</a>
+      <a class="btn" href={kofi.href} target="_blank" rel="noopener">Ko-fi</a>
+    </div>
+    <details class="spei-fold">
+      <summary>Transferencia SPEI desde México, sin comisiones</summary>
+      <ul class="accounts">
+        {spei.accounts.map((a, i) => (
+          <li>
+            <span class="bank">{a.bank}</span>
+            <code id={`${idPrefix}-clabe-${i}`} class="clabe">{fmt(a.clabe)}</code>
+            <button class="copy" type="button" data-copy={a.clabe} data-copy-target={`${idPrefix}-clabe-${i}`}>Copiar</button>
+          </li>
+        ))}
+      </ul>
+      <p class="small muted">A nombre de {spei.holder}. Concepto: {spei.concept}.</p>
+    </details>
+  </div>
+)}
+
+<style>
+  .methods { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 18px; align-items: stretch; }
+  .m {
+    display: grid; grid-template-rows: auto 1fr auto; gap: 12px; align-content: start;
+    padding: 22px; border-radius: var(--r-lg);
+    background: var(--navy); border: var(--stroke); box-shadow: var(--lift-lg); min-width: 0;
+  }
+  .m h3 { font-size: var(--step-1); }
+  .m > p { color: #d8e2f1; }
+  .m .btn { justify-self: start; }
+  .m--spei { grid-template-rows: auto auto auto auto; scroll-margin-top: 90px; }
+  .accounts { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .accounts li {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'bank copy' 'clabe copy';
+    align-items: center; gap: 2px 12px;
+    padding: 10px 12px; border-radius: var(--r-sm);
+    background: rgb(6 20 43 / 0.55); border: 1px solid var(--line);
+  }
+  .bank { grid-area: bank; font-weight: 800; font-size: var(--step--1); color: var(--honey); }
+  .clabe {
+    grid-area: clabe; font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: 1rem; letter-spacing: 0.02em; color: var(--paper);
+    font-variant-numeric: tabular-nums; white-space: nowrap; user-select: all;
+  }
+  @media (max-width: 520px) {
+    .accounts li { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'bank' 'clabe' 'copy'; gap: 4px; }
+    .copy { justify-self: start; margin-top: 6px; }
+  }
+  .copy {
+    grid-area: copy; min-height: 40px; padding: 6px 12px; cursor: pointer;
+    border-radius: 8px; border: 1px solid var(--line); background: var(--navy-2); color: var(--paper);
+    font: 700 var(--step--1) var(--font-body);
+  }
+  .copy:hover { border-color: var(--honey); }
+  .copy[data-copied] { background: var(--honey); color: var(--ink); border-color: var(--ink); }
+  .meta { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: var(--step--1); }
+  .meta div { display: contents; }
+  .meta dt { color: var(--mist); }
+  .meta dd { margin: 0; font-weight: 700; }
+  .compact { display: grid; gap: 12px; }
+  .spei-fold summary { cursor: pointer; font-weight: 700; color: var(--honey); }
+  .spei-fold[open] summary { margin-bottom: 10px; }
+  .spei-fold p { margin-top: 8px; }
+  @media (max-width: 900px) { .methods { grid-template-columns: 1fr 1fr; } .m--spei { grid-column: 1 / -1; } }
+  @media (max-width: 560px) { .methods { grid-template-columns: 1fr; } }
+</style>

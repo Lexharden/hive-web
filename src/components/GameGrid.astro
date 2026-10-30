@@ -1,9 +1,10 @@
 ---
-import { games } from '../config/site';
+import { gamesWithEffects } from '../lib/effects';
 import { getReleases } from '../lib/releases';
 
 interface Props { linkTo?: 'page' | 'anchor' }
 const { linkTo = 'page' } = Astro.props;
+const games = await gamesWithEffects();
 const ports = Object.fromEntries(
   await Promise.all(games.filter((g) => g.repo).map(async (g) => [g.id, await getReleases(g.repo!)])),
 );

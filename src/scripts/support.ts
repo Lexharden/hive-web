@@ -29,3 +29,30 @@ document.addEventListener('click', (ev) => {
 dialog?.addEventListener('click', (ev) => {
   if (ev.target === dialog) dialog.close(); // clic fuera del cuadro
 });
+
+// Botones «Copiar CLABE». Si el portapapeles no está disponible, se selecciona el número.
+document.addEventListener('click', async (ev) => {
+  const btn = (ev.target as Element).closest<HTMLButtonElement>('button[data-copy]');
+  if (!btn) return;
+  const text = btn.dataset.copy!;
+  const label = (btn.dataset.label ??= btn.textContent ?? '');
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.dataset.copied = '';
+    btn.textContent = 'Copiada';
+  } catch {
+    const target = document.getElementById(btn.dataset.copyTarget || '');
+    if (target) {
+      const range = document.createRange();
+      range.selectNodeContents(target);
+      const sel = window.getSelection();
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+    }
+    btn.textContent = 'Selecciónala y cópiala';
+  }
+  setTimeout(() => {
+    delete btn.dataset.copied;
+    btn.textContent = label;
+  }, 2200);
+});

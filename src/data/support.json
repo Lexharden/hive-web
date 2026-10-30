@@ -1,0 +1,72 @@
+{
+  "_ayuda": "Edita este archivo para cambiar cómo se pide apoyo en la web. Los donadores NO van aquí: van en donors.json, que se llena solo (Ko-fi) o con el formulario de n8n (PayPal y SPEI).",
+
+  "trackTotals": false,
+  "_trackTotals": "true = el bot suma los montos (sin publicar montos por persona) y las metas con 'target' muestran su porcentaje. false = no se guarda ningún monto.",
+  "usdToMxn": 18.5,
+
+  "methods": {
+    "paypal": {
+      "label": "PayPal",
+      "href": "https://paypal.me/yafel789",
+      "text": "Con tu cuenta de PayPal o tarjeta, desde cualquier país."
+    },
+    "kofi": {
+      "label": "Ko-fi",
+      "href": "https://ko-fi.com/yafel",
+      "text": "Una vez o cada mes. Si marcas tu donación como pública, apareces solo en el muro."
+    },
+    "spei": {
+      "label": "Transferencia SPEI",
+      "text": "Desde México, sin comisiones: el apoyo llega completo.",
+      "holder": "Alexis Yafel Garcia Hernandez",
+      "concept": "Donativo",
+      "accounts": [
+        { "bank": "BBVA", "clabe": "012180015523326258" },
+        { "bank": "Banco Azteca", "clabe": "127180016806432070" }
+      ]
+    }
+  },
+
+  "goals": [
+    {
+      "title": "Firma de código para Windows",
+      "text": "Un certificado quita el aviso de «aplicación no reconocida» al instalar."
+    },
+    {
+      "title": "Firma y notarización en macOS",
+      "text": "La cuenta de desarrollador de Apple permite abrir las apps sin pasos extra."
+    },
+    {
+      "title": "Equipo para pruebas",
+      "text": "Computadoras, consolas y teléfonos para probar cada port y la app de Android."
+    },
+    {
+      "title": "Tiempo para nuevos ports",
+      "text": "Cada juego nuevo lleva semanas de integración, efectos y pruebas en directo."
+    }
+  ],
+  "_goals": "Añade \"target\": 5000 (en MXN) a una meta para mostrar su barra cuando trackTotals es true. Las metas se llenan en orden.",
+
+  "tiers": [
+    {
+      "name": "Abeja",
+      "when": "Una donación, de cualquier monto",
+      "perks": ["Tu nombre en el muro de donadores", "Rol de donador en Discord"]
+    },
+    {
+      "name": "Obrera",
+      "when": "Apoyo cada mes",
+      "perks": ["Todo lo de Abeja", "Acceso anticipado a versiones de prueba", "Canal privado para proponer efectos"],
+      "featured": true
+    },
+    {
+      "name": "Reina",
+      "when": "Patrocinio de marca, equipo o creador",
+      "perks": ["Tu logo en esta página y en la portada", "Mención en las notas de cada versión", "Contacto directo para colaboraciones"]
+    }
+  ],
+
+  "sponsors": [],
+  "_sponsors": "Ejemplo: { \"name\": \"Marca\", \"url\": \"https://...\", \"logo\": \"/img/sponsors/marca.png\" }"
+}

@@ -1,0 +1,183 @@
+{
+  "name": "Registrar donación (PayPal y SPEI)",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "formTitle": "Registrar donación",
+        "formDescription": "Para donaciones por PayPal o SPEI. Si la persona aceptó aparecer, su nombre sale en el muro de hive.yafel.dev en unos minutos. Los montos nunca se publican.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nombre para el muro",
+              "placeholder": "Como quiere aparecer"
+            },
+            {
+              "fieldLabel": "Método",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "PayPal"
+                  },
+                  {
+                    "option": "SPEI"
+                  },
+                  {
+                    "option": "Ko-fi"
+                  },
+                  {
+                    "option": "Otro"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Monto",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Moneda",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "MXN"
+                  },
+                  {
+                    "option": "USD"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "¿Aceptó aparecer en el muro?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "No"
+                  },
+                  {
+                    "option": "Sí"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "97b46071-fa4f-41a5-8152-24e61f4d303a",
+      "name": "Formulario",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2,
+      "position": [
+        200,
+        300
+      ],
+      "webhookId": "5ee054c4-1355-416e-ac0f-2952ea3d5251"
+    },
+    {
+      "parameters": {
+        "jsCode": "const methods = { PayPal: 'paypal', SPEI: 'spei', 'Ko-fi': 'kofi', Otro: 'otro' };\nconst f = $json;\nreturn [{\n  json: {\n    event_type: 'donation',\n    client_payload: {\n      id: `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,\n      name: f['Nombre para el muro'] || '',\n      method: methods[f['Método']] || 'otro',\n      amount: f['Monto'] ?? null,\n      currency: f['Moneda'] || 'MXN',\n      public: f['¿Aceptó aparecer en el muro?'] === 'Sí',\n      source: 'formulario',\n    },\n  },\n}];\n"
+      },
+      "id": "f400058a-d73a-406d-81de-5ee353826ab0",
+      "name": "Preparar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/Lexharden/hive-web/dispatches",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2022-11-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ event_type: $json.event_type, client_payload: $json.client_payload }) }}",
+        "options": {}
+      },
+      "id": "60acff77-85ef-48e3-a3d3-f4b06f81d50c",
+      "name": "Avisar a hive-web",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "PEGA_AQUI_EL_WEBHOOK_DEL_CANAL_PRIVADO_DE_DISCORD",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: `Donación registrada a mano (${$json.client_payload.method}): ${$json.client_payload.public ? $json.client_payload.name + ' sale en el muro' : 'privada'}` }) }}",
+        "options": {}
+      },
+      "id": "52d48944-d4e2-47fa-ad30-0ea11f35f459",
+      "name": "Aviso en Discord (opcional)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        400
+      ],
+      "disabled": true,
+      "notes": "Actívalo cuando pegues la URL de un webhook de un canal PRIVADO de administración."
+    }
+  ],
+  "connections": {
+    "Formulario": {
+      "main": [
+        [
+          {
+            "node": "Preparar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar": {
+      "main": [
+        [
+          {
+            "node": "Avisar a hive-web",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aviso en Discord (opcional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

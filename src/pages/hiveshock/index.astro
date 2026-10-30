@@ -13,14 +13,14 @@ const app = apps.hiveshock;
 const data = await getReleases(app.repo);
 
 const features = [
-  { icon: 'gift', title: 'Regalos con combos', text: 'Cada regalo lanza uno o varios efectos en orden, con esperas opcionales. Con combos, el efecto se repite por cada unidad.' },
+  { icon: 'gift', title: 'Varios efectos por evento', text: 'Un regalo, comando, follow, like, bits o meta lanza uno o varios efectos en orden, con esperas opcionales. Con combos se repiten por cada unidad.' },
   { icon: 'chat', title: 'Comandos del chat', text: 'Palabras como !bobomb o !saltar disparan efectos, con tiempo de espera por espectador y anti-spam.' },
   { icon: 'heart', title: 'Follows, likes, shares y bits', text: 'TikTok y Twitch a la vez. Cada evento tiene sus reglas y sus efectos.' },
   { icon: 'target', title: 'Metas en pantalla', text: 'Barras de meta con el ícono del regalo que hay que enviar. Al llenarse, el juego reacciona.' },
-  { icon: 'layers', title: 'Overlays para OBS', text: 'Contador de muertes, regalos recientes y metas, listos para capturar.' },
+  { icon: 'layers', title: 'Overlays para OBS por URL', text: 'Alertas animadas, regalos, metas y contador de muertes como Fuente de navegador, con fondo transparente.' },
   { icon: 'keys', title: 'Teclas y macros', text: 'Para juegos sin integración: secuencias de teclas hacia la ventana del juego, con atajos globales.', only: 'Windows' },
   { icon: 'shield', title: 'Pausa de emergencia', text: 'Detén todo con un clic. Los efectos peligrosos, como borrar la partida, se arman a mano.' },
-  { icon: 'refresh', title: 'Nada se repite, nada se pierde', text: 'Si TikTok o Twitch reenvían algo al reconectar, se ignora. Lo pendiente sobrevive a un cierre.' },
+  { icon: 'refresh', title: 'Efectos nuevos al actualizar', text: 'Cada versión trae los enemigos y efectos nuevos de cada juego sin tocar tus regalos ni lo que editaste.' },
   { icon: 'android', title: 'Compañero en Android', text: 'El live corre en tu teléfono y el juego en el mismo aparato o en tu PC por la red local.' },
 ];
 
@@ -88,6 +88,20 @@ const support = [
           </tbody>
         </table>
       </div>
+
+      <div class="android" id="android">
+        <div class="android-copy">
+          <h3>Instalar en Android</h3>
+          <p class="muted">El APK se publica con cada versión, junto a las de computadora.</p>
+          <a class="btn btn--honey" href="#descargar">Descargar el APK</a>
+        </div>
+        <ol class="android-steps">
+          <li><strong>Descarga el APK</strong> desde tu teléfono. El botón de arriba lo elige solo si entras desde Android.</li>
+          <li><strong>Permite instalar apps de origen desconocido</strong> para tu navegador cuando el teléfono lo pida.</li>
+          <li><strong>Para actualizar</strong>, instala el APK nuevo encima. No hace falta desinstalar ni pierdes tus regalos.</li>
+          <li><strong>Si la batería corta el live</strong>, quita a HiveShock de la optimización de batería.</li>
+        </ol>
+      </div>
     </div>
   </section>
 
@@ -117,4 +131,16 @@ const support = [
   .yes :global(svg) { width: 22px; height: 22px; color: var(--honey); }
   .no { color: var(--mist); opacity: 0.8; }
   .closing { display: grid; gap: 16px; justify-items: start; }
+  .android {
+    display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(20px, 4vw, 48px);
+    margin-top: clamp(36px, 5vw, 56px); padding: clamp(20px, 3vw, 32px);
+    background: var(--navy); border: var(--stroke); border-radius: var(--r-lg); box-shadow: var(--lift-lg);
+    scroll-margin-top: 90px;
+  }
+  .android-copy { display: grid; gap: 12px; align-content: start; justify-items: start; }
+  .android-copy h3 { font-size: var(--step-2); }
+  .android-steps { margin: 0; padding-left: 1.4em; display: grid; gap: 12px; color: #d8e2f1; }
+  .android-steps li::marker { color: var(--honey); font-weight: 800; }
+  .android-steps strong { color: var(--paper); }
+  @media (max-width: 800px) { .android { grid-template-columns: 1fr; } }
 </style>

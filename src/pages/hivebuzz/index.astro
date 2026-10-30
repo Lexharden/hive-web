@@ -13,19 +13,19 @@ const data = await getReleases(app.repo);
 
 const features = [
   { icon: 'bolt', title: 'Alertas con sonido a tiempo', text: 'Imagen, GIF o video con texto. El sonido arranca justo cuando la alerta aparece, aunque haya cola.' },
-  { icon: 'mic', title: 'Voz que no habla encima', text: 'Lee el chat y los regalos con Piper (sin internet), voces de Windows o Edge. Espera a que termines de hablar.' },
+  { icon: 'mic', title: 'Voz que no habla encima', text: 'Lee el chat con Piper (sin internet), voces de Windows o Edge, con voz distinta por plataforma o por usuario. Espera a que termines de hablar.' },
   { icon: 'code', title: 'Reglas sin programar', text: 'Cuando pase algo, si se cumplen las condiciones, haz esto. Con plantillas listas y botón para probar.' },
   { icon: 'timer', title: 'Metas, timers y subathon', text: 'Metas de likes, follows o monedas. El timer se alarga con cada regalo y sobrevive a reinicios.' },
   { icon: 'wheel', title: 'Puntos, ruleta y encuestas', text: 'Tus espectadores ganan puntos, giran la ruleta y votan con un número en el chat.' },
   { icon: 'plug', title: 'OBS, webhooks y más', text: 'Cambia de escena, muestra fuentes, avisa a Home Assistant o Streamer.bot y manda comandos a juegos por TCP.' },
-  { icon: 'play', title: 'Pedidos de canciones', text: 'Con Spotify conectado, tu chat pide canciones con !sr, con permisos por rol y costo en puntos.' },
+  { icon: 'play', title: 'Spotify desde el chat', text: 'Tu chat pide canciones con !sr y tus moderadores usan !skip, !pausa o !volumen. Sin canciones repetidas.' },
   { icon: 'layers', title: 'Respaldo en un archivo', text: 'Exporta toda tu configuración, con sonidos e imágenes, en un .zip y llévala a otra PC.' },
   { icon: 'shield', title: 'Todo en tu PC', text: 'Sin servidores ni cuentas. Los tokens viven en el llavero del sistema y los overlays solo responden en tu equipo.' },
 ];
 
 const overlays = [
   'Alertas', 'Feed de eventos', 'Chat en pantalla', 'Regalos', 'Top donadores', 'Metas',
-  'Timer', 'Contadores', 'Ruleta', 'Encuestas', 'Jarrón de regalos', 'Sonando ahora',
+  'Timer', 'Contadores', 'Ruleta', 'Encuestas', 'Jarrón de regalos', 'Sonando ahora', 'Próximas canciones',
 ];
 ---
 <Base
@@ -54,7 +54,7 @@ const overlays = [
     <div class="wrap overlays-wrap">
       <div class="section-head">
         <h2>{overlays.length} overlays para OBS</h2>
-        <p>Cada uno con su enlace. Los ajustas en un editor con vista previa en vivo a 1920×1080: fuente, colores, posición y escala.</p>
+        <p>Cada uno con su enlace y vista previa en vivo a 1920×1080. Las alertas pueden ir en hasta 20 pantallas a la vez, y los videos con fondo verde o negro se recortan solos.</p>
       </div>
       <ul class="overlays">
         {overlays.map((o) => <li>{o}</li>)}

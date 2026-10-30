@@ -6,11 +6,13 @@ import GameGrid from '../components/GameGrid.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import SupportBand from '../components/SupportBand.astro';
-import { apps, site, totalEffects, games } from '../config/site';
+import { apps, site, games } from '../config/site';
+import { totalEffectsLive } from '../lib/effects';
 import { getReleases } from '../lib/releases';
 
 const shock = await getReleases(apps.hiveshock.repo);
 const buzz = await getReleases(apps.hivebuzz.repo);
+const totalEffects = await totalEffectsLive();
 
 const faq = [
   {
@@ -88,8 +90,8 @@ const jsonLd = {
           tone="ember"
           points={[
             'Regalos, chat, follows, likes y bits disparan efectos',
-            'Varios efectos por regalo, con esperas entre ellos',
-            'Metas, contador de muertes y overlays para OBS',
+            'Varios efectos por regalo, comando, follow o meta',
+            'Overlays para OBS por URL: alertas, metas y contador',
             'Compañero para Android: el live corre en tu teléfono',
           ]}
         />
@@ -100,8 +102,8 @@ const jsonLd = {
           points={[
             'Alertas con imagen, video y sonido sincronizado',
             'Voz offline con Piper, voces de Windows o Edge',
-            '12 overlays con editor visual y vista previa',
-            'Reglas con OBS, webhooks, teclas y Spotify',
+            '13 overlays y hasta 20 pantallas de alertas',
+            'Spotify con pedidos y control desde el chat',
           ]}
         />
       </div>

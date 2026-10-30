@@ -1,0 +1,56 @@
+# Registra una donación en src/data/donors.json y vuelve a publicar la web.
+# Lo dispara n8n con un repository_dispatch de tipo «donation»:
+#   - flujo «Ko-fi → Hive» (automático, cada donación de Ko-fi)
+#   - flujo «Registrar donación» (formulario para PayPal y SPEI)
+name: Donación
+
+on:
+  repository_dispatch:
+    types: [donation]
+
+permissions:
+  contents: write
+  actions: write
+
+# Las donaciones se procesan de una en una para no pisarse al guardar el archivo.
+concurrency:
+  group: donations
+  cancel-in-progress: false
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Registrar
+        id: add
+        env:
+          # El contenido llega como variable, nunca dentro del comando, para que no se pueda inyectar nada.
+          DONATION: ${{ toJSON(github.event.client_payload) }}
+        run: node scripts/add-donation.mjs
+
+      - name: Guardar en el repo
+        if: steps.add.outputs.changed == 'true'
+        run: |
+          git config user.name "hive-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/donors.json
+          git commit -m "Donación registrada${{ steps.add.outputs.published != '' && ' (muro)' || '' }}"
+          for i in 1 2 3; do
+            git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0
+            sleep $((i * 5))
+          done
+          echo "No se pudo guardar después de 3 intentos" >&2
+          exit 1
+
+      # Un push hecho con GITHUB_TOKEN no dispara otros workflows, así que el deploy se lanza a mano.
+      - name: Publicar la web
+        if: steps.add.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main
