@@ -68,6 +68,8 @@ Requiere Node 22.12 o superior.
 | Colores y tipografía | `src/styles/global.css` (tokens al inicio) |
 | Cómo se nombran los archivos de descarga | `src/lib/assets.ts` |
 | Patrocinadores | `src/data/support.json` → `sponsors` (logos en `public/img/sponsors/`) |
+| Logo e insignias de nivel | `src/lib/brand.js`; `npm run brand` regenera los SVG de `public/brand/` |
+| Qué hace el apoyo (Desarrollo, Pruebas…) | `src/data/support.json` → `work` |
 | Quitar o renombrar a un donador | `src/data/donors.json` (lo demás lo llena el bot) |
 | PayPal, Ko-fi, cuentas SPEI, metas y niveles | `src/data/support.json` |
 | Número de efectos por juego | Se lee solo de los perfiles de HiveShock; `effects` en `site.ts` es el respaldo |
@@ -108,6 +110,35 @@ Viven en `src/scripts/easter.ts` y no afectan el uso normal:
 
 Cada panel de descarga lleva una franja para apoyar y, al pulsar una descarga, se abre un agradecimiento con el botón
 de donación (como mucho una vez cada 10 minutos por visitante). La descarga empieza igual aunque se cierre.
+
+## Cómo poner a alguien en el muro (con usuario, canales y nivel)
+
+Cada donador en `src/data/donors.json` se ve así:
+
+```json
+{
+  "name": "Mint Kookie",
+  "tier": "obrera",
+  "since": "2026-10",
+  "links": { "tiktok": "mint.kookie", "twitch": "mintkookie", "youtube": "MintKookie" }
+}
+```
+
+- `tier`: `abeja` (una donación), `obrera` (apoyo cada mes) o `reina` (patrocinio). Cambia la insignia, el color y el orden.
+- `links`: redes opcionales: `tiktok`, `twitch`, `youtube`, `kick`, `instagram`, `x`. Solo el usuario, sin `@` ni enlace.
+- `since`: mes en que empezó a apoyar (`AAAA-MM`).
+
+Tres formas de llenarlo:
+
+1. **Formulario de n8n** (lo normal para PayPal y SPEI): *Acción* «Registrar donación», nombre, «Sí» en aparecer,
+   nivel y los canales que te dio. En los canales puedes pegar el enlace del perfil o el @usuario: se limpian solos.
+2. **Actualizar a alguien** que ya está (por ejemplo, donó por Ko-fi y luego te mandó su TikTok): mismo formulario con
+   *Acción* «Actualizar datos», el mismo nombre y los canales nuevos. También sirve para cambiarle el nivel.
+3. **A mano en GitHub**: abre `src/data/donors.json`, pulsa el lápiz, añade o edita la entrada y guarda (*Commit changes*).
+   La web se publica sola en un par de minutos.
+
+Para quitar a alguien: formulario con *Acción* «Quitar del muro», o borra su entrada en GitHub.
+Ko-fi mensual entra solo como Obrera; Ko-fi de una vez, como Abeja.
 
 ## Donaciones y muro de donadores
 

@@ -11,7 +11,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "snapshot": "node scripts/snapshot.mjs"
+    "snapshot": "node scripts/snapshot.mjs",
+    "test": "node tests/donations.test.mjs",
+    "brand": "node scripts/export-brand.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

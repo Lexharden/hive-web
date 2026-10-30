@@ -1,16 +1,67 @@
 {
-  "name": "Registrar donación (PayPal y SPEI)",
+  "name": "Donadores de Hive (registrar, actualizar o quitar)",
   "nodes": [
     {
       "parameters": {
         "authentication": "basicAuth",
-        "formTitle": "Registrar donación",
-        "formDescription": "Para donaciones por PayPal o SPEI. Si la persona aceptó aparecer, su nombre sale en el muro de hive.yafel.dev en unos minutos. Los montos nunca se publican.",
+        "formTitle": "Donadores de Hive",
+        "formDescription": "Registra una donación de PayPal o SPEI, actualiza los datos de alguien que ya está en el muro o quítalo. Los canales aceptan usuario, @usuario o el enlace al perfil. Los montos nunca se publican.",
         "formFields": {
           "values": [
             {
+              "fieldLabel": "Acción",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Registrar donación"
+                  },
+                  {
+                    "option": "Actualizar datos"
+                  },
+                  {
+                    "option": "Quitar del muro"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
               "fieldLabel": "Nombre para el muro",
-              "placeholder": "Como quiere aparecer"
+              "placeholder": "Como quiere aparecer",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "¿Aceptó aparecer en el muro?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Sí"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Nivel",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Abeja"
+                  },
+                  {
+                    "option": "Obrera"
+                  },
+                  {
+                    "option": "Reina"
+                  }
+                ]
+              }
             },
             {
               "fieldLabel": "Método",
@@ -30,8 +81,7 @@
                     "option": "Otro"
                   }
                 ]
-              },
-              "requiredField": true
+              }
             },
             {
               "fieldLabel": "Monto",
@@ -52,19 +102,28 @@
               }
             },
             {
-              "fieldLabel": "¿Aceptó aparecer en el muro?",
-              "fieldType": "dropdown",
-              "fieldOptions": {
-                "values": [
-                  {
-                    "option": "No"
-                  },
-                  {
-                    "option": "Sí"
-                  }
-                ]
-              },
-              "requiredField": true
+              "fieldLabel": "TikTok",
+              "placeholder": "usuario o enlace"
+            },
+            {
+              "fieldLabel": "Twitch",
+              "placeholder": "canal o enlace"
+            },
+            {
+              "fieldLabel": "YouTube",
+              "placeholder": "@handle o enlace"
+            },
+            {
+              "fieldLabel": "Kick",
+              "placeholder": "canal o enlace"
+            },
+            {
+              "fieldLabel": "Instagram",
+              "placeholder": "usuario o enlace"
+            },
+            {
+              "fieldLabel": "X",
+              "placeholder": "usuario o enlace"
             }
           ]
         },
@@ -82,7 +141,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const methods = { PayPal: 'paypal', SPEI: 'spei', 'Ko-fi': 'kofi', Otro: 'otro' };\nconst f = $json;\nreturn [{\n  json: {\n    event_type: 'donation',\n    client_payload: {\n      id: `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,\n      name: f['Nombre para el muro'] || '',\n      method: methods[f['Método']] || 'otro',\n      amount: f['Monto'] ?? null,\n      currency: f['Moneda'] || 'MXN',\n      public: f['¿Aceptó aparecer en el muro?'] === 'Sí',\n      source: 'formulario',\n    },\n  },\n}];\n"
+        "jsCode": "// Convierte lo que llenaste en el formulario en la petición para la web.\nconst f = $json;\nconst actions = { 'Registrar donación': 'registrar', 'Actualizar datos': 'actualizar', 'Quitar del muro': 'quitar' };\nconst methods = { PayPal: 'paypal', SPEI: 'spei', 'Ko-fi': 'kofi', Otro: 'otro' };\nconst tiers = { Abeja: 'abeja', Obrera: 'obrera', Reina: 'reina' };\nconst action = actions[f['Acción']] || 'registrar';\nreturn [{\n  json: {\n    event_type: 'donation',\n    client_payload: {\n      action,\n      id: action === 'registrar' ? `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}` : undefined,\n      name: f['Nombre para el muro'] || '',\n      public: f['¿Aceptó aparecer en el muro?'] === 'Sí',\n      tier: tiers[f['Nivel']],\n      method: methods[f['Método']] || 'otro',\n      amount: f['Monto'] ?? null,\n      currency: f['Moneda'] || 'MXN',\n      links: {\n        tiktok: f['TikTok'] || undefined,\n        twitch: f['Twitch'] || undefined,\n        youtube: f['YouTube'] || undefined,\n        kick: f['Kick'] || undefined,\n        instagram: f['Instagram'] || undefined,\n        x: f['X'] || undefined,\n      },\n      source: 'formulario',\n    },\n  },\n}];\n"
       },
       "id": "f400058a-d73a-406d-81de-5ee353826ab0",
       "name": "Preparar",
@@ -132,7 +191,7 @@
         "url": "PEGA_AQUI_EL_WEBHOOK_DEL_CANAL_PRIVADO_DE_DISCORD",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ content: `Donación registrada a mano (${$json.client_payload.method}): ${$json.client_payload.public ? $json.client_payload.name + ' sale en el muro' : 'privada'}` }) }}",
+        "jsonBody": "={{ JSON.stringify({ content: `Muro de donadores: ${$json.client_payload.action} ${$json.client_payload.name} (${$json.client_payload.public ? 'público' : 'privado'})` }) }}",
         "options": {}
       },
       "id": "52d48944-d4e2-47fa-ad30-0ea11f35f459",

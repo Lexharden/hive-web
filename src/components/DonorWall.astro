@@ -1,0 +1,72 @@
+---
+// Muro de donadores: tarjetas con insignia del nivel, nombre y enlaces a sus canales.
+import TierBadge from './TierBadge.astro';
+import { support, type Donor } from '../config/site';
+import { platforms, displayHandle } from '../lib/socials.js';
+
+interface Props { donors: Donor[] }
+const { donors } = Astro.props;
+const tierName = Object.fromEntries(support.tiers.map((t) => [t.id, t.name]));
+const month = (ym?: string) =>
+  ym ? new Date(`${ym}-15T12:00:00Z`).toLocaleDateString('es-MX', { month: 'short', year: 'numeric', timeZone: 'UTC' }) : '';
+---
+<ul class="wall">
+  {donors.map((d) => {
+    const tier = d.tier ?? 'abeja';
+    const links = Object.entries(d.links ?? {}).filter(([p, h]) => platforms[p as keyof typeof platforms] && h);
+    return (
+      <li class={`donor donor--${tier}`}>
+        <TierBadge tier={tier} size={tier === 'reina' ? 78 : 56} />
+        <div class="who">
+          <p class="name">{d.name}</p>
+          <p class="tier">{tierName[tier]}{d.since && ` desde ${month(d.since)}`}</p>
+          {links.length > 0 && (
+            <ul class="links" aria-label={`Canales de ${d.name}`}>
+              {links.map(([p, h]) => (
+                <li>
+                  <a href={platforms[p as keyof typeof platforms].url(h)} target="_blank" rel="noopener nofollow ugc">
+                    <span class="net">{platforms[p as keyof typeof platforms].label}</span>
+                    <span class="handle">{displayHandle(p, h)}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .wall { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .donor {
+    --tc: var(--ember);
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start;
+    padding: 16px; border-radius: var(--r);
+    background: rgb(22 67 125 / 0.45); border: 1px solid var(--line);
+    border-top: 3px solid var(--tc);
+  }
+  .donor--obrera { --tc: #d3deee; }
+  .donor--reina {
+    --tc: var(--honey);
+    grid-column: span 2;
+    background: var(--navy); border: var(--stroke); border-top: 4px solid var(--honey);
+    box-shadow: var(--lift-lg); padding: 20px;
+  }
+  .who { display: grid; gap: 2px; min-width: 0; }
+  .name { font-weight: 800; font-size: var(--step-1); overflow-wrap: anywhere; line-height: 1.25; }
+  .donor--reina .name { font-family: var(--font-display); font-weight: 400; font-size: var(--step-2); }
+  .tier { color: var(--tc); font-size: var(--step--1); font-weight: 700; }
+  .links { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .links a {
+    display: inline-flex; gap: 6px; align-items: baseline;
+    padding: 3px 10px; border-radius: 999px;
+    background: rgb(6 20 43 / 0.55); border: 1px solid var(--line);
+    color: var(--paper); text-decoration: none; font-size: 0.82rem;
+  }
+  .links a:hover { border-color: var(--honey); }
+  .net { color: var(--mist); font-weight: 700; }
+  .handle { font-weight: 700; overflow-wrap: anywhere; }
+  @media (max-width: 600px) { .donor--reina { grid-column: auto; } }
+</style>

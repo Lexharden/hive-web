@@ -3,9 +3,21 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 import DonateMethods from '../components/DonateMethods.astro';
-import { site, support, sponsors, donors, goalProgress } from '../config/site';
+import TierBadge from '../components/TierBadge.astro';
+import DonorWall from '../components/DonorWall.astro';
+import { site, support, sponsors, donors, apps, games } from '../config/site';
+import { getReleases } from '../lib/releases';
 
-const progress = goalProgress();
+// Cifras reales del trabajo, leídas de los releases de cada app y port.
+const repos = [apps.hiveshock.repo, apps.hivebuzz.repo, ...games.filter((g) => g.repo).map((g) => g.repo!)];
+const all = await Promise.all(repos.map((r) => getReleases(r)));
+const versions = all.reduce((n, r) => n + r.releases.length, 0);
+const stats = [
+  { n: String(versions), label: 'versiones publicadas' },
+  { n: String(Object.keys(apps).length + games.length), label: 'apps, ports y mods con soporte' },
+  { n: '4', label: 'plataformas: Windows, macOS, Linux y Android' },
+  { n: '1', label: 'persona detrás de todo' },
+];
 
 const faq = [
   {
@@ -14,7 +26,7 @@ const faq = [
   },
   {
     q: '¿Cómo aparezco en el muro de donadores?',
-    a: `<p><strong>Ko-fi:</strong> marca tu donación como pública y apareces sola en unos minutos.</p><p><strong>PayPal o SPEI:</strong> mándame por <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> el nombre que quieres mostrar. Si no me dices nada, tu donación queda privada.</p>`,
+    a: `<p><strong>Ko-fi:</strong> marca tu donación como pública y apareces en unos minutos.</p><p><strong>PayPal o SPEI:</strong> mándame por <a href="${site.links.discord}" target="_blank" rel="noopener">Discord</a> el nombre que quieres mostrar y, si quieres, tus canales de TikTok, Twitch, YouTube o Kick. Si no me dices nada, tu donación queda privada.</p>`,
   },
   {
     q: '¿Se publica cuánto doné?',
@@ -78,24 +90,23 @@ const faq = [
   </section>
 
   <section class="section section--band">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>A dónde va tu apoyo</h2>
-        <p>Gastos reales que hacen las apps más fáciles de instalar y llevan HiveShock a más juegos.</p>
+    <div class="wrap work">
+      <div class="work-head">
+        <h2>Un proyecto hecho por una sola persona</h2>
+        <p class="lead">
+          Programo, pruebo y doy soporte yo solo a cada app y a cada port. Tu apoyo se convierte en horas para seguir
+          haciéndolo con calma y con cuidado.
+        </p>
       </div>
-      <ul class="goals">
-        {support.goals.map((g, i) => (
+      <ul class="stats">
+        {stats.map((x) => <li><strong>{x.n}</strong><span>{x.label}</span></li>)}
+      </ul>
+      <ul class="areas">
+        {support.work.map((w) => (
           <li>
-            <h3>{g.title}</h3>
-            <p>{g.text}</p>
-            {progress[i] != null && (
-              <div class="goal-bar">
-                <div class="bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress[i]!} aria-label={g.title}>
-                  <span style={`width:${progress[i]}%`}></span>
-                </div>
-                <span class="pct">{progress[i] === 100 ? 'Logrado' : `${progress[i]}%`}</span>
-              </div>
-            )}
+            <span class="area-ic"><Icon name={w.icon} /></span>
+            <h3>{w.title}</h3>
+            <p>{w.text}</p>
           </li>
         ))}
       </ul>
@@ -110,16 +121,16 @@ const faq = [
       </div>
       <ul class="tiers">
         {support.tiers.map((t) => (
-          <li class={t.featured ? 'tier tier--featured' : 'tier'}>
+          <li class={`tier tier--${t.id}${t.featured ? ' tier--featured' : ''}`}>
             <div class="tier-head">
-              <span class="tier-hex" aria-hidden="true"></span>
+              <TierBadge tier={t.id} size={96} />
               <h3>{t.name}</h3>
               <p class="when">{t.when}</p>
             </div>
             <ul class="perks">
               {t.perks.map((p) => <li><Icon name="check" /> <span>{p}</span></li>)}
             </ul>
-            {t.name === 'Reina' ? (
+            {t.id === 'reina' ? (
               <a class="btn" href={site.links.discord} target="_blank" rel="noopener">Escribir para patrocinar</a>
             ) : t.featured ? (
               <a class="btn btn--ember" href={support.methods.kofi.href} target="_blank" rel="noopener">Apoyar cada mes en Ko-fi</a>
@@ -162,9 +173,7 @@ const faq = [
         <p>Gracias a cada persona que puso su granito de miel.</p>
       </div>
       {donors.length > 0 ? (
-        <ul class="donors">
-          {donors.map((d) => <li>{d.name}</li>)}
-        </ul>
+        <DonorWall donors={donors} />
       ) : (
         <div class="donors-empty">
           <p>El muro se llena con cada donación pública. Dona y avísame tu nombre para aparecer aquí.</p>
@@ -191,14 +200,23 @@ const faq = [
   .jar { margin: 0; justify-self: center; width: min(260px, 70vw); filter: drop-shadow(8px 8px 0 var(--ink)); }
   #donar, #muro, #patrocinar, #niveles { scroll-margin-top: 80px; }
   .after { margin-top: 22px; max-width: 60rem; }
-  .goals { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-  .goals li { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 3px solid var(--ember); }
-  .goals h3 { font-family: var(--font-body); font-weight: 800; font-size: var(--step-1); }
-  .goals p { color: var(--mist); }
-  .goal-bar { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin-top: 4px; }
-  .bar { height: 10px; border-radius: 999px; background: rgb(6 20 43 / 0.6); overflow: hidden; border: 1px solid var(--line); }
-  .bar span { display: block; height: 100%; background: var(--honey); }
-  .pct { font-weight: 800; font-size: var(--step--1); color: var(--honey); font-variant-numeric: tabular-nums; }
+  .work { display: grid; gap: clamp(28px, 4vw, 44px); }
+  .work-head { display: grid; gap: 14px; max-width: 46rem; }
+  .stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .stats li { display: grid; gap: 4px; align-content: start; padding: 16px 18px; border-radius: var(--r); background: rgb(6 20 43 / 0.45); border: 1px solid var(--line); }
+  .stats strong { font-family: var(--font-display); font-weight: 400; font-size: 2.4rem; line-height: 1; color: var(--honey); font-variant-numeric: tabular-nums; }
+  .stats li:last-child strong { color: var(--ember); }
+  .stats span { color: var(--mist); font-size: var(--step--1); }
+  .areas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+  .areas li { display: grid; gap: 8px; align-content: start; }
+  .areas h3 { font-family: var(--font-body); font-weight: 800; font-size: var(--step-1); }
+  .areas p { color: var(--mist); }
+  .area-ic {
+    width: 46px; height: 50px; display: grid; place-items: center;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--honey); color: var(--ink); margin-bottom: 4px;
+  }
+  .area-ic :global(svg) { width: 22px; height: 22px; }
   .tiers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
   .tier {
     display: grid; grid-template-rows: auto 1fr auto; gap: 18px;
@@ -207,8 +225,11 @@ const faq = [
   }
   .tier--featured { background: var(--navy); border: var(--stroke); box-shadow: var(--lift-lg); }
   .tier-head { display: grid; gap: 6px; }
-  .tier-hex { width: 32px; height: 36px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: var(--honey); }
-  .tier--featured .tier-hex { background: var(--ember); }
+  .tier { border-top: 4px solid var(--tc); }
+  .tier--abeja { --tc: var(--ember); }
+  .tier--obrera { --tc: #d3deee; }
+  .tier--reina { --tc: var(--honey); }
+  .tier .when { color: var(--tc); font-weight: 700; }
   .tier h3 { font-size: var(--step-2); }
   .when { color: var(--mist); }
   .perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; align-content: start; }
@@ -226,16 +247,14 @@ const faq = [
   .sp--on a { border-style: solid; background: var(--navy); }
   .sp--on img { max-height: 72px; object-fit: contain; }
   .sp-name { font-family: var(--font-display); color: var(--paper); }
-  .sp-hex { width: 36px; height: 40px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: rgb(252 202 47 / 0.25); }
+  .sp-hex { width: 36px; height: 40px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: rgb(167 187 217 / 0.22); }
   .donors-head { margin-bottom: 24px; }
-  .donors { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-  .donors li { padding: 6px 14px; border-radius: 999px; background: var(--honey); color: var(--ink); border: var(--stroke); font-weight: 800; }
   .donors-empty { display: grid; gap: 14px; justify-items: start; padding: 22px; border: 1px dashed rgb(167 187 217 / 0.35); border-radius: var(--r); color: #d8e2f1; }
   @media (max-width: 960px) {
-    .goals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stats, .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .tiers { grid-template-columns: 1fr; }
     .sponsors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .jar { width: 180px; } }
-  @media (max-width: 520px) { .goals { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .areas { grid-template-columns: 1fr; } }
 </style>

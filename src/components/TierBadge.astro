@@ -1,0 +1,15 @@
+---
+import { tierBadge } from '../lib/brand.js';
+import type { TierId } from '../config/site';
+
+interface Props { tier: TierId; size?: number; class?: string }
+const { tier, size = 48, class: cls } = Astro.props;
+// id único por uso para que los recortes de cada SVG no choquen entre sí
+const uid = Math.random().toString(36).slice(2, 8);
+---
+<span class:list={['tier-badge', cls]} style={`--s:${size}px`} set:html={tierBadge(tier, uid)} />
+
+<style>
+  .tier-badge { display: inline-block; width: var(--s); height: calc(var(--s) * 128 / 120); flex: none; }
+  .tier-badge :global(svg) { width: 100%; height: 100%; display: block; }
+</style>

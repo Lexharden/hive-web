@@ -138,13 +138,15 @@ export const totalEffects = games.reduce((n, g) => n + g.effects, 0);
 // ---------- Apoyo al proyecto ----------
 // Lo que se edita a mano vive en src/data/support.json; los donadores, en src/data/donors.json.
 
-export interface SupportGoal {
+export interface WorkArea {
+  icon: string;
   title: string;
   text: string;
-  target?: number; // MXN; solo se usa con trackTotals
 }
 export interface SpeiAccount { bank: string; clabe: string }
-export interface Supporter { name: string; url?: string; logo?: string; since?: string }
+export type TierId = 'abeja' | 'obrera' | 'reina';
+export interface Supporter { name: string; url?: string; logo?: string }
+export interface Donor { name: string; tier?: TierId; since?: string; links?: Record<string, string> }
 
 export const support = supportData as unknown as {
   trackTotals: boolean;
@@ -154,22 +156,14 @@ export const support = supportData as unknown as {
     kofi: { label: string; href: string; text: string };
     spei: { label: string; text: string; holder: string; concept: string; accounts: SpeiAccount[] };
   };
-  goals: SupportGoal[];
-  tiers: Array<{ name: string; when: string; perks: string[]; featured?: boolean }>;
+  work: WorkArea[];
+  tiers: Array<{ id: TierId; name: string; when: string; perks: string[]; featured?: boolean }>;
   sponsors: Supporter[];
 };
 
 export const sponsors: Supporter[] = support.sponsors ?? [];
-export const donors: Supporter[] = (donorsData.donors as Supporter[]) ?? [];
-export const raisedMXN: number = support.trackTotals ? Number(donorsData.raisedMXN) || 0 : 0;
-
-/** Progreso de cada meta, llenándolas en orden con lo recaudado. null = sin barra. */
-export function goalProgress(): Array<number | null> {
-  let left = raisedMXN;
-  return support.goals.map((g) => {
-    if (!support.trackTotals || !g.target) return null;
-    const used = Math.min(left, g.target);
-    left -= used;
-    return Math.round((used / g.target) * 100);
-  });
-}
+const tierRank: Record<TierId, number> = { reina: 0, obrera: 1, abeja: 2 };
+/** Donadores en orden: Reina, Obrera, Abeja; dentro de cada nivel, quien apoya desde antes va primero. */
+export const donors: Donor[] = ((donorsData.donors as Donor[]) ?? [])
+  .slice()
+  .sort((a, b) => tierRank[a.tier ?? 'abeja'] - tierRank[b.tier ?? 'abeja'] || (a.since ?? '').localeCompare(b.since ?? '') || a.name.localeCompare(b.name));
