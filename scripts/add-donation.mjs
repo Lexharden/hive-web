@@ -15,13 +15,21 @@
 // Nunca se guardan montos por persona, correos ni mensajes.
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
 import { platforms, cleanHandle } from '../src/lib/socials.js';
 
 const DONORS = new URL('../src/data/donors.json', import.meta.url);
 const SUPPORT = new URL('../src/data/support.json', import.meta.url);
 
 // Palabras que vuelven anónima una donación pública (Ko-fi publica el nombre que escriba cualquiera).
-const BLOCKED = ['puta', 'puto', 'pendej', 'verga', 'chinga', 'mierda', 'culer', 'nigg', 'fuck', 'shit', 'nazi', 'hitler'];
+// Se compara por palabra (sin acentos, sin números ni signos) para no vetar «Computadora» ni «Vergara».
+const BLOCKED_STEMS = ['pendej', 'chinga', 'mierd', 'nigg', 'fuck', 'shit', 'nazi', 'hitler'];
+const BLOCKED_WORDS = ['puta', 'puto', 'putas', 'putos', 'verga', 'vergas', 'culero', 'culera', 'culeros', 'culeras'];
+
+function isBlocked(name) {
+  const words = name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().split(/[^a-z]+/).filter(Boolean);
+  return words.some((w) => BLOCKED_WORDS.includes(w) || BLOCKED_STEMS.some((s) => w.startsWith(s)));
+}
 const METHODS = ['kofi', 'paypal', 'spei', 'otro'];
 const TIERS = ['abeja', 'obrera', 'reina'];
 const YES = [true, 'true', 'si', 'sí', 'Si', 'Sí', 'yes'];
@@ -34,7 +42,7 @@ export function cleanName(raw) {
     .replace(/\s+/g, ' ')
     .trim();
   if (/https?:\/\/|www\.|\.(com|net|org|gg|ly|xyz)\b/i.test(name)) return null; // nada de enlaces
-  if (BLOCKED.some((w) => name.toLowerCase().includes(w))) return null;
+  if (isBlocked(name)) return null;
   name = name.replace(/^@+/, '');
   if (name.length > 32) name = name.slice(0, 31).trimEnd() + '…';
   return name.length >= 2 ? name : null;
@@ -130,7 +138,7 @@ export function applyDonation(donorsDoc, supportDoc, input, today = new Date()) 
 }
 
 // Ejecución desde el workflow
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const raw = process.env.DONATION;
   if (!raw) throw new Error('Falta la variable DONATION');
   const input = JSON.parse(raw);
