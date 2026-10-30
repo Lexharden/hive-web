@@ -1,0 +1,41 @@
+# Valida cada PR y cada push a develop: pruebas, tipos y build.
+# No publica nada; el despliegue solo ocurre desde main (deploy.yml).
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Pruebas
+        run: npm test
+
+      - name: Tipos (astro check)
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+        env:
+          # Lectura de la API de GitHub con más cuota. Sin REQUIRE_GITHUB: un fallo de red no debe tumbar un PR.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
