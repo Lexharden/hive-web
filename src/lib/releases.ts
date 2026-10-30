@@ -40,19 +40,28 @@ interface RawRelease {
 
 const cache = new Map<string, Promise<RepoReleases>>();
 
+const PAGE_SIZE = 100;
+const MAX_PAGES = 5;
+
 async function fromGitHub(repo: string): Promise<RawRelease[]> {
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
-  const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=50`, {
-    headers: {
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'hive-web',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    signal: AbortSignal.timeout(15000),
-  });
-  if (!res.ok) throw new Error(`GitHub ${res.status} en ${repo}`);
-  return res.json();
+  const all: RawRelease[] = [];
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=${PAGE_SIZE}&page=${page}`, {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'User-Agent': 'hive-web',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) throw new Error(`GitHub ${res.status} en ${repo}`);
+    const batch = (await res.json()) as RawRelease[];
+    all.push(...batch);
+    if (batch.length < PAGE_SIZE) break;
+  }
+  return all;
 }
 
 async function fromSnapshot(repo: string): Promise<RawRelease[]> {

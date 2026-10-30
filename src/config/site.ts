@@ -1,12 +1,14 @@
 import supportData from '../data/support.json';
 import donorsData from '../data/donors.json';
+import creditsData from '../data/credits.json';
 // Configuración central del sitio. Todo lo que no viene de los releases vive aquí:
 // enlaces, textos de cada app, juegos compatibles y la forma de apoyar el proyecto.
 
 export const site = {
   name: 'Hive',
   owner: 'Yafel',
-  url: 'https://hive.yafel.dev',
+  // Mismo valor que usa astro.config.mjs, para que JSON-LD y SEO sigan al dominio configurado.
+  url: process.env.SITE_URL || 'https://hive.yafel.dev',
   description:
     'HiveShock y HiveBuzz: herramientas gratuitas para streamers de TikTok LIVE y Twitch. Tu comunidad controla el juego con regalos y chat; alertas, voz y overlays para tu stream.',
   links: {
@@ -19,6 +21,8 @@ export const site = {
   legalUpdated: '2026-10-30',
   /** Mostrar descargas de los ports en la web. En false, solo se muestra cómo activarlos. */
   showPortDownloads: true,
+  /** Mostrar patrocinadores (franja de la portada, bloque, nivel Reina y su pregunta en /apoyar/). Temporalmente oculto. */
+  showSponsors: false,
 };
 
 export type AppId = 'hiveshock' | 'hivebuzz';
@@ -148,6 +152,15 @@ export type TierId = 'abeja' | 'obrera' | 'reina';
 export interface Supporter { name: string; url?: string; logo?: string }
 export interface Donor { name: string; tier?: TierId; since?: string; links?: Record<string, string> }
 
+/** Persona a la que se da crédito. `links` usa las redes de lib/socials.js (usuario o enlace); `extra` admite cualquier otro sitio. */
+export interface Credit {
+  name: string;
+  role?: string;
+  note?: string;
+  links?: Record<string, string>;
+  extra?: Array<{ label: string; url: string }>;
+}
+
 export const support = supportData as unknown as {
   trackTotals: boolean;
   usdToMxn: number;
@@ -167,3 +180,6 @@ const tierRank: Record<TierId, number> = { reina: 0, obrera: 1, abeja: 2 };
 export const donors: Donor[] = ((donorsData.donors as Donor[]) ?? [])
   .slice()
   .sort((a, b) => tierRank[a.tier ?? 'abeja'] - tierRank[b.tier ?? 'abeja'] || (a.since ?? '').localeCompare(b.since ?? '') || a.name.localeCompare(b.name));
+
+/** Créditos en el orden en que se escriben en src/data/credits.json. */
+export const credits: Credit[] = (creditsData.people as Credit[]) ?? [];

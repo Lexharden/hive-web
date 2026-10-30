@@ -20,10 +20,10 @@ export function renderMarkdown(md: string): string {
       h1: 'h3',
       h2: 'h3',
       h3: 'h4',
-      a: (tagName, attribs) =>
+      a: (_tag, attribs): sanitizeHtml.Tag =>
         /github\.com/i.test(attribs.href ?? '')
           ? { tagName: 'span', attribs: {} }
-          : { tagName: 'a', attribs: { href: attribs.href, target: '_blank', rel: 'noopener' } },
+          : { tagName: 'a', attribs: { href: attribs.href ?? '', target: '_blank', rel: 'noopener' } },
     },
     exclusiveFilter: (frame) => frame.tag === 'p' && !frame.text.trim() && !frame.mediaChildren?.length,
   });
