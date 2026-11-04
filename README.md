@@ -41,7 +41,7 @@ En local, sin red, se usa `src/data/snapshot.json`.
    - Repository access: solo `Lexharden/hive-web`
    - Permissions → Contents: **Read and write** (es lo que pide `repository_dispatch`)
    - Caducidad: la máxima que acepte tu cuenta; pon un recordatorio para renovarlo.
-5. En **cada repo de app y port** (HiveShock-Avalonia, HiveBuzz, Shipwright-HiveShock, 2ship2harkinian-HiveShock):
+5. En **cada repo de app, port y mod** (HiveShock-Avalonia, HiveBuzz, Shipwright-HiveShock, 2ship2harkinian-HiveShock, Dusklight-HiveShock):
    - guarda el token como secreto `WEB_DISPATCH_TOKEN`
    - copia `integracion/notify-web.yml` en `.github/workflows/notify-web.yml`
 6. Lanza *Deploy* a mano desde Actions la primera vez.
@@ -87,6 +87,10 @@ actuales no hay que tocar nada:
 - Arquitectura: `arm64` / `aarch64` o `x64` / `amd64` / `x86_64`
 - Se ocultan: firmas `.sig`, `latest.json`, paquetes `-update` y `.app.tar.gz` (son para el autoactualizador)
 - `SHA256SUMS.txt` aparece como enlace de verificación
+
+- Mods de Dusklight: un `.dusk` por plataforma, con la plataforma en el nombre
+  (`HiveShock-Dusklight-1.2.0-win-x64.dusk`). Un `.dusk` sin `win`/`linux`/`macos` en el nombre no se muestra.
+- **El repo tiene que existir y ser público antes de añadirlo a `games`**: en CI una respuesta 404 de GitHub hace fallar el build.
 
 Una versión con guion (`v2.0.0-beta.1`) marcada como *pre-release* se muestra aparte como versión de prueba y nunca
 reemplaza al botón principal.

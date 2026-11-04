@@ -51,7 +51,7 @@ const ports = Object.fromEntries(
           </div>
           <div class="get">
             {port && site.showPortDownloads ? (
-              <DownloadPanel data={port} appName={`${g.port} con HiveShock`} />
+              <DownloadPanel data={port} appName={`${g.port} con HiveShock`} note={g.install} />
             ) : (
               <div class="soon">
                 <h3>El perfil ya viene en HiveShock</h3>

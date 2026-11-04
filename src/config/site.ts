@@ -77,6 +77,8 @@ export interface Game {
   repo?: string;
   kind: 'port' | 'mod';
   howTo: string;
+  /** Pasos de instalación (HTML) que se muestran bajo el botón de descarga. Útil para mods, que no llevan instalador. */
+  install?: string;
   sample: string[]; // ejemplos reales de regalo → efecto del perfil
 }
 
@@ -111,8 +113,10 @@ export const games: Game[] = [
     port: 'Dusklight',
     profile: 'dusklight',
     effects: 69,
-    kind: 'port',
+    repo: 'Lexharden/Dusklight-HiveShock',
+    kind: 'mod',
     howTo: 'Entra en una partida y activa el puente en el menú Mods.',
+    install: 'Copia el archivo <code>.dusk</code> a <code>%APPDATA%\\TwilitRealm\\Dusklight\\mods</code> y abre Dusklight.',
     sample: ['Manada de bokoblins', 'Botas de hierro', 'Bestia de las Sombras', 'Llena el farol'],
   },
   {

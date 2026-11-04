@@ -20,7 +20,7 @@ const ports = Object.fromEntries(
           <span class="title">{g.title}</span>
           <span class="port">{g.port}</span>
           <span class={`status ${port ? 'status--ready' : ''}`}>
-            {port ? (v ? `Port con HiveShock v${v}` : 'Port con HiveShock') : 'Perfil incluido en HiveShock'}
+            {port ? `${g.kind === 'mod' ? 'Mod' : 'Port'} con HiveShock${v ? ` v${v}` : ''}` : 'Perfil incluido en HiveShock'}
           </span>
         </a>
       </li>

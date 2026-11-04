@@ -72,7 +72,8 @@ function detectKind(n: string, ext: string): Kind {
   if (/update/.test(n) || ext === 'app.tar.gz') return 'update';
   if (['exe', 'dmg', 'apk'].includes(ext)) return 'installer';
   if (['msi', 'deb', 'rpm'].includes(ext)) return 'package';
-  if (['zip', 'appimage', 'tar.gz', '7z'].includes(ext)) return 'portable';
+  // .dusk = mod de Dusklight (un zip con la librería de UNA plataforma; el nombre lleva win/linux/macos).
+  if (['zip', 'appimage', 'tar.gz', '7z', 'dusk'].includes(ext)) return 'portable';
   return 'other';
 }
 
@@ -87,7 +88,7 @@ function labelFor(kind: Kind, ext: string, platform?: Platform, arch?: Arch): st
       what = `Paquete ${e}`;
       break;
     case 'portable':
-      what = ext === 'appimage' ? `AppImage portable` : `Portable ${e}`;
+      what = ext === 'appimage' ? `AppImage portable` : ext === 'dusk' ? `Mod ${e}` : `Portable ${e}`;
       break;
     case 'update':
       what = `Actualización ${e}`;
@@ -105,7 +106,7 @@ function labelFor(kind: Kind, ext: string, platform?: Platform, arch?: Arch): st
 }
 
 function rankFor(kind: Kind, ext: string, platform?: Platform, arch?: Arch): number {
-  const base: Record<string, number> = { exe: 0, dmg: 0, apk: 0, appimage: 1, msi: 3, deb: 4, rpm: 5, zip: 2 };
+  const base: Record<string, number> = { exe: 0, dmg: 0, apk: 0, dusk: 0, appimage: 1, msi: 3, deb: 4, rpm: 5, zip: 2 };
   let r = base[ext] ?? 8;
   if (kind === 'update' || kind === 'signature' || kind === 'manifest') r += 50;
   // Mac: primero Apple Silicon. Linux: primero x64.

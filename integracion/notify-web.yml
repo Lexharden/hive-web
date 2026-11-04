@@ -1,6 +1,7 @@
 # Copia este archivo en .github/workflows/notify-web.yml de cada repo que aparece en la web:
 #   Lexharden/HiveShock-Avalonia, Lexharden/HiveBuzz,
-#   Lexharden/Shipwright-HiveShock, Lexharden/2ship2harkinian-HiveShock
+#   Lexharden/Shipwright-HiveShock, Lexharden/2ship2harkinian-HiveShock,
+#   Lexharden/Dusklight-HiveShock
 #
 # Necesita el secreto WEB_DISPATCH_TOKEN en cada repo (ver README de hive-web).
 #

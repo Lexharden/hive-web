@@ -8,6 +8,7 @@ const repos = [
   'Lexharden/HiveBuzz',
   'Lexharden/Shipwright-HiveShock',
   'Lexharden/2ship2harkinian-HiveShock',
+  'Lexharden/Dusklight-HiveShock',
 ];
 
 const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;

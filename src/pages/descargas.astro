@@ -40,7 +40,7 @@ const ports = await Promise.all(portGames.map((g) => getReleases(g.repo!)));
         {portGames.map((g, i) => (
           <div class="col">
             <h3>{g.title} <span class="muted">con {g.port}</span></h3>
-            <DownloadPanel data={ports[i]} appName={g.port} support={false} />
+            <DownloadPanel data={ports[i]} appName={g.port} support={false} note={g.install} />
           </div>
         ))}
       </div>
