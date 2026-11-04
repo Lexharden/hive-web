@@ -12,7 +12,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "snapshot": "node scripts/snapshot.mjs",
-    "test": "node tests/donations.test.mjs && node tests/assets.test.mjs",
+    "test": "node tests/donations.test.mjs && node tests/assets.test.mjs && node tests/analytics.test.mjs",
     "brand": "node scripts/export-brand.mjs",
     "check": "astro check"
   },

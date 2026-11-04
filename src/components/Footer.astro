@@ -37,7 +37,7 @@ const year = new Date().getFullYear();
       No distribuimos juegos, ROMs ni contenido con derechos de autor. El software se ofrece tal cual y se usa bajo
       responsabilidad de cada usuario.
     </p>
-    <p class="legal-links"><a href="/legal/">Aviso legal</a> <a href="/legal/#privacidad">Privacidad</a> <span class="copy" data-egg-copy>© {year} {site.owner}</span></p>
+    <p class="legal-links"><a href="/legal/">Aviso legal</a> <a href="/legal/#privacidad">Privacidad</a> {site.gaId && <button type="button" class="linklike" data-consent-open>Preferencias de analítica</button>} <span class="copy" data-egg-copy>© {year} {site.owner}</span></p>
   </div>
 </footer>
 
@@ -58,6 +58,7 @@ const year = new Date().getFullYear();
   .legal p:first-child { max-width: 62rem; }
   .legal-links { display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline; }
   .legal-links a { color: var(--mist); }
-  .legal-links a:hover { color: var(--honey); }
+  .legal-links a:hover, .linklike:hover { color: var(--honey); }
+  .linklike { background: none; border: 0; padding: 0; font: inherit; color: var(--mist); text-decoration: underline; cursor: pointer; }
   @media (max-width: 820px) { .grid { grid-template-columns: 1fr 1fr; } .about { grid-column: 1 / -1; } }
 </style>

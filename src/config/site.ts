@@ -1,6 +1,7 @@
 import supportData from '../data/support.json';
 import donorsData from '../data/donors.json';
 import creditsData from '../data/credits.json';
+import { cleanGaId } from '../lib/analytics';
 // Configuración central del sitio. Todo lo que no viene de los releases vive aquí:
 // enlaces, textos de cada app, juegos compatibles y la forma de apoyar el proyecto.
 
@@ -18,7 +19,9 @@ export const site = {
     instagram: 'https://www.instagram.com/yaafel/',
   },
   /** Fecha de la última revisión del aviso legal. Cámbiala cuando edites /legal/. */
-  legalUpdated: '2026-10-30',
+  legalUpdated: '2026-11-04',
+  /** ID de GA4 (variable PUBLIC_GA_ID). Sin un ID válido no se carga analítica ni se muestra el banner. */
+  gaId: cleanGaId(import.meta.env?.PUBLIC_GA_ID),
   /** Mostrar descargas de los ports en la web. En false, solo se muestra cómo activarlos. */
   showPortDownloads: true,
   /** Mostrar patrocinadores (franja de la portada, bloque, nivel Reina y su pregunta en /apoyar/). Temporalmente oculto. */

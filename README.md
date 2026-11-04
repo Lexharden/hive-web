@@ -76,6 +76,15 @@ Requiere Node 22.23.4 o superior (ver `.nvmrc`).
 | Número de efectos por juego | Se lee solo de los perfiles de HiveShock; `effects` en `site.ts` es el respaldo |
 | Aviso legal | `src/pages/legal.astro`; cambia `site.legalUpdated` al editarlo |
 | Ocultar las descargas de los ports | `site.showPortDownloads = false` |
+| **Google Analytics 4** | Variable de repo `PUBLIC_GA_ID` (`G-XXXXXXXXXX`, Settings → Variables). Sin ella no se carga nada. Lógica en `src/scripts/analytics.ts` y `src/lib/analytics.ts`; banner en `ConsentBanner.astro` |
+
+### Analítica
+
+Consent Mode v2: todo arranca denegado y solo se guardan cookies si la persona acepta (`localStorage` → `hive:consent`).
+Eventos: `page_view` (automático), `file_download` (app, versión, archivo), `outbound_click` (network: discord, youtube,
+kofi…), `copy_clabe`, `support_cta` y `thanks_shown`. Para verlos en informes, registra `app`, `version` y `network` como
+dimensiones personalizadas en GA4 y marca `file_download` como evento clave. Para probar en local:
+`PUBLIC_GA_ID=G-TEST123456 npm run dev`.
 
 ### Nombres de archivo que entiende la web
 

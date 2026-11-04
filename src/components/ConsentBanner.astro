@@ -1,0 +1,27 @@
+<div class="consent" data-consent role="region" aria-label="Preferencias de analítica" hidden>
+  <p>
+    Usamos Google Analytics, solo si aceptas, para saber qué páginas y descargas se usan y mejorar el sitio. Si rechazas,
+    no se guardan cookies de analítica.
+    <a href="/legal/#privacidad">Más información</a>
+  </p>
+  <div class="actions">
+    <button type="button" class="btn btn--ghost" data-consent-reject>Rechazar</button>
+    <button type="button" class="btn btn--honey" data-consent-accept>Aceptar</button>
+  </div>
+</div>
+
+<style>
+  .consent {
+    position: fixed; z-index: 60;
+    inset: auto max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    max-width: 640px; margin-inline: auto;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px;
+    padding: 16px 18px; background: var(--navy); color: var(--paper);
+    border: var(--stroke); border-radius: var(--r); box-shadow: var(--lift-lg);
+    font-size: var(--step--1);
+  }
+  .consent[hidden] { display: none; }
+  .consent p { flex: 1 1 280px; margin: 0; }
+  .consent a { color: var(--honey); }
+  .actions { display: flex; gap: 10px; }
+</style>

@@ -52,6 +52,8 @@ jobs:
           # (mejor eso que publicar datos viejos del snapshot).
           REQUIRE_GITHUB: '1'
           SITE_URL: ${{ vars.SITE_URL || 'https://hive.yafel.dev' }}
+          # ID de medición de GA4 (Settings > Variables). Sin él el sitio no carga analítica.
+          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
