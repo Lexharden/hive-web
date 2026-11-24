@@ -4,6 +4,7 @@
 import { classify, type Asset, type RawAsset } from './assets';
 import { renderMarkdown } from './markdown';
 import snapshotData from '../data/snapshot.json';
+import { gameBuilds, type Game, type GameBuild } from '../config/site';
 
 export interface Release {
   tag: string;
@@ -114,4 +115,14 @@ async function load(repo: string): Promise<RepoReleases> {
 export function getReleases(repo: string): Promise<RepoReleases> {
   if (!cache.has(repo)) cache.set(repo, load(repo));
   return cache.get(repo)!;
+}
+
+export interface BuildReleases {
+  build: GameBuild;
+  data: RepoReleases;
+}
+
+/** Releases de cada build de un juego, en el orden de `builds` (el primero es el principal). */
+export function getGameReleases(g: Game): Promise<BuildReleases[]> {
+  return Promise.all(gameBuilds(g).map(async (build) => ({ build, data: await getReleases(build.repo) })));
 }

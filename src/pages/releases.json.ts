@@ -1,14 +1,20 @@
 // /releases.json: resumen público de la última versión de cada app y port.
 // Útil para un bot de Discord, un widget o las propias apps.
 import type { APIRoute } from 'astro';
-import { apps, games } from '../config/site';
+import { apps, games, gameBuilds, buildId } from '../config/site';
 import { getReleases } from '../lib/releases';
 import { visibleAssets } from '../lib/assets';
 
 export const GET: APIRoute = async () => {
   const repos = [
     ...Object.values(apps).map((a) => ({ id: a.id, name: a.name, repo: a.repo })),
-    ...games.filter((g) => g.repo).map((g) => ({ id: g.id, name: `${g.port} con HiveShock`, repo: g.repo! })),
+    ...games.flatMap((g) =>
+      gameBuilds(g).map((b, i, all) => ({
+        id: buildId(g, b),
+        name: `${g.port} con HiveShock${all.length > 1 && i > 0 ? ` (${b.label})` : ''}`,
+        repo: b.repo,
+      })),
+    ),
   ];
   const out = await Promise.all(
     repos.map(async (r) => {

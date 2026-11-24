@@ -1,14 +1,15 @@
 # Copia este archivo en .github/workflows/notify-web.yml de cada repo que aparece en la web:
 #   Lexharden/HiveShock-Avalonia, Lexharden/HiveBuzz,
-#   Lexharden/Shipwright-HiveShock, Lexharden/2ship2harkinian-HiveShock,
-#   Lexharden/Dusklight-HiveShock
+#   Lexharden/Shipwright-HiveShock, Lexharden/Shipwright-Android-HiveShock,
+#   Lexharden/2ship2harkinian-HiveShock, Lexharden/Dusklight-HiveShock
 #
 # Necesita el secreto WEB_DISPATCH_TOKEN en cada repo (ver README de hive-web).
 #
 # Por qué dos disparadores:
 #   - `release` cubre los releases que publicas o editas a mano (también publicar un borrador).
 #   - Un release creado por otro workflow con GITHUB_TOKEN no dispara `release` (regla de GitHub),
-#     así que también se escucha el fin del workflow de release del propio repo.
+#     así que también se escucha el fin del workflow de release del propio repo. Ese workflow debe
+#     llamarse `Release` (o `release`): `workflow_run` lo busca por nombre.
 name: Avisar a la web
 
 on:

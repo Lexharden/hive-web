@@ -2,12 +2,14 @@
 import Base from '../layouts/Base.astro';
 import DownloadPanel from '../components/DownloadPanel.astro';
 import { apps, games, site } from '../config/site';
-import { getReleases } from '../lib/releases';
+import { getReleases, getGameReleases } from '../lib/releases';
 
 const shock = await getReleases(apps.hiveshock.repo);
 const buzz = await getReleases(apps.hivebuzz.repo);
-const portGames = site.showPortDownloads ? games.filter((g) => g.repo) : [];
-const ports = await Promise.all(portGames.map((g) => getReleases(g.repo!)));
+// Un panel por build: un juego con versión de PC y de Android ocupa dos columnas.
+const ports = site.showPortDownloads
+  ? (await Promise.all(games.map(async (g) => (await getGameReleases(g)).map((b, _i, all) => ({ g, ...b, multi: all.length > 1 }))))).flat()
+  : [];
 ---
 <Base title="Descargas" description="Descarga la última versión de HiveShock, HiveBuzz y los ports compatibles para Windows, macOS, Linux y Android.">
   <section class="intro honeycomb">
@@ -30,17 +32,17 @@ const ports = await Promise.all(portGames.map((g) => getReleases(g.repo!)));
     </div>
   </section>
 
-  {portGames.length > 0 && <section class="section section--band">
+  {ports.length > 0 && <section class="section section--band">
     <div class="wrap">
       <div class="section-head">
         <h2>Ports con HiveShock</h2>
         <p>Necesitas tu propia copia legal de cada juego; no proporcionamos juegos ni ROMs. <a href="/juegos/">Ver todos los juegos</a></p>
       </div>
       <div class="grid">
-        {portGames.map((g, i) => (
+        {ports.map(({ g, build, data, multi }) => (
           <div class="col">
-            <h3>{g.title} <span class="muted">con {g.port}</span></h3>
-            <DownloadPanel data={ports[i]} appName={g.port} support={false} note={g.install} />
+            <h3>{g.title} <span class="muted">con {g.port}{multi ? ` · ${build.label}` : ''}</span></h3>
+            <DownloadPanel data={data} appName={g.port} support={false} note={g.install} />
           </div>
         ))}
       </div>
