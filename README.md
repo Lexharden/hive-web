@@ -41,7 +41,8 @@ En local, sin red, se usa `src/data/snapshot.json`.
    - Repository access: solo `Lexharden/hive-web`
    - Permissions → Contents: **Read and write** (es lo que pide `repository_dispatch`)
    - Caducidad: la máxima que acepte tu cuenta; pon un recordatorio para renovarlo.
-5. En **cada repo de app, port y mod** (HiveShock-Avalonia, HiveBuzz, Shipwright-HiveShock, 2ship2harkinian-HiveShock, Dusklight-HiveShock):
+5. En **cada repo de app, port y mod** (HiveShock-Avalonia, HiveBuzz, Shipwright-HiveShock, Shipwright-Android-HiveShock, 2ship2harkinian-HiveShock,
+   Dusklight-HiveShock):
    - guarda el token como secreto `WEB_DISPATCH_TOKEN`
    - copia `integracion/notify-web.yml` en `.github/workflows/notify-web.yml`
 6. Lanza *Deploy* a mano desde Actions la primera vez.
@@ -63,7 +64,8 @@ Requiere Node 22.23.4 o superior (ver `.nvmrc`).
 |---|---|
 | Cambiar enlaces (Discord, Ko-fi, YouTube…) | `src/config/site.ts` → `site.links` |
 | Cambiar textos de una app | `src/config/site.ts` → `apps` y `src/pages/<app>/index.astro` |
-| **Añadir un juego** | `src/config/site.ts` → `games`. Si tiene repo con releases, pon `repo` y la descarga aparece sola |
+| **Añadir un juego** | `src/config/site.ts` → `games`. Si tiene repo con releases, añádelo a `builds` y la descarga aparece sola |
+| **Otra versión de un port** (p. ej. Android en otro repo) | Añade `{ repo, label }` a `builds` de ese juego: sale un panel más con su propia versión |
 | **Añadir una app nueva** | Añádela a `apps`, copia `src/pages/hivebuzz/` como plantilla y añádela al menú en `Header.astro` |
 | Colores y tipografía | `src/styles/global.css` (tokens al inicio) |
 | Cómo se nombran los archivos de descarga | `src/lib/assets.ts` |
@@ -99,7 +101,11 @@ actuales no hay que tocar nada:
 
 - Mods de Dusklight: un `.dusk` por plataforma, con la plataforma en el nombre
   (`HiveShock-Dusklight-1.2.0-win-x64.dusk`). Un `.dusk` sin `win`/`linux`/`macos` en el nombre no se muestra.
-- **El repo tiene que existir y ser público antes de añadirlo a `games`**: en CI una respuesta 404 de GitHub hace fallar el build.
+- **El repo tiene que existir y ser público antes de añadirlo a `builds`**: en CI una respuesta 404 de GitHub hace fallar el build.
+- Un juego puede tener varios `builds` (PC y Android en repos distintos). Cada uno tiene su panel, su versión y su
+  refresco en vivo; el primero es el principal (tarjetas de juego). En `/releases.json` el principal conserva el id del
+  juego y los demás le añaden su etiqueta (`ocarina-of-time-android`).
+- El workflow que publica el release debe llamarse `Release` (o `release`) para que `notify-web.yml` lo escuche.
 
 Una versión con guion (`v2.0.0-beta.1`) marcada como *pre-release* se muestra aparte como versión de prueba y nunca
 reemplaza al botón principal.

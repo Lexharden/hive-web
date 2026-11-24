@@ -69,6 +69,13 @@ export const apps: Record<AppId, AppInfo> = {
   },
 };
 
+/** Una versión del port que se publica en su propio repo (p. ej. PC y Android), con sus propios releases. */
+export interface GameBuild {
+  repo: string; // owner/name: solo se usa para leer los releases, nunca se muestra
+  /** Nombre corto que se muestra sobre su panel cuando el juego tiene más de un build («PC», «Android»). */
+  label: string;
+}
+
 export interface Game {
   id: string;
   title: string;
@@ -76,8 +83,11 @@ export interface Game {
   /** Carpeta del perfil en HiveShock (config/profiles/<perfil>). Con ella el número de efectos se lee solo. */
   profile?: string;
   effects: number; // respaldo si no se puede leer el perfil
-  /** Repo del port con HiveShock integrado; sus releases alimentan las descargas (no se muestra). */
-  repo?: string;
+  /**
+   * Repos del port con HiveShock integrado; sus releases alimentan las descargas. Uno por cada versión que se publica
+   * aparte (PC, Android…), cada una con su propio panel. El primero es el principal (tarjetas y versión del juego).
+   */
+  builds?: GameBuild[];
   kind: 'port' | 'mod';
   howTo: string;
   /** Pasos de instalación (HTML) que se muestran bajo el botón de descarga. Útil para mods, que no llevan instalador. */
@@ -94,7 +104,7 @@ export const games: Game[] = [
     port: '2 Ship 2 Harkinian',
     profile: 'majora-mask',
     effects: 67,
-    repo: 'Lexharden/2ship2harkinian-HiveShock',
+    builds: [{ repo: 'Lexharden/2ship2harkinian-HiveShock', label: 'PC' }],
     kind: 'port',
     howTo: 'Entra en una partida y activa HiveShock en el menú Cheats.',
     sample: ['Un cucco', 'Stick invertido 20 s', 'Un hada', 'Enemigo aleatorio'],
@@ -105,7 +115,10 @@ export const games: Game[] = [
     port: 'Ship of Harkinian',
     profile: 'ocarina-of-time',
     effects: 74,
-    repo: 'Lexharden/Shipwright-HiveShock',
+    builds: [
+      { repo: 'Lexharden/Shipwright-HiveShock', label: 'PC' },
+      { repo: 'Lexharden/Shipwright-Android-HiveShock', label: 'Android' },
+    ],
     kind: 'port',
     howTo: 'Entra en una partida y activa HiveShock en Enhancements.',
     sample: ['Dark Link', 'Ganon bestia', 'Flare Dancer', '+10 rupias'],
@@ -116,7 +129,7 @@ export const games: Game[] = [
     port: 'Dusklight',
     profile: 'dusklight',
     effects: 69,
-    repo: 'Lexharden/Dusklight-HiveShock',
+    builds: [{ repo: 'Lexharden/Dusklight-HiveShock', label: 'PC' }],
     kind: 'mod',
     howTo: 'Entra en una partida y activa el puente en el menú Mods.',
     install: 'Copia el archivo <code>.dusk</code> a <code>%APPDATA%\\TwilitRealm\\Dusklight\\mods</code> y abre Dusklight.',
@@ -143,6 +156,13 @@ export const games: Game[] = [
     sample: ['Snippet mutante', 'Salto gigante', 'Cámara lenta', 'Emboscada'],
   },
 ];
+
+/** Builds publicados de un juego (vacío si solo viene como perfil dentro de HiveShock). */
+export const gameBuilds = (g: Game): GameBuild[] => g.builds ?? [];
+
+/** Id estable de un build en /releases.json: el principal conserva el id del juego; los demás le añaden su etiqueta. */
+export const buildId = (g: Game, b: GameBuild): string =>
+  gameBuilds(g)[0] === b ? g.id : `${g.id}-${b.label.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 
 export const totalEffects = games.reduce((n, g) => n + g.effects, 0);
 

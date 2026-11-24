@@ -5,11 +5,11 @@ import Faq from '../components/Faq.astro';
 import DonateMethods from '../components/DonateMethods.astro';
 import TierBadge from '../components/TierBadge.astro';
 import DonorWall from '../components/DonorWall.astro';
-import { site, support, sponsors, donors, apps, games } from '../config/site';
+import { site, support, sponsors, donors, apps, games, gameBuilds } from '../config/site';
 import { getReleases } from '../lib/releases';
 
 // Cifras reales del trabajo, leídas de los releases de cada app y port.
-const repos = [apps.hiveshock.repo, apps.hivebuzz.repo, ...games.filter((g) => g.repo).map((g) => g.repo!)];
+const repos = [apps.hiveshock.repo, apps.hivebuzz.repo, ...games.flatMap((g) => gameBuilds(g).map((b) => b.repo))];
 const all = await Promise.all(repos.map((r) => getReleases(r)));
 const versions = all.reduce((n, r) => n + r.releases.length, 0);
 const stats = [

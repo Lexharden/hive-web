@@ -4,12 +4,12 @@ import DownloadPanel from '../components/DownloadPanel.astro';
 import Icon from '../components/Icon.astro';
 import { site } from '../config/site';
 import { gamesWithEffects } from '../lib/effects';
-import { getReleases } from '../lib/releases';
+import { getGameReleases, type BuildReleases } from '../lib/releases';
 
 const games = await gamesWithEffects();
 const totalEffects = games.reduce((n, g) => n + g.effects, 0);
-const ports = Object.fromEntries(
-  await Promise.all(games.filter((g) => g.repo).map(async (g) => [g.id, await getReleases(g.repo!)])),
+const ports: Record<string, BuildReleases[]> = Object.fromEntries(
+  await Promise.all(games.map(async (g) => [g.id, await getGameReleases(g)])),
 );
 ---
 <Base
@@ -35,7 +35,8 @@ const ports = Object.fromEntries(
 
   <div class="wrap list">
     {games.map((g) => {
-      const port = ports[g.id];
+      const builds = ports[g.id];
+      const port = builds.length > 0;
       return (
         <section class="game" id={g.id} aria-labelledby={`${g.id}-t`}>
           <div class="info">
@@ -51,7 +52,12 @@ const ports = Object.fromEntries(
           </div>
           <div class="get">
             {port && site.showPortDownloads ? (
-              <DownloadPanel data={port} appName={`${g.port} con HiveShock`} note={g.install} />
+              builds.map(({ build, data }) => (
+                <div class="build">
+                  {builds.length > 1 && <h3 class="build-label">{build.label}</h3>}
+                  <DownloadPanel data={data} appName={`${g.port} con HiveShock`} note={g.install} />
+                </div>
+              ))
             ) : (
               <div class="soon">
                 <h3>El perfil ya viene en HiveShock</h3>
@@ -100,7 +106,8 @@ const ports = Object.fromEntries(
     font-weight: 800; font-size: var(--step--1);
   }
   .credit { color: var(--mist); }
-  .get { min-width: 0; }
+  .get { min-width: 0; display: grid; gap: 24px; align-content: start; }
+  .build-label { font-size: var(--step-0); margin: 0 0 8px; color: var(--mist); }
   .soon {
     display: grid; gap: 12px; justify-items: start;
     padding: clamp(18px, 3vw, 28px);
